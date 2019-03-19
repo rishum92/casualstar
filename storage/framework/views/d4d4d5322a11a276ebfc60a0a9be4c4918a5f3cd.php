@@ -199,7 +199,7 @@
         </div>
         <div class="modal-body">
           <p>Please register or login to access all functions on our member’s only website. <span style="font-weight:bold;"> Registration only takes about 1 Minute.</span></p><br />
-          <a href = "<?php echo e(url('register')); ?>" class = "page_btn"> Register </a>
+          <a href = "<?php echo e(url('/')); ?>" class = "page_btn"> Register </a>
           <a href = "<?php echo e(url('/')); ?>" class = "page_btn"> Login </a>
         </div>
       </form>
