@@ -57,6 +57,7 @@ class HomeController extends BaseController
     $post_data = offer_post::getPost();
     $user_posts = offer_post::get_user_posts();
     $myofferpost = offer_post::myofferPost();
+    $myofferpostinterested = offer_post::myofferPostInterested();
     $notification_data = offer_post::offer_notification();
 
     //echo "<pre>";print_r($notification_data);die;
@@ -65,7 +66,7 @@ class HomeController extends BaseController
             ->where('id', $user_id)
             ->update(['notification' => 0]);
 
-    return view('offers', ['offerpost'=>$post_data, 'user_posts'=>$user_posts,'myofferpost'=>$myofferpost,]);
+    return view('offers', ['offerpost'=>$post_data, 'user_posts'=>$user_posts,'myofferpost'=>$myofferpost,'myofferpostinterested'=>$myofferpostinterested,'my_notifications'=> $notification_data]);
 
   }
 

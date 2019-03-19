@@ -70,7 +70,18 @@ class offerPostController extends Controller
       $post_data = offer_post::getPost();
       $post_id       = $Request->id;
       $myoffer_interested_users = offer_post::post_intrest_users($post_id);
+      //echo "<pre>";print_r($myoffer_interested_users);die;
       return view('myoffer_interest_users',['myoffer_interested_users'=>$myoffer_interested_users]);
+    }
+
+    //logged interested
+    public function logged_interested(Request $Request)
+    { 
+      $post_data = offer_post::getPost();
+      $post_id = $Request->id;
+      $my_logged_interested_users = offer_post::post_intrest_users($post_id);
+      //echo "<pre>";print_r($myoffer_interested_users);die;
+      return view('logged_interested',['my_logged_interested_users'=>$my_logged_interested_users]);
     }
 
     //delete posts

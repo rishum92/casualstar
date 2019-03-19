@@ -206,6 +206,7 @@
 	Route::get('offerpost/{id}','offerPostController@post_intrest_users');
 	Route::get('myofferpost/{id}','offerPostController@myoffer_intrest_users');
 	Route::post('send_offer_message','offerPostController@send_offer_message');
+	Route::get('logged_interested/{id}','offerPostController@logged_interested');
 	
 	// Route::get('offersrr','offerPostController@getData');
 

@@ -142,6 +142,28 @@ class offer_post extends Model
       return $myofferpost;              
    }
 
+   public static function myofferPostInterested()
+   {
+      $myofferpostinterested = DB::table('offer_post')
+                    ->join('users', 'offer_post.user_id', '=', 'users.id')
+                    ->join('offer_interested_users', 'offer_post.id', '=', 'offer_interested_users.post_id')
+                    ->select('offer_post.*','users.username','users.img')
+                    ->where('offer_interested_users.user_id','=',Auth::user()->id)
+                    ->groupBy('offer_post.id')
+                    ->get();
+      //echo "<pre>";print_r($myofferpostinterested);die;
+
+      foreach ($myofferpostinterested as $key => $post) {
+        $interest_count = DB::table('offer_interested_users')
+                          ->select('id')
+                          ->where('post_id', $post->id)
+                          ->get(); 
+        $myofferpostinterested[$key]->intrest_count = count($interest_count);
+      }
+      //echo "<pre>";print_r($myofferpostinterested);die;
+      return $myofferpostinterested;              
+   }
+
 
    //
    public static function intrestedCount()
@@ -173,7 +195,7 @@ class offer_post extends Model
                     ->where('offer_interested_users.post_id', '=', $post_id)
                     ->select('users.*', 'offer_interested_users.*')
                     ->orderBy('offer_interested_users.created_at')
-                    ->get();
+                    ->paginate(10);
             return $users;
     }
 

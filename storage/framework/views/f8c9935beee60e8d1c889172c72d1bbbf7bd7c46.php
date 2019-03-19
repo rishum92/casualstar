@@ -1,18 +1,18 @@
 <?php //echo "<pre>";print_r($notification_data);die; ?>
-@extends('layouts.master')
 
-@section('style')
-  <link href="{{ URL::asset('css/supersubs.css') }}" rel="stylesheet">
-@endsection
 
-@section('meta')
+<?php $__env->startSection('style'); ?>
+  <link href="<?php echo e(URL::asset('css/supersubs.css')); ?>" rel="stylesheet">
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('meta'); ?>
   <title>Super Subs » CasualStar</title> 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <?php date_default_timezone_set("Asia/Kolkata"); ?>
- @if(Auth::user()->gender == 'male')
+ <?php if(Auth::user()->gender == 'male'): ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script>   
 
  <!-- mal start -->
@@ -24,7 +24,7 @@
        <div class="row">
          <div class="col-md-12">
            <div class="col-md-2">
-            <form method="post" action="{{url('offerpost')}}" autocomplete="off">
+            <form method="post" action="<?php echo e(url('offerpost')); ?>" autocomplete="off">
                <!-- <div class="usd_offer">USD</div>  -->
              <select class="form-control" name="currency" required>
                <option value="">Select Currency</option>
@@ -49,7 +49,8 @@
            <div class="col-md-3">
               
              <div class="form-group">
-               {{csrf_field()}}
+               <?php echo e(csrf_field()); ?>
+
                <input type="hidden" name="hiddenname" id="hiddenid">
                <input type="text" id="myField"  maxlength="8"  pattern="^[\d,]+$"  class="form-control" required="required" name="offerrate" placeholder="1,054"/>
              </div>
@@ -72,7 +73,7 @@
     </div>
   </div>
   <!-- male end -->
-  @else
+  <?php else: ?>
    <!-- femal start -->
     <div data-ng-controller="SuperSubsController">
     <div class="wrap">
@@ -83,39 +84,40 @@ first 10 interests will be logged for each Offer.</center>
      </div>
   </div>
    <!-- femal end -->
-    @endif
+    <?php endif; ?>
     <div class="wrap">
        <div class="row">
          <div class="col-md-12">
            <?php // echo "<pre>"; print_r($offerpost);die;?> 
-            @foreach($offerpost as $offers)
+            <?php foreach($offerpost as $offers): ?>
              <div class="col-md-6 offer_container_grid">
               
-                @if(in_array($offers->post_id, $user_posts))
+                <?php if(in_array($offers->post_id, $user_posts)): ?>
                   <div class=" offer_content_shadow2  offer_cont_shadow">
-                @else
+                <?php else: ?>
                   <div class="offer_cont_shadow">
-                @endif 
+                <?php endif; ?> 
 
                     <div class="offer_left">
-                      <a href="{{url('users/'.$offers->username)}}">
-                        @if($offers->img == '')
+                      <a href="<?php echo e(url('users/'.$offers->username)); ?>">
+                        <?php if($offers->img == ''): ?>
                         <img src="img/59ce3646d240c.png" class="offer_pro_pic" />
-                        @else
-                        <img src="img/{{ $offers->img }}" class="offer_pro_pic" />
-                        @endif
+                        <?php else: ?>
+                        <img src="img/<?php echo e($offers->img); ?>" class="offer_pro_pic" />
+                        <?php endif; ?>
                       </a>
                       <h3>
-                        <a href="{{url('users/'.$offers->username)}}"><span>{{$offers->username}}</span>
+                        <a href="<?php echo e(url('users/'.$offers->username)); ?>"><span><?php echo e($offers->username); ?></span>
                         </a>
                       </h3>
                     </div>
                      <div class="offer_right">
-                        <h3><span>{{$offers->currency}}{{$offers->offer_rate}}</span></h3>
+                        <h3><span><?php echo e($offers->currency); ?><?php echo e($offers->offer_rate); ?></span></h3>
                      </div> 
                      <div class="offer_detailes_box">
                        <p>
-                           {{$offers->offer_details}}
+                           <?php echo e($offers->offer_details); ?>
+
                        </p>
                       </div>
                         <p class="info_icon">
@@ -124,35 +126,35 @@ first 10 interests will be logged for each Offer.</center>
                           </a>
                         </p>
                       <br/>
-                     @if(Auth::user()->gender == 'male')
+                     <?php if(Auth::user()->gender == 'male'): ?>
                        <button type="button" disabled class="btn btn-default btn_interested">
                          <i class="fa fa-thumbs-up"></i> Interested
                        </button>
-                     @else
+                     <?php else: ?>
 
-                      @if($offers->intrest_count < 10)
-                       <a href="{{url('intrested/'.$offers->post_id)}}">
+                      <?php if($offers->intrest_count < 10): ?>
+                       <a href="<?php echo e(url('intrested/'.$offers->post_id)); ?>">
                        <button type="submit" class="btn btn-default btn_interested">
                          <i class="fa fa-thumbs-up"></i> Interested
                        </button>
                        </a>
-                       @else
+                       <?php else: ?>
                        <a href="#">
                        <button type="submit" disabled class="btn btn-default btn_interested">
                          <i class="fa fa-thumbs-up"></i> Interested
                        </button>
                        </a>
-                       @endif
-                     @endif
+                       <?php endif; ?>
+                     <?php endif; ?>
                  
                      <!-- popup call -->
                       
-                      <span class="viewOffers cursor-pointer" onclick="interestedcount(<?php echo $offers->post_id; ?>)">{{$offers->intrest_count}}</span>
+                      <span class="viewOffers cursor-pointer" onclick="interestedcount(<?php echo $offers->post_id; ?>)"><?php echo e($offers->intrest_count); ?></span>
                     <!-- pop call close -->  
                    
                       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script>
-                      @if($offers->intrest_count < 10)
-                        <span class="post_remaining" id="clock{{$offers->post_id}}"></span>
+                      <?php if($offers->intrest_count < 10): ?>
+                        <span class="post_remaining" id="clock<?php echo e($offers->post_id); ?>"></span>
                         <span class="post_remaining">
                         <?php 
                           $date_a = new DateTime(date("F j, Y, H:i:s"));
@@ -169,7 +171,7 @@ first 10 interests will be logged for each Offer.</center>
                           {
                         ?>
                           <script type="text/javascript">
-                          $('#clock{{$offers->post_id}}').countdown("{{$stop_date}}", function(event) 
+                          $('#clock<?php echo e($offers->post_id); ?>').countdown("<?php echo e($stop_date); ?>", function(event) 
                           { 
                             var totalHours = event.offset.totalDays * 24 + event.offset.hours;
                             var totalMins = event.strftime('%M');
@@ -190,17 +192,17 @@ first 10 interests will be logged for each Offer.</center>
                         ?>
                         </span>
                         
-                      @else
+                      <?php else: ?>
                        <span class="post_remaining">Close</span>
-                      @endif 
+                      <?php endif; ?> 
                       <br/><br/>
                       
                     
 
-                     <span class="offer_id">Id: #{{$offers->post_id}}</span>
-                     @if(Auth::user()->gender == 'male' OR Auth::user()->username == 'Admin')
-                      <a href="{{url('delete/'.$offers->post_id )}}"><span class="fa fa-trash offer_delete"></span></a>
-                     @endif 
+                     <span class="offer_id">Id: #<?php echo e($offers->post_id); ?></span>
+                     <?php if(Auth::user()->gender == 'male' OR Auth::user()->username == 'Admin'): ?>
+                      <a href="<?php echo e(url('delete/'.$offers->post_id )); ?>"><span class="fa fa-trash offer_delete"></span></a>
+                     <?php endif; ?> 
                   </div> 
                   
                </div>
@@ -224,12 +226,12 @@ first 10 interests will be logged for each Offer.</center>
                 </div>
               </div>
               <!-- popup modal close--> 
-              @endforeach
+              <?php endforeach; ?>
          
             
             <!-- pagination start -->
             <div class="col-md-12">
-             <center> {{ $offerpost->links() }} </center>
+             <center> <?php echo e($offerpost->links()); ?> </center>
             </div> 
             <!-- pagination close -->
             
@@ -246,44 +248,45 @@ first 10 interests will be logged for each Offer.</center>
        </div>
        <br/>
       
-      @if(Auth::user()->gender == 'male')
+      <?php if(Auth::user()->gender == 'male'): ?>
        <?php //echo "<pre>";print_r($myofferpost);die;  ?>
        <!-- my offer post start -->
 
        <div class="row">
           <h1 class="my_offer_post">My offer post</h1>
-          @if(empty($myofferpost))
+          <?php if(empty($myofferpost)): ?>
             <p class="female_subpage_title">
               You currently have no closed or active Offers, Click Here (link to offers page) to Post an Offer today. The more interests you get, the faster you will achieve the PGa badge for your 24 hours access to ALL private galleries.
             </p>
-          @else
+          <?php else: ?>
             <p class="female_subpage_title">
               Below are the Offers that you have shown interest in.
             </p>
-          @endif
+          <?php endif; ?>
            <div class="col-md-12">
-            @foreach($myofferpost as $myoffer)
+            <?php foreach($myofferpost as $myoffer): ?>
             <div class="col-md-6 offer_container_grid">
               <div class="offer_cont_shadow">
                  <div class="offer_left">
-                    <a href="{{url('users/'.$offers->username)}}">
-                    @if($offers->img == '')
+                    <a href="<?php echo e(url('users/'.$offers->username)); ?>">
+                    <?php if($offers->img == ''): ?>
                       <img src="img/59ce3646d240c.png" class="offer_pro_pic" />
-                      @else
-                      <img src="img/{{ $offers->img }}" class="offer_pro_pic" />
-                    @endif
+                      <?php else: ?>
+                      <img src="img/<?php echo e($offers->img); ?>" class="offer_pro_pic" />
+                    <?php endif; ?>
                     </a>
                     <h3>
-                      <a href="{{url('users/'.$offers->username)}}"><span>{{$offers->username}}</span>
+                      <a href="<?php echo e(url('users/'.$offers->username)); ?>"><span><?php echo e($offers->username); ?></span>
                       </a>
                     </h3>
                  </div>
                   <div class="offer_right">
-                    <h3><span>{{$myoffer->currency}}{{$offers->offer_rate}}</span></h3>
+                    <h3><span><?php echo e($myoffer->currency); ?><?php echo e($offers->offer_rate); ?></span></h3>
                   </div> 
                   <div class="offer_detailes_box">
                     <p>
-                      {{$myoffer->offer_details}}
+                      <?php echo e($myoffer->offer_details); ?>
+
                     </p>
                   </div>
                   <br/>
@@ -291,9 +294,10 @@ first 10 interests will be logged for each Offer.</center>
                          <i class="fa fa-thumbs-up"></i> Interested
                   </button>
                   <span class="viewOffers cursor-pointer" onclick="myofferinterestedcount(<?php echo $myoffer->id; ?>)">
-                      {{$myoffer->intrest_count}}
+                      <?php echo e($myoffer->intrest_count); ?>
+
                   </span>
-                    <span class="post_remaining" id="clockbottom{{$myoffer->id}}"></span>
+                    <span class="post_remaining" id="clockbottom<?php echo e($myoffer->id); ?>"></span>
                         <span class="post_remaining">
                         <?php 
                           $date_a = new DateTime(date("F j, Y, H:i:s"));
@@ -310,7 +314,7 @@ first 10 interests will be logged for each Offer.</center>
                           {
                         ?>
                           <script type="text/javascript">
-                          $('#clockbottom{{$myoffer->id}}').countdown("{{$stop_date}}", function(event) 
+                          $('#clockbottom<?php echo e($myoffer->id); ?>').countdown("<?php echo e($stop_date); ?>", function(event) 
                           { 
                             var totalHours = event.offset.totalDays * 24 + event.offset.hours;
                             var totalMins = event.strftime('%M');
@@ -331,14 +335,14 @@ first 10 interests will be logged for each Offer.</center>
                         ?>
                         </span>
                   <br/><br/>
-                  <span class="offer_id">Id: #{{$myoffer->id}}</span>
+                  <span class="offer_id">Id: #<?php echo e($myoffer->id); ?></span>
                   <div class="post_delete_date">
                     <a href="#">
                       <span >
                         <?php echo date("d/m/Y", strtotime($myoffer->created_at) ); ?>
                       </span>
                     </a> &nbsp; 
-                    <a href="{{url('deletemyoffer/'.$myoffer->id)}}">
+                    <a href="<?php echo e(url('deletemyoffer/'.$myoffer->id)); ?>">
                       <span><i class="fa fa-trash"></i></span>
                     </a>
                 </div>
@@ -349,7 +353,7 @@ first 10 interests will be logged for each Offer.</center>
 
             
 
-            @endforeach
+            <?php endforeach; ?>
 
             <!-- popup my offer post start -->
             <div class="modal fade" id="myofferpost" role="dialog">
@@ -374,7 +378,7 @@ first 10 interests will be logged for each Offer.</center>
           </div>
         </div>
        <!-- my offer post close -->
-      @else
+      <?php else: ?>
         <div class="row">
           <h1 class="my_offer_post">Logged interests</h1>
           <p class="female_subpage_title">
@@ -382,23 +386,24 @@ first 10 interests will be logged for each Offer.</center>
           </p> 
         <div class="col-md-12">
           <?php //echo "<pre>";print_r($myofferpostinterested);die; ?>
-          @foreach($myofferpostinterested as $interested)
+          <?php foreach($myofferpostinterested as $interested): ?>
           <div class="col-md-6 offer_container_grid">
             <div class="offer_cont_shadow">
                 <div class="offer_left">
-                    @if($interested->img == '')
+                    <?php if($interested->img == ''): ?>
                       <img src="img/59ce3646d240c.png" class="offer_pro_pic" />
-                    @else
-                      <img src="img/{{ $interested->img }}" class="offer_pro_pic" />
-                    @endif
-                    <h3><span>{{$interested->username}}</span></h3>
+                    <?php else: ?>
+                      <img src="img/<?php echo e($interested->img); ?>" class="offer_pro_pic" />
+                    <?php endif; ?>
+                    <h3><span><?php echo e($interested->username); ?></span></h3>
                 </div>
                 <div class="offer_right">
-                  <h3><span>{{$interested->currency}}{{$interested->offer_rate}}</span></h3>
+                  <h3><span><?php echo e($interested->currency); ?><?php echo e($interested->offer_rate); ?></span></h3>
                 </div> 
                 <div class="offer_detailes_box">
                   <p>
-                    {{$interested->offer_details}}
+                    <?php echo e($interested->offer_details); ?>
+
                   </p>
                 </div>
                 <br/>
@@ -406,13 +411,14 @@ first 10 interests will be logged for each Offer.</center>
                        <i class="fa fa-thumbs-up"></i> Interested
                 </button>
                   <span class="viewOffers cursor-pointer" onclick="my_logged_interested(<?php echo $interested->id; ?>)">
-                      {{$interested->intrest_count}}
+                      <?php echo e($interested->intrest_count); ?>
+
                   </span> 
                  <!--  <span data-toggle="modal" data-target="#logged_interested">
                       10
                   </span> -->
 
-                <span class="post_remaining" id="clock_loged_interest{{$interested->id}}"></span>
+                <span class="post_remaining" id="clock_loged_interest<?php echo e($interested->id); ?>"></span>
 
                 <span class="post_remaining">
                    <?php 
@@ -430,7 +436,7 @@ first 10 interests will be logged for each Offer.</center>
                           {
                         ?>
                           <script type="text/javascript">
-                          $('#clock_loged_interest{{$interested->id}}').countdown("{{$stop_date}}", function(event) 
+                          $('#clock_loged_interest<?php echo e($interested->id); ?>').countdown("<?php echo e($stop_date); ?>", function(event) 
                           { 
                             var totalHours = event.offset.totalDays * 24 + event.offset.hours;
                             var totalMins = event.strftime('%M');
@@ -451,7 +457,7 @@ first 10 interests will be logged for each Offer.</center>
                         ?>
                 </span>
                 <br/><br/>
-                <span class="offer_id" style="float:left;">Id: #{{$interested->id}}</span>
+                <span class="offer_id" style="float:left;">Id: #<?php echo e($interested->id); ?></span>
                 <div class="post_delete_date">
                   <a href="#">
                     <span>
@@ -461,7 +467,7 @@ first 10 interests will be logged for each Offer.</center>
                 </div>
             </div>
           </div>
-          @endforeach
+          <?php endforeach; ?>
         </div>
         <!-- popup my offer post start -->
             <div class="modal fade" id="logged_interested" role="dialog">
@@ -485,8 +491,6 @@ first 10 interests will be logged for each Offer.</center>
 
        
           <!-- pagination start -->
-            
-
              
             <!-- pagination close -->
         
@@ -499,7 +503,7 @@ first 10 interests will be logged for each Offer.</center>
                </div>
              </div>
        </div>
-      @endif
+      <?php endif; ?>
 
 
     </div>
@@ -559,4 +563,5 @@ first 10 interests will be logged for each Offer.</center>
   );
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -57,11 +57,11 @@ class AppServiceProvider extends ServiceProvider
                 // } else {
                   $subscribed = 1;
                 // }
-
-     $notifications = Notification::where('is_read','FALSE')
-             ->where('to_id',Auth::user()->id)->count();
+                $notification_data = offer_post::offer_notification();
+                $notifications = Notification::where('is_read','FALSE')
+                                  ->where('to_id',Auth::user()->id)->count();
   
-            $view->with(['activityCount' => $viewCount + $winkCount+$notifications, 'donationCount' => $donationCount, 'subscribed' => $subscribed, 'plans' => $plans, 'bannerAdRequestCount' => $bannerAdRequestCount,'offercount'=>$offerCount]);
+            $view->with(['activityCount' => $viewCount + $winkCount+$notifications, 'donationCount' => $donationCount, 'subscribed' => $subscribed, 'plans' => $plans, 'bannerAdRequestCount' => $bannerAdRequestCount,'offercount'=>$offerCount,'notification_data' => $notification_data]);
             } else {
                 $view->with(['subscribed' => 0]);
             }
