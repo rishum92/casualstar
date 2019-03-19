@@ -88,9 +88,19 @@
                 </div>
             </center>            
                 <?php endif; ?>
+
                <?php }
+               
            }
+            else {?>
+                 <center>
+                  <button type="button" onclick="newwin()" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
+                </center>
+               <?php } 
            ?>
+
+
+
            <!---Image Uploader Close-->
            <!--Competition User Div Start-->
 
@@ -155,8 +165,8 @@
                                                 <i class="fa fa-heart"></i> Vote Me
                                             </button>
                                             <?php echo $__env->make('modals.commentcompetition', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                                            <button ng-controller = "ExploreController"
-                                            data-ng-click="viewThisPhoto(photo,<?php echo e($user->user_id); ?>)"
+                                            <button ng-controller = "CommentController"
+                                            data-ng-click="viewThisPhoto(<?php echo e($user->user_id); ?>)"
                                             class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
                                             </button>
                                         </div> 

@@ -465,6 +465,7 @@
       <script src="{{ URL::asset('js/controllers/CompitionuserController.js') }}" type="text/javascript"></script>
       <script src="{{ URL::asset('js/controllers/PostController.js') }}" type="text/javascript"></script>
 	    <script src="{{ URL::asset('js/controllers/CompetitionuserController.js') }}" type="text/javascript"></script>
+       <script src="{{ URL::asset('js/controllers/CommentController.js') }}" type="text/javascript"></script>
 
       <!-- CasualStar Angular app -->
       <script src="{{ URL::asset('js/app.js') }}" type="text/javascript"></script>

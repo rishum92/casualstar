@@ -108,6 +108,13 @@ class competitionController extends Controller
 
       return view('competitions',['updatedate'=>$updatedate]);
      }
+     public function termsstore(Request $request)
+     {
+         $user_id         = Auth::user()->id;
+         $termscondition  = $request->input('terms_condition');
+         $terms_condition = competition_user::termscondition($user_id,$termscondition);
+          return redirect('competitions');
+     }
       
     public function destroy($id){
         $execute = Photo::remove($id);

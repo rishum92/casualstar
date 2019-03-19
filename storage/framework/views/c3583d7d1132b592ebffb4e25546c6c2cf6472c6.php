@@ -1,9 +1,8 @@
 
-<
-<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
+<div class="modal fade" id="viewPhotoModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="viewPhoto" ng-submit="submitModal('commentcompetition')" files="true" novalidate>
+      <form name="viewPhoto" ng-submit="submitModal('viewPhoto')" files="true" novalidate>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
           
@@ -59,5 +58,4 @@
     </div>
   </div>
 </div>
-
 

@@ -2,7 +2,7 @@
 <div class="modal fade" id="termsmodelModal" tabindex="-1" role="dialog" aria-labelledby="addPhotoModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="termsmodel" ng-submit="submitModal('termsmodel')" files="true" novalidate>
+     
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
           <h2>Terms & Condition</h2>
@@ -11,7 +11,13 @@
           <div class="form-group">
             <?php  if(Auth::check()) {?>
              <?php if(Auth::user()->username == 'Admin'): ?>
-              <textarea style = "border:none;" rows="8" cols="60" name = "edittext"><b>Participation</b>
+               <form action = "<?php echo e(url('/terms_store')); ?>" role = "form" 
+                        method = "post" enctype = "multipart/form-data" />
+                <?php echo csrf_field(); ?>
+
+                
+              <textarea style = "border:none;" rows="8" cols="60" name = "terms_condition">
+                <b>Participation</b>
 Anyone is able to participate in the competition however, only verified Casualstar members can receive a prize payout, be it cash or otherwise. 
 Verification can be done before, during or after competition has expired. 
 Image submitted into any competition must be of the same user who the registered account belongs to. 
@@ -32,6 +38,11 @@ Casualstar reserve to right to withhold rewards from any contestant who does not
 Casualstar reserve the right to at any time change or modify these terms and conditions, and any changes made shall be effective immediately upon posting/ update to this webpage.
 The competition and these terms and conditions will be governed by [English] law and any disputes will be subject to the exclusive jurisdiction of the courts of [England].
               </textarea>
+               <div class="margin-top-10">
+                      <button type="submit" class="btn green"> Submit </button>
+                          <a href="javascript:;" class="btn default"> Cancel </a>
+                  </div>
+            </form>
               <?php else: ?>
               <textarea style = "border:none;" rows="8" cols="60" readonly>This is the terms and condition
               </textarea>

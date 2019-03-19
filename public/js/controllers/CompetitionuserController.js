@@ -14,7 +14,7 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
     $scope.user = response.data;
     // console.log($scope.user);
     
-    $scope.getServiceList($scope.user.username);
+  
     $scope.geoReady();
 
     $scope.date = $scope.user.dob;

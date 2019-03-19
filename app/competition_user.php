@@ -44,5 +44,20 @@ class competition_user extends Model
                  
       return $showdate;  
    }
+   public static function termscondition($user_id,$termscondition)
+
+   {
+      $termscondition = DB::table('competiton_terms_condition')
+                     ->update(['user_id'=>$user_id,'termscondition'=>$termscondition]);
+
+      return $termscondition;die;
+   }
+   public static function showtermscondition()
+   {
+     $termscondtion = DB::table('competiton_terms_condition')
+                    ->select('termscondition')
+                    ->get();
+     return $termscondtion;
+   }
 
 }

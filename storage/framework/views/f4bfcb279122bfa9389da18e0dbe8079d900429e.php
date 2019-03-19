@@ -464,6 +464,7 @@
       <script src="<?php echo e(URL::asset('js/controllers/CompitionuserController.js')); ?>" type="text/javascript"></script>
       <script src="<?php echo e(URL::asset('js/controllers/PostController.js')); ?>" type="text/javascript"></script>
 	    <script src="<?php echo e(URL::asset('js/controllers/CompetitionuserController.js')); ?>" type="text/javascript"></script>
+       <script src="<?php echo e(URL::asset('js/controllers/CommentController.js')); ?>" type="text/javascript"></script>
 
       <!-- CasualStar Angular app -->
       <script src="<?php echo e(URL::asset('js/app.js')); ?>" type="text/javascript"></script>
