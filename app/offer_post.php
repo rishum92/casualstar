@@ -50,7 +50,7 @@ class offer_post extends Model
       $post_data = DB::table('offer_post')
                   ->join('users', 'offer_post.user_id', '=', 'users.id')
                   ->select('offer_post.id as post_id','offer_post.created_at as offer_post_date','offer_post.*','users.*')
-                  ->orderBy('offer_post.id', 'desc')
+                  ->orderBy('offer_post.created_at', 'desc')
                   ->paginate(10);
 
 
@@ -150,6 +150,7 @@ class offer_post extends Model
                     ->select('offer_post.*','users.username','users.img')
                     ->where('offer_interested_users.user_id','=',Auth::user()->id)
                     ->groupBy('offer_post.id')
+                    ->orderBy('offer_post.created_at', 'desc')
                     ->get();
       //echo "<pre>";print_r($myofferpostinterested);die;
 

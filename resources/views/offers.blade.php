@@ -486,8 +486,8 @@ first 10 interests will be logged for each Offer.</center>
        
           <!-- pagination start -->
             
+              
 
-             
             <!-- pagination close -->
         
           <div class="col-md-12">
