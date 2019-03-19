@@ -1,0 +1,68 @@
+@extends('layouts.master')
+
+@section('style')
+  <link href="{{ URL::asset('css/supersubs.css') }}" rel="stylesheet">
+@endsection
+
+@section('meta')
+  <title>Super Subs » CasualStar</title> 
+@endsection
+
+@section('content')
+
+  <div data-ng-controller="SuperSubsController">
+    <div class="wrap">
+      <div class="highlight">
+       <center>This list is a guide to some of the most active and generous subs within our site. If you are a Femdom, this list can help you identify the more genuine subs and paypigs. If you are reading this and you’re just a regular sub, you should be doing everything you can to be number one on the SuperSubs list!</center>
+      </div>
+    </div>
+    <div class="block-flex wrap-flex" id="supersubs" infinite-scroll="paging()" infinite-scroll-disabled="isLoading" infinite-scroll-distance="1">
+      <div class="sub" data-ng-repeat="supersub in supersubs">
+        <div class="left">
+          <a href="/users/[[supersub.username]]">
+            <img ng-src="[[getUserPhotoPreviewUrl(supersub)]]" alt="[[supersub.username]]" />
+          </a>
+        </div>
+        <div class="right">
+          <h3>
+            <!-- <div class="stat status" style="display:inline-block" ng-if="supersub.online">
+              <span class="indicator active"></span>
+            </div> -->
+            <a href="/users/[[supersub.username]]">[[supersub.username]]</a>
+          </h3>
+          <p>Estimated tributes: <span>[[formatTributes(supersub)]]</span></p>
+          <!-- <p ng-if="supersub.last_login != null && supersub.last_login != ''">Last login: <span>[[supersub.last_login.lastLogin]]</span></p> -->
+          <!-- <p>Location: <span>[[supersub.location]]</span></p> -->
+          <p ng-if="supersub.description != null && supersub.description != ''">Statement: <span>[[supersub.description]]</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap" ng-if="$parent.user.gender == 'female' && $parent.user.verify_check != 'VERIFIED'">
+      <div>
+       <center><b>Verified users only</b>: This page is a guide to some of the most active and generous subs within our site, therefore it is only accessible to Subs and genuine Femdoms who have been verified.
+        <br>
+        <br>
+        <div class="add-gallery-photo ng-scope" style="background:transparent;">
+          <a href="/verify"><button type="button">Apply for Verification now</button></a></center>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<button onclick="scrollToTop()" id="scrollToTopButton"><i class="ion-arrow-up-a"></i></button>
+
+<script type="text/javascript">
+  window.onscroll = function() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      $('#scrollToTopButton').fadeIn();
+    } else {
+      $('#scrollToTopButton').fadeOut();
+    }
+  };
+
+  function scrollToTop() {
+    $('html,body').animate({scrollTop: 0}, 300);
+  }
+</script>
+@endsection

@@ -1,0 +1,86 @@
+10
+
+dir
+528
+svn+ssh://tudor@one.zefiro.ro/home/dev/casualstar/vendor/phpunit/phpunit/tests
+svn+ssh://tudor@one.zefiro.ro/home/dev/casualstar
+
+
+
+2016-05-17T21:16:40.540267Z
+3
+tudor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+200de448-8b05-4eb1-b60c-30e053b665bb
+
+Extensions
+dir
+
+Regression
+dir
+
+_files
+dir
+
+TextUI
+dir
+
+bootstrap.php
+file
+
+
+
+
+2016-07-14T14:36:54.601000Z
+138b94451592c0b3fdf5664b02efbc0d
+2016-04-26T07:58:13.872989Z
+1
+tudor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+143
+
+Runner
+dir
+
+Fail
+dir
+
+Framework
+dir
+
+Util
+dir
+

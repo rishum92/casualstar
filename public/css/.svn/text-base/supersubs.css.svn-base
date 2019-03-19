@@ -1,0 +1,97 @@
+
+#supersubs {
+  padding-left:110px;
+  padding-right:110px;
+}
+
+#supersubs .sub {
+  display: flex;
+  flex: 100%;
+  margin-top:15px;
+  margin-bottom:15px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #EFEFEF;
+  padding:20px;
+}
+
+#supersubs .sub .left {
+  flex: 10%;
+}
+
+#supersubs .sub .right .stat.status .indicator {
+  width:10px;
+  height:10px;
+  margin:0px;
+}
+
+#supersubs .sub .left img {
+  border-radius:100%;
+  max-width:200px;
+  border-width:2px;
+  border-style:solid;
+  border-color:white;
+  -moz-transition: all .2s;
+  -o-transition: all .2s;
+  -webkit-transition: all .2s;
+  transition: all .2s;
+}
+
+#supersubs .sub .right {
+  flex: 90%;
+  padding:30px;
+}
+
+#supersubs .sub .left img:hover {
+  border-color: #d61857;
+  -moz-transition: all .1s ease-in;
+  -o-transition: all .1s ease-in;
+  -webkit-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+}
+
+
+#scrollToTopButton {
+  display: none;
+  position: fixed;
+  bottom: 20px; 
+  right: 20px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: #d61857;
+  color: white;
+  cursor: pointer; 
+  padding: 15px;
+  border-radius: 10px; 
+  font-size: 18px;
+}
+
+#scrollToTopButton:hover {
+  background-color: #d61857;
+}
+
+
+@media only screen and (max-width : 992px) {
+  
+  #supersubs {
+    padding-left:20px;
+    padding-right:20px;
+  }
+
+  #supersubs .sub {
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  #supersubs .sub .left,
+  #supersubs .sub .right {
+    flex: 100%;
+    padding:0px;
+  }
+  
+  #supersubs .sub .right {
+    margin-top:20px;
+  }
+
+}

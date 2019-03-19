@@ -1,0 +1,132 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Controller as BaseController;
+
+use App;
+use Auth;
+use Lang;
+use Input;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\ProfileView;
+use App\Models\Order;
+use App\Models\Plan;
+use App\Models\Online;
+use App\Models\Activity;
+use App\Models\DonationAttempt;
+use App\Models\Notification;
+use DateTime;
+use Geotools;
+
+class UserController extends BaseController
+{
+  	public function show($username) {
+	    $explore = Input::get('explore');
+	    $user = User::where('username', $username)->first();
+	    $from = new DateTime($user->dob);
+		$to = new DateTime('today');
+		$age = $from->diff($to)->y;
+
+		$count = 0;
+		
+	    if($user) {
+	    	if((Auth::user()->gender == $user->gender && Auth::user()->gender == 'male') && Auth::user()->title !== 'ADMIN' && !isset($explore)) {
+				return redirect()->route('dashboard');
+	    	}
+		    if($user->id == Auth::user()->id) {
+		    	return redirect()->route('profile');
+		    }
+	    	if($user->status == 1) {
+			    $viewed24 = ProfileView::where('by_user_id', Auth::user()->id)->where('user_id', $user->id)->whereRaw('date(created_at) = ?', [Carbon::today()])->first();
+			    if($viewed24) {
+			    	$viewed24->seen = false;
+				    $viewed24->updated_at = Carbon::now();
+			    	$viewed24->save();
+			    } else {
+			    	if(Auth::user()->title !== 'ADMIN' && Auth::user()->gender != $user->gender) {
+					    $profileView = new ProfileView;
+					    $profileView->user_id = $user->id;
+					    $profileView->seen = false;
+					    $profileView->by_user_id = Auth::user()->id;
+					    $profileView->created_at = Carbon::now();
+					    $profileView->updated_at = Carbon::now();
+					    $profileView->save();
+			    	}
+			    }
+				
+
+			    $lastLogin = Activity::where('user_id', $user->id)->where('activity', 'LOGIN')->orderBy('created_at', 'DESC')->first();
+			    if($lastLogin) {
+			    	$lastLogin = $lastLogin->created_at;
+			    } else {
+			    	$lastLogin = NULL;
+			    }
+
+	    		$isOnline = Online::getOnline($user->id);
+	    		//$isOnline = true; //APInfo Set Static Value for Mongo DB
+
+	    		$haversine = "(3959 * acos(cos(radians(" . $user->lat . ")) 
+                     * cos(radians(lat))    
+                     * cos(radians(lng) 
+                     - radians(" . $user->lng . ")) 
+                     + sin(radians(" . $user->lat . ")) 
+                     * sin(radians(lat))))";
+
+	    		$similarUsers = User::select('username', 'img', 'location', 'gender')->where('gender', $user->gender)->selectRaw("YEAR(CURDATE()) - YEAR(dob) AS age, cast({$haversine} as decimal(10,2)) AS distance")->selectRaw("cast({$haversine} as decimal(10,2)) AS distance")->whereRaw("{$haversine} < ?", [100])->where('id', '!=', $user->id)->where('status','1')->where('title', 'USER')->orderBy('distance','ASC')->limit(8)->get();
+			    
+
+		        $plans = Plan::all();
+			    $me = User::find(Auth::user()->id);
+			    $orders = Order::where('user_id', Auth::user()->id)->where('status', 1)->with('plan')->get();
+			    $activeOrders = $orders->filter(function ($item) {
+			        return $item->created_at->gt(Carbon::now()->subMonth($item->plan->period));
+			    });
+			    $orders = $activeOrders->all();
+
+			    if(count($orders) == 0 && $me->gender == 'male') {
+			      $subscribed = 0;
+			    } else {
+			      $subscribed = 1;
+			    }
+
+		    	return view('visitorProfile', ['username' => $user->username, 'isOnline' => $isOnline, 'lastLogin' => $lastLogin, 'similarUsers' => $similarUsers, 'subscribed' => $subscribed, 'plans' => $plans, 'user' => $user]);
+			} elseif($user->status == 0) {
+				if(Auth::user()) {
+    				return redirect()->route('dashboard')->with('message', Lang::get('messages.accountDeactivated'))->with('messageType', 'warning');
+				} else {
+    				return redirect()->route('index')->with('message', Lang::get('messages.accountDeactivated'))->with('messageType', 'warning');
+
+				}
+
+			} elseif($user->status == -1) {
+	    		if(Auth::user()) {
+    				return redirect()->route('dashboard')->with('message', Lang::get('messages.accountBanned'))->with('messageType', 'warning');
+				} else {
+    				return redirect()->route('index')->with('message', Lang::get('messages.accountLocked'))->with('messageType', 'success');
+
+				}
+			}
+	    }
+  	}
+
+  	public function closeAccount() {
+	    $user = User::find(Auth::user()->id);
+	    $user->status = 0;
+	    $user->save();
+
+	    $notifications = Notification::where('from_id', Auth::user()->id)->where('is_read', 'FALSE')->get();
+	    foreach($notifications as $notification) {
+		    $notification->delete();
+	    }
+	    
+	    Auth::logout();
+
+	    return redirect()->route('index')->with('message', Lang::get('messages.closedAccount'))->with('messageType', 'success');
+	}
+
+	
+
+
+}

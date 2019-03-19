@@ -1,0 +1,49 @@
+10
+
+dir
+528
+svn+ssh://tudor@one.zefiro.ro/home/dev/casualstar/vendor/phpunit
+svn+ssh://tudor@one.zefiro.ro/home/dev/casualstar
+
+
+
+2016-05-17T21:16:40.540267Z
+3
+tudor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+200de448-8b05-4eb1-b60c-30e053b665bb
+
+php-text-template
+dir
+
+php-timer
+dir
+
+phpunit-mock-objects
+dir
+
+phpunit
+dir
+
+php-code-coverage
+dir
+
+php-file-iterator
+dir
+
+php-token-stream
+dir
+

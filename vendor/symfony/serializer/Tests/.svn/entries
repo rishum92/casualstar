@@ -1,0 +1,80 @@
+10
+
+dir
+528
+svn+ssh://tudor@one.zefiro.ro/home/dev/casualstar/vendor/symfony/serializer/Tests
+svn+ssh://tudor@one.zefiro.ro/home/dev/casualstar
+
+
+
+2016-07-15T08:21:42.816707Z
+219
+tudor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+200de448-8b05-4eb1-b60c-30e053b665bb
+
+Encoder
+dir
+
+SerializerTest.php
+file
+
+
+
+
+2016-07-15T08:22:12.414000Z
+7fc797928de30ddef0300fe7b5b8331a
+2016-07-15T08:21:42.816707Z
+219
+tudor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+14568
+
+Normalizer
+dir
+
+NameConverter
+dir
+
+Fixtures
+dir
+
+Annotation
+dir
+
+Mapping
+dir
+

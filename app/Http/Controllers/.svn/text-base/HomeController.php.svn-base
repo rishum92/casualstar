@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Controller as BaseController;
+
+use App;
+use Auth;
+use Mail;
+use Input;
+use App\Models\Tribute;
+
+class HomeController extends BaseController
+{
+  public function index() {
+  	if(Auth::check()) {
+    	return redirect()->route('dashboard');
+  	} else {
+      $tributeCount = Tribute::count();
+    	return view('index', ['tributeCount' => $tributeCount]);
+  	}
+  }
+
+  public function contact() {
+	 return view('contact', []);
+  }
+   
+  public function faq() {
+   return view('faq', []);
+  }
+
+  public function terms() {
+   return view('terms', []);
+  }
+
+  public function privacy() {
+   return view('privacy', []);
+  }
+
+  public function safety() {
+   return view('safety', []);
+  }
+
+  public function about() {
+   return view('about', []);
+  }
+
+  public function explore() {
+   return view('explore', []);
+  }
+
+  public function bannerAds() {
+   return view('bannerAds', []);
+  }
+
+  public function supersubs() {
+    // if(Auth::user()->gender == 'female' && Auth::user()->verify_check != 'VERIFIED') {
+    //   return redirect()->back()->with('message', 'You need to be verified to access this section.')->with('messageType', 'warning');
+    // }
+   return view('supersubs', []);
+  }
+
+  public function sendContact() {
+    $name = Input::get('name');
+    $emailMessage = Input::get('message');
+    $fromEmail = Input::get('email');
+    $telephone = Input::get('telephone');
+
+    if($name == "" || $emailMessage == "" || $fromEmail == "") {
+      return redirect()->back()->with('message', 'You need to fill out all the required fields.')->with('messageType', 'danger');
+    }
+
+    // $toEmail = 'casualstar.uk.info@gmail.com';
+    $toEmail = 'casualstar.uk.info@gmail.com';
+
+    Mail::send('emails.contact', ['emailMessage' => $emailMessage], function($email) use($name, $fromEmail, $toEmail) {
+        $email->from($fromEmail, $name)->to($toEmail)->subject('CasualStar: New message');
+    });
+
+    return redirect()->back()->with('message', 'Thanks for your message!')->with('messageType', 'success');
+
+  }
+
+}

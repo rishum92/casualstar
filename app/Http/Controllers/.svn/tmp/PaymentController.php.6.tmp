@@ -1,0 +1,222 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Controller as BaseController;
+
+use App;
+use Auth;
+use Lang;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Plan as PaymentPlan;
+use App\Models\Order;
+use Input;
+use Log;
+
+require __DIR__  . '/../../../vendor/autoload.php';
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\ShippingAddress;
+use PayPal\Api\CreditCard;
+use PayPal\Api\Error;
+use PayPal\Api\FundingInstrument;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Rest\ApiContext;
+use PayPal\Api\ChargeModel;
+use PayPal\Api\Currency;
+use PayPal\Api\MerchantPreferences;
+use PayPal\Api\PaymentDefinition;
+use PayPal\Api\Plan;
+use PayPal\Api\Patch;
+use PayPal\Api\PatchRequest;
+use PayPal\Api\PlanList;
+use PayPal\Api\Agreement;
+use PayPal\Api\WebhookEvent;
+use PayPal\Common\PayPalModel;
+
+use PayPal\Exception\PayPalConnectionException;
+
+
+class PaymentController extends BaseController
+{
+
+	public function index()
+    {
+        $sdkConfig = array(
+            "mode" => getenv('PAYPAL_MODE'),
+            'log.LogEnabled' => true,
+            'log.FileName' => 'PayPal.log',
+            'log.LogLevel' => 'FINE', 
+            'cache.enabled' => true,
+            'validation.level' => 'log'
+        );
+        $cred = new OAuthTokenCredential(getenv('PAYPAL_TOKEN'), getenv('PAYPAL_SECRET'));
+        $apiContext = new ApiContext($cred, 'Request' . time());
+        $apiContext->setConfig($sdkConfig);
+
+        $paymentPlan = PaymentPlan::find(Input::get('plan'));
+
+        $order = new Order();
+        $order->plan_id = $paymentPlan->id;
+        $order->user_id = Auth::user()->id;
+        $order->status = 0;
+        $order->save();
+
+        $payer = new Payer();
+        
+        if(Input::get('method') == 'paypal') {
+            $payer->setPaymentMethod("paypal");
+            $order->payment_method = 'PayPal';
+            $order->save();
+        } elseif(Input::get('method') == 'credit_card') {
+            $card = new CreditCard();
+            $card->setType(strtolower(str_replace('string:', '', Input::get('card_type'))))
+                ->setNumber(str_replace(' ', '', Input::get('number')))
+                ->setExpireMonth(Input::get('expireMonth'))
+                ->setExpireYear(Input::get('expireYear'))
+                ->setCvv2(Input::get('cvv2'))
+                ->setFirstName(Input::get('first_name'))
+                ->setLastName(Input::get('last_name'));
+
+            $fi = new FundingInstrument();
+            $fi->setCreditCard($card);
+
+            $payer->setPaymentMethod("credit_card")
+                ->setFundingInstruments(array($fi));
+            $order->payment_method = 'Credit/Debit Card';
+            $order->save();
+        }
+
+        $itemList = new ItemList();
+        $item = new Item();
+        $item->setName($paymentPlan->name)
+            ->setCurrency('GBP')
+            ->setQuantity(1)
+            ->setPrice($paymentPlan->price * $paymentPlan->period);
+        $itemList->addItem($item);
+
+        $details = new Details();
+        $details->setShipping(0)
+            ->setTax(0)
+            ->setSubtotal($paymentPlan->price * $paymentPlan->period);
+        $amount = new Amount();
+        $amount->setCurrency("GBP")
+            ->setTotal($paymentPlan->price * $paymentPlan->period)
+            ->setDetails($details);
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+            ->setItemList($itemList)
+            ->setDescription($paymentPlan->description)
+            ->setInvoiceNumber(uniqid());
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl(getenv('HTTP_TYPE') . "://" . getenv('NODE_HOST') . "/payment-completion/" . $order->id . "/confirmation");
+        $redirectUrls->setCancelUrl(getenv('HTTP_TYPE') . "://" . getenv('NODE_HOST') . "/payment-completion/" . $order->id . "/cancellation");
+
+        $payment = new Payment();
+        $payment->setIntent("sale")
+            ->setPayer($payer)
+            ->setRedirectUrls($redirectUrls)
+            ->setTransactions(array($transaction));
+        $request = clone $payment;
+        
+        try {
+            $payment->create($apiContext);
+            $order->payment_token = $payment->id;
+            $order->save();
+            if(Input::get('method') == 'paypal') {
+                return redirect($payment->links[1]->href);
+            } elseif(Input::get('method') == 'credit_card') {
+                $paymentId = $payment->id;
+                $status = $payment->status;
+                if($payment->state == 'approved') {
+                    $order = Order::where('payment_token', $payment->id)->get()->first();
+                    $order->status = 1;
+                    $order->save();
+                    return redirect()->route('payment.completion', [$order->id, 'completed']);
+                } else {
+                    return redirect()->route('payment.completion', [$order->id, 'declined']);
+
+                }
+
+            }
+        } catch (PayPalConnectionException $ex) {
+		dd($ex);
+            return redirect()->back()->with('message', 'A problem has been encountered while processing your payment. Please check all the fields and try again.')->with('messageType', 'danger');
+        }
+            
+    }
+
+   
+
+    public function completion($id, $status) {
+        $paymentId = Input::get('paymentId');
+        $token = Input::get('token');
+
+        $sdkConfig = array(
+            "mode" => getenv('PAYPAL_MODE'),
+            'log.LogEnabled' => true,
+            'log.FileName' => 'PayPal.log',
+            'log.LogLevel' => 'FINE', 
+            'cache.enabled' => true,
+            'validation.level' => 'log'
+        );
+        $cred = new OAuthTokenCredential(getenv('PAYPAL_TOKEN'), getenv('PAYPAL_SECRET'));
+        $apiContext = new ApiContext($cred, 'Request' . time());
+        $apiContext->setConfig($sdkConfig);
+        
+        $order = Order::find($id);
+
+        if($order->user_id == Auth::user()->id) {
+            if($status == 'confirmation') {
+                if($paymentId) {
+                    $payment = Payment::get($paymentId, $apiContext);
+                    $paymentExecution = new PaymentExecution();
+                    $paymentExecution->setPayerId(Input::get('PayerID'));
+
+                    try {
+                        $payment = $payment->execute($paymentExecution, $apiContext);
+                        if($payment->state == 'approved') {
+                            $order = Order::where('payment_token', $payment->id)->get()->first();
+                            $order->status = 1;
+                            $order->save();
+                        }
+
+                    } catch (PayPalConnectionException $ex) {
+                        return view('order', ['order' => $order, 'status' => $status])->with('message', 'A problem has been encountered while processing your payment. Please check all the fields and try again.')->with('messageType', 'danger');
+                    }
+                }
+            }
+
+            return view('order', ['order' => $order, 'status' => $status]);
+        }
+
+    }
+
+    public function subscription() {
+
+        $plans = PaymentPlan::all();
+        $me = User::find(Auth::user()->id);
+        $orders = Order::where('user_id', Auth::user()->id)->where('status', 1)->with('plan')->get();
+        $activeOrders = $orders->filter(function ($item) {
+            return $item->created_at->gt(Carbon::now()->subMonth($item->plan->period));
+        });
+        $orders = $activeOrders->all();
+        if(count($orders) == 0 && $me->gender == 'male') {
+          $subscribed = 0;
+        } else {
+          $subscribed = 1;
+        }
+
+        return view('subscription', ['orders' => $orders, 'subscribed' => $subscribed, 'plans' => $plans]);
+    }
+
+
+}

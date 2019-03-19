@@ -1,0 +1,267 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Routing\Controller as BaseController;
+
+use App;
+use Auth;
+use Lang;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Plan as PaymentPlan;
+use App\Models\Order;
+use Input;
+use Log;
+
+require __DIR__  . '/../../../vendor/autoload.php';
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\ShippingAddress;
+use PayPal\Api\CreditCard;
+use PayPal\Api\Error;
+use PayPal\Api\FundingInstrument;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Rest\ApiContext;
+use PayPal\Api\ChargeModel;
+use PayPal\Api\Currency;
+use PayPal\Api\MerchantPreferences;
+use PayPal\Api\PaymentDefinition;
+use PayPal\Api\Plan;
+use PayPal\Api\Patch;
+use PayPal\Api\PatchRequest;
+use PayPal\Api\PlanList;
+use PayPal\Api\Agreement;
+use PayPal\Api\WebhookEvent;
+use PayPal\Common\PayPalModel;
+
+use PayPal\Exception\PayPalConnectionException;
+
+
+class PaymentController extends BaseController
+{
+
+	public function index()
+    {
+        $sdkConfig = array(
+            "mode" => getenv('PAYPAL_MODE')
+        );
+        $cred = new OAuthTokenCredential(getenv('PAYPAL_TOKEN'), getenv('PAYPAL_SECRET'), $sdkConfig);
+        $apiContext = new ApiContext($cred, 'Request' . time());
+
+        $paymentPlan = PaymentPlan::find(Input::get('plan'));
+
+        $order = new Order();
+        $order->plan_id = $paymentPlan->id;
+        $order->user_id = Auth::user()->id;
+        $order->status = 0;
+        $order->save();
+
+        $payer = new Payer();
+        
+        if(Input::get('method') == 'paypal') {
+            $payer->setPaymentMethod("paypal");
+            $order->payment_method = 'PayPal';
+            $order->save();
+        } elseif(Input::get('method') == 'credit_card') {
+            $card = new CreditCard();
+            $card->setType(strtolower(str_replace('string:', '', Input::get('card_type'))))
+                ->setNumber(str_replace(' ', '', Input::get('number')))
+                ->setExpireMonth(Input::get('expireMonth'))
+                ->setExpireYear(Input::get('expireYear'))
+                ->setCvv2(Input::get('cvv2'))
+                ->setFirstName(Input::get('first_name'))
+                ->setLastName(Input::get('last_name'));
+
+            $fi = new FundingInstrument();
+            $fi->setCreditCard($card);
+
+            $payer->setPaymentMethod("credit_card")
+                ->setFundingInstruments(array($fi));
+            $order->payment_method = 'Credit/Debit Card';
+            $order->save();
+        }
+
+        $plan = new Plan();
+        $plan->setName($paymentPlan->name)
+            ->setDescription($paymentPlan->description)
+            ->setType('fixed');
+        $paymentDefinition = new PaymentDefinition();
+        $paymentDefinition->setName($paymentPlan->name)
+            ->setType('REGULAR')
+            ->setFrequency('Month')
+            ->setFrequencyInterval("1")
+            ->setCycles($paymentPlan->period)
+            ->setAmount(new Currency(array('value' => $paymentPlan->price, 'currency' => 'GBP')));
+        $merchantPreferences = new MerchantPreferences();
+        $merchantPreferences->setReturnUrl("https://" . getenv('NODE_HOST') . "/payment-completion/" . $order->id . "/confirmation")
+            ->setCancelUrl("https://" . getenv('NODE_HOST') . "/payment-completion/" . $order->id . "/cancellation")
+            ->setAutoBillAmount("yes")
+            ->setInitialFailAmountAction("CANCEL")
+            ->setMaxFailAttempts("0");
+            // ->setSetupFee(new Currency(array('value' => $paymentPlan->price, 'currency' => 'GBP')));
+        $plan->setPaymentDefinitions(array($paymentDefinition));
+        $plan->setMerchantPreferences($merchantPreferences);
+        $request = clone $plan;
+        try {
+            $plan = $plan->create($apiContext);
+            $plan->setState('ACTIVE');
+
+            $patch = new Patch();
+            $value = new PayPalModel('{
+                   "state":"ACTIVE"
+                 }');
+            $patch->setOp('replace')
+                ->setPath('/')
+                ->setValue($value);
+            $patchRequest = new PatchRequest();
+            $patchRequest->addPatch($patch);
+            $plan->update($patchRequest, $apiContext);
+            $plan = Plan::get($plan->getId(), $apiContext);
+
+            $startDate = gmdate("Y-m-d\TH:i:s\Z", time()+60);
+            $agreement = new Agreement();
+            $agreement->setName($paymentPlan->name)
+                ->setDescription($paymentPlan->description)
+                ->setStartDate($startDate);
+            $newPlan = new Plan();
+            $newPlan->setId($plan->getId());
+            $agreement->setPlan($newPlan);
+            $agreement->setPayer($payer);
+            
+            $request = clone $agreement;
+
+            try {
+                $agreement = $agreement->create($apiContext);
+                $order->agreement_id = $agreement->getId();
+                $approvalUrl = $agreement->getApprovalLink();
+                if($approvalUrl) {
+                    $token = explode('&token=', $approvalUrl)[1];
+                    $order->payment_token = $token;
+                    $order->save();
+                } else {
+                    $order->payment_token = $agreement->getId();
+                    $order->status = 1;
+                    $order->save();
+                    $approvalUrl = $merchantPreferences->getReturnUrl();
+                }
+
+                return redirect($approvalUrl);
+            } catch (PayPalConnectionException $ex) {
+                return redirect()->back()->with('message', 'A problem has been encountered while processing your payment. Please check all the fields and try again.')->with('messageType', 'danger');
+                dd($ex);
+            }
+
+        } catch (PayPalConnectionException $ex) {
+                return redirect()->back()->with('message', 'A problem has been encountered while processing your payment. Please check all the fields and try again.')->with('messageType', 'danger');
+            dd($ex);
+        }
+            
+    }
+
+    public function cancelled() {
+
+        $sdkConfig = array(
+            "mode" => getenv('PAYPAL_MODE')
+        );
+        $cred = new OAuthTokenCredential(getenv('PAYPAL_TOKEN'), getenv('PAYPAL_SECRET'), $sdkConfig);
+        $apiContext = new ApiContext($cred, 'Request' . time());
+
+        $bodyReceived = file_get_contents('php://input');
+
+        try {
+            $webhook = WebhookEvent::validateAndGetReceivedEvent($bodyReceived, $apiContext);
+            if($webhook->getEventType() == 'BILLING.SUBSCRIPTION.CANCELLED' || $webhook->getEventType() == 'PAYMENT.SALE.DENIED') {
+                $order = Order::where('agreement_id', $webhook->getResource()->toArray()['id'])->first();
+                $order->status = 0;
+                $order->save();
+            }
+        } catch (\InvalidArgumentException $ex) {
+            return response('Return.', 503);
+        } catch (Exception $ex) {
+            exit(1);
+        }
+    }
+
+    public function completion($id, $status) {
+        $paymentId = Input::get('paymentId');
+        $token = Input::get('token');
+
+        $sdkConfig = array(
+            "mode" => getenv('PAYPAL_MODE')
+        );
+        $cred = new OAuthTokenCredential(getenv('PAYPAL_TOKEN'), getenv('PAYPAL_SECRET'), $sdkConfig);
+        $apiContext = new ApiContext($cred, 'Request' . time());
+        $apiContext->setConfig($sdkConfig);
+        
+        $order = Order::find($id);
+
+        if($order->user_id == Auth::user()->id) {
+            if($status == 'confirmation') {
+
+                if($paymentId) {
+
+                    $payment = Payment::get($paymentId, $apiContext);
+
+                    $paymentExecution = new PaymentExecution();
+                    $paymentExecution->setPayerId(Input::get('PayerID'));
+
+                    try {
+                        $payment = $payment->execute($paymentExecution, $apiContext);
+
+                        if($payment->state == 'approved') {
+                            $order = Order::where('payment_token', $payment->id)->get()->first();
+                            $order->status = 1;
+                            $order->save();
+                        }
+
+                    } catch (PayPalConnectionException $ex) {
+                        dd($ex);
+                    }
+                } elseif($token) {
+                    $agreement = new \PayPal\Api\Agreement();
+                    try {
+                        $agreement = $agreement->execute($token, $apiContext);
+                        $newAgreement = Agreement::get($agreement->getId(), $apiContext);
+                        if($newAgreement->getState() == 'Active') {
+                            $order = Order::where('payment_token', $token)->get()->first();
+                            $order->status = 1;
+                            $order->save();
+                        }
+                    } catch (PayPalConnectionException $ex) {
+                        return redirect()->back()->with('message', 'A problem has been encountered while processing your payment. Please check all the fields and try again.')->with('messageType', 'danger');
+                    }
+                }
+            }
+
+            return view('order', ['order' => $order, 'status' => $status]);
+        }
+
+    }
+
+    public function delete() {
+             // try {
+        //     // Get the list of all plans
+        //     // You can modify different params to change the return list.
+        //     // The explanation about each pagination information could be found here
+        //     // at https://developer.paypal.com/webapps/developer/docs/api/#list-plans
+        //     $params = array('page_size' => '5');
+        //     $plan = Plan::get('P-45Y66973588158121MFDW2VY', $apiContext);
+        //     $plan->delete($apiContext);
+        //     $planList = Plan::all($params, $apiContext);
+        //     dd($planList);
+        // } catch (Exception $ex) {
+        //     // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
+        //     dd($ex);
+        //     exit(1);
+        // }
+    }
+
+}

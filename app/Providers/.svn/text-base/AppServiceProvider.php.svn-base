@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Providers;
+
+use App\Models\BannerAdRequest;
+use Illuminate\Support\ServiceProvider;
+
+use Auth;
+use App\Models\ProfileView;
+use App\Models\Wink;
+use App\Models\Plan; 
+use App\Models\User;
+use App\Models\Order;
+
+use App\Models\Notification;
+use App\Models\DonationAttempt;
+use Carbon\Carbon;
+use View;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        view()->composer('layouts.master', function($view) {
+            $bannerAdRequestCount = 0;
+            if(Auth::check()) {
+                $viewCount = 0;
+                $winkCount = 0;
+                $viewCount = ProfileView::where('user_id', Auth::user()->id)->where('seen', false)->count();
+                $winkCount = Wink::where('user_id', Auth::user()->id)->where('seen', false)->count();
+                $donationCount = DonationAttempt::where('user_id', Auth::user()->id)->where('seen', 0)->count();
+
+                $plans = Plan::all();
+                $me = User::find(Auth::user()->id);
+                if($me->title == 'ADMIN') {
+                    $bannerAdRequestCount = BannerAdRequest::where('status','review')->count();
+                }
+                $orders = Order::where('user_id', Auth::user()->id)->where('status', 1)->with('plan')->get();
+                $activeOrders = $orders->filter(function ($item) {
+                    return $item->created_at->gt(Carbon::now()->subMonth($item->plan->period));
+                });
+                $orders = $activeOrders->all();
+                
+                // if(count($orders) == 0 && $me->gender == 'male') {
+                //   $subscribed = 0;
+                // } else {
+                  $subscribed = 1;
+                // }
+
+     $notifications = Notification::where('is_read','FALSE')
+             ->where('to_id',Auth::user()->id)->count();
+  
+            $view->with(['activityCount' => $viewCount + $winkCount+$notifications, 'donationCount' => $donationCount, 'subscribed' => $subscribed, 'plans' => $plans, 'bannerAdRequestCount' => $bannerAdRequestCount]);
+            } else {
+                $view->with(['subscribed' => 0]);
+            }
+        });
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+}

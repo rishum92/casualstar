@@ -1,0 +1,505 @@
+html body
+{
+    font-family: "Open Sans",sans-serif;
+    font-size: 14px
+    line-height:1.5;
+}
+
+
+body a:hover{
+    text-decoration: none !important;
+}
+body a:focus{
+    text-decoration: none !important;
+}
+
+
+/*=======  page css satrt here===========*/
+.delbtn
+{
+  margin-left: 88px !important;
+  line-height: 3 !important;
+  padding: 5px !important;
+  padding-right: 5px !important;
+  padding-left: 5px !important;
+  padding-left: 21px !important;
+  padding-right: 21px !important;
+}
+.inputfield
+{
+  border: none; 
+  font-size: 20px;
+  text-align: center;
+  width: 118px;
+}
+
+
+.imgbtn
+{
+  position: absolute;
+  top: 79%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  margin-top: 13px;
+  padding-top: 3px;
+  padding-bottom: 4px;
+  text-align: center;
+  color:#fff;
+  background-color: #d61857;
+  border-radius: 5px;
+  min-width: 75px;
+  box-shadow: unset;
+  border: 3px solid #d61857;
+  margin-right: 10px;
+}
+section.com_banner {
+  float: left;
+  width: 100%;
+  background-image: url("/img/competitions/banner.png");
+  height: 559px;
+  background-position: center;
+  background-size: cover;
+}
+.table_block {
+  display: table;
+  height: 559px;
+  width: 100%;
+}
+.table_cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+.table_cell h1 {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 84px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  position: relative;
+  margin: 0;
+}
+.table_cell h1::after {
+  position: absolute;
+  left: -30px;
+  top: -62px;
+  height: 192px;
+  width: 203px;
+  content: "";
+  background-image: url('/img/competitions/afterimg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.table_cell h1 span{color:#eb4c80;}
+.compt_content {
+  float: left;
+  width: 100%;
+  padding-top: 60px;
+}
+.headeing_search {
+  float: left;
+  width: 100%;
+}
+.headeing_search h2{
+  font-size: 50px;font-weight: bold;color: #000;
+  width: auto;display: inline-block;margin: 0px;
+}
+.headeing_search h2 span{
+  font-weight: normal;color: #eb4c80; 
+}
+.inputform{float: right;display: inline-block;}
+.inputform .form-group {
+  position: relative;
+}
+.inputform input {
+  height: 55px;
+  padding: 10px 12px;
+  max-width: 500px;
+  width: 420px;
+  border: 2px solid #A8A8A8;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.btn_search {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding: 5px 19px;
+  border: 1px solid #eb4c80;
+  background-color: #eb4c80;
+  color: #fff;
+  font-size: 28px;
+  margin-top: -56px;
+}
+.wrap_prodiv {
+  float: left;
+  width: 100%;
+  margin:70px 0px;
+}
+.wrap_profile {
+  background-color: #fff;
+  box-shadow: 0 0 30px 0 #eaeaea;
+  padding: 35px 30px 30px;min-height: 300px;
+}
+.img-pro {
+  float: left;
+  width: auto;
+  position: relative;
+}
+.img-pro img{
+  width: 100%;z-index: 1;position: relative; border-radius: 90px;
+}
+.img-pro::before {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #d61857;
+  content: "";
+  z-index: 1;
+  border-radius: 100%;
+  top: 6px;
+  right: 4px;
+}
+.profile_content {
+  float: right;
+  width: calc(100% - 190px);
+  padding-left: 15px;
+}
+.profile_content h1 {
+  margin: 0 0 12px 0px;
+  color: #000;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.profile_content p {
+  font-size: 21px;
+  color: #757575;
+  font-weight: 300;
+}
+.like_block {
+  margin: 10px 0 0 0;
+  color: #000;
+  font-size: 22px;
+  font-weight: bold;
+}
+.like_block .fa.fa-heart {
+  color: #d61857;
+  font-size: 22px;margin-right: 4px;
+}
+.wrap_btn {
+  float: left;
+  width: 100%;
+  margin-top: 30px;
+}
+.page_btn:last-child {
+  margin-right: 0;
+}
+.page_btn, .btn.btn-red{
+  background-color: #d61857;
+  color: #fff;
+  font-size: 18px;
+  padding: 8px 10px;
+  border-radius: 5px;
+  min-width: 135px;
+  box-shadow: unset;
+  border: 3px solid #d61857;
+  margin-right: 12px;
+}
+.page_btn:first-child {
+  backgroundcol: ;
+  background-color: transparent;
+  color: #d61857;
+  border: 3px solid #d61857;
+  padding: 8px 10px;
+}
+.profil_ul {
+  width: auto;
+  float: none;
+  margin-left: -15px;
+  margin-right: -15px;
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 0;
+}
+.profil_ul li {
+  display: inline-block;
+  float: left;
+  width: 50%;
+  padding: 0 15px;
+  margin-bottom: 30px;
+}
+.page_btn:first-child:hover, .page_btn:first-child:focus,
+.btn.btn-red:hover,.btn.btn-red:focus {
+  color: #fff;
+  background-color: #d61857;
+  transition: 0.5s;
+}
+.page_btn:hover,.page_btn:focus{
+  background-color:#e62867;
+}
+
+/*======  comments and form ===*/
+.author-img {
+  margin-bottom: 35px;
+}
+
+.author-img img {
+  margin-top: -60px;
+}
+
+.author-text h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.author-text p {
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.author-icon {
+  margin-top: 6px;
+  margin-bottom: 25px;
+}
+
+.author-icon a {
+  font-size: 14px;
+  color: #9498b6;
+  margin: 0 5px;
+  transition: .3s;
+}
+
+.author-icon a:hover {
+  color: #ff4b57;
+}
+
+.post-comments {
+  border-bottom: 1px solid #eaedff;
+  margin-bottom: 42px;
+  padding-bottom: 23px;
+}
+
+.blog-coment-title h2 {
+  font-size: 26px;
+  margin-bottom: 0;
+}
+
+.comments-avatar {
+  float: left;
+}
+
+@media (max-width: 767px) {
+  .comments-avatar {
+    float: none;
+  }
+}
+
+.comments-avatar img {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.latest-comments li:first-child .comments-box {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.latest-comments li:last-child .comments-box {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.latest-comments li.children {
+  margin-left: 100px;
+}
+
+@media (max-width: 767px) {
+  .latest-comments li.children {
+    margin-left: 0;
+  }
+}
+
+.comments-box {
+  border-top: 1px solid #eaedff;
+  padding: 30px 0;
+}
+
+.comments-text {
+  overflow: hidden;
+  padding-top: 4px;
+}
+
+@media (max-width: 767px) {
+  .comments-text {
+    margin-top: 15px;
+  }
+}
+.comments-text p {
+  margin-bottom: 0;
+  margin-top: 8px;
+  font-size: 16px;
+  color: #989898;
+}
+.avatar-name h5 {
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+
+.avatar-name span {
+  color: #ff4b57;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.avatar-name {
+  margin-bottom: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.reply {
+  color: #6f7172;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 400;
+  transition: .3s;
+  line-height: 1;
+  float: right;
+  margin-top: 4px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.reply:hover {
+  color: #ff4b57;
+}
+
+.reply i {
+  margin-right: 5px;
+}
+
+.post-comments-title {
+  margin-bottom: 39px;
+}
+
+.post-comments-title h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #140a20;
+  margin-bottom: 0;
+}
+.conatct-post-form {
+  background: #f8f8f8;
+  padding: 33px 50px;
+}
+
+@media (max-width: 767px) {
+  .conatct-post-form {
+    padding: 20px;
+  }
+}
+
+.conatct-post-form input {
+  border: none;
+  height: 60px;
+  margin-bottom: 20px;
+  padding: 0 30px;
+  width: 100%;
+  font-size: 14px;
+  color: #a7a7c1;
+}
+
+.conatct-post-form textarea {
+  border: none;
+  height: 150px;
+  margin-bottom: 20px;
+  padding: 30px;
+  width: 100%;
+  color: #a7a7c1;
+  font-size: 14px;
+}
+
+#contacts-form input::-moz-placeholder {
+  color: #a7a7c1;
+  font-size: 14px;
+}
+
+#contacts-form input::placeholder {
+  color: #a7a7c1;
+  font-size: 14px;
+}
+
+#contacts-form textarea::-moz-placeholder {
+  color: #a7a7c1;
+  font-size: 14px;
+}
+
+#contacts-form textarea::placeholder {
+  color: #a7a7c1;
+  font-size: 14px;
+}
+
+.contact-icon {
+  position: relative;
+}
+
+.contact-icon::after {
+  position: absolute;
+  content: "";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 700;
+  display: inline-block;
+  font-size: 16px;
+  text-align: center;
+  right: 30px;
+  color: #d2cce9;
+  top: 18px;
+}
+
+.contacts-message::after {
+  content: "\f303";
+}
+
+.contacts-name::after {
+  content: "\f007";
+}
+
+.contacts-email::after {
+  content: "\f0e0";
+}
+
+.contacts-website::after {
+  content: "\f0ac";
+}
+.wrap_cooments {
+  float: left;
+  width: 100%;
+  margin-top: 50px;
+}
+.latest-comments {
+  margin-top: 50px;
+}
+.latest-comments ul {
+  padding: 0;
+  display: inline-block;
+} 
+.latest-comments ul li {
+  display: inline-block;
+  width: auto;
+}
+
+/*=======  ends here ======*/
+
+
+
+
