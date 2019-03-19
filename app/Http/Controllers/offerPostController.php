@@ -101,6 +101,11 @@ class offerPostController extends Controller
     public function send_offer_message(Request $Request)
     {
       $post_data = $Request->all();
+      $post_id   =  $Request->post_id;
+      $receiver_id   =  $Request->receiver_id;
+      $offer_message   =  $Request->offer_message;
+      $sender_id = $Request->sender_id;
+
       $post_data['sender_id']  = Auth::user()->id;
       echo '<pre>';print_r($post_data);exit;
       offer_post::send_offer_message($post_data);

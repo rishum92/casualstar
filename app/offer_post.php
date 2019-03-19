@@ -151,7 +151,7 @@ class offer_post extends Model
                     ->where('offer_interested_users.user_id','=',Auth::user()->id)
                     ->groupBy('offer_post.id')
                     ->orderBy('offer_post.created_at', 'desc')
-                    ->get();
+                    ->paginate(10);
       //echo "<pre>";print_r($myofferpostinterested);die;
 
       foreach ($myofferpostinterested as $key => $post) {
@@ -196,7 +196,7 @@ class offer_post extends Model
                     ->where('offer_interested_users.post_id', '=', $post_id)
                     ->select('users.*', 'offer_interested_users.*')
                     ->orderBy('offer_interested_users.created_at')
-                    ->paginate(10);
+                    ->get();
             return $users;
     }
 
@@ -241,8 +241,10 @@ class offer_post extends Model
 
   public static function send_offer_message($post_data)
   {
-    DB::table('offer_message')
-    -> insert(['post_id'=>$post_data['post_id'], 'sender_id'=>$post_data['sender_id'], 'receiver_id'=>$post_data['receiver_id'], 'offer_message'=>$post_data['offer_message']]);
+
+      $message_send = DB::table('offer_message')
+                     -> insert(['post_id'=>$post_data['post_id'], 'sender_id'=>$post_data['sender_id'], 'receiver_id'=>$post_data['receiver_id'], 'offer_message'=>$post_data['offer_message']]);
+      return $message_send;
   }
 
 

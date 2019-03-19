@@ -200,11 +200,13 @@
                   </li>  -->
 
                   <li><a class="<?php if(Route::is('offers') || Route::is('offers')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('offers')); ?>"><i class="ion-star"></i>Offer</a>
-                    
-                    <?php foreach($notification_data as $user_notifications): ?>
-                    <span class="small-notif larger"><?php echo e($user_notifications->notification); ?></span>
-                    <?php endforeach; ?>
-                 
+                  
+                      <?php foreach($notification_data as $user_notifications): ?>
+                       <?php if($user_notifications->notification == '0'): ?>
+                       <?php else: ?>
+                        <span class="small-notif larger"><?php echo e($user_notifications->notification); ?></span>
+                        <?php endif; ?>
+                      <?php endforeach; ?>
                   </li> 
 
              </ul>

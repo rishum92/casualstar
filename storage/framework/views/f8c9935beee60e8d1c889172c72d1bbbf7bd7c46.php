@@ -490,10 +490,10 @@ first 10 interests will be logged for each Offer.</center>
             <!-- popup my offer post close -->
 
        
-          <!-- pagination start -->
-            
-              
-
+            <!-- pagination start -->
+              <div class="col-md-12">
+                <center> <?php echo e($myofferpostinterested->links()); ?> </center>
+              </div> 
             <!-- pagination close -->
         
           <div class="col-md-12">

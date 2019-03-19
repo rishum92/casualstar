@@ -5242,7 +5242,7 @@ header .menu-toggle {
   background: #f1f1f1;
   position: absolute;
   z-index: 2;
-  bottom: -216px;
+  bottom: -271px;
   border-radius: 10px;
   margin-left: -54px;
   text-align: center;
@@ -8904,7 +8904,7 @@ input:checked + .slider:before {
 .user-menu .image_ver_twit .logout {
     width: 160px;
     height: auto;
-    bottom: -256px;
+    bottom: -339px;
 }
 
 @media all and (min-width: 960px) {

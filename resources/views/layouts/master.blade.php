@@ -201,11 +201,13 @@
                   </li>  -->
 
                   <li><a class="@if(Route::is('offers') || Route::is('offers')) active @endif" href="{{ URL::route('offers') }}"><i class="ion-star"></i>Offer</a>
-                    
-                    @foreach($notification_data as $user_notifications)
-                    <span class="small-notif larger">{{$user_notifications->notification}}</span>
-                    @endforeach
-                 
+                  
+                      @foreach($notification_data as $user_notifications)
+                       @if($user_notifications->notification == '0')
+                       @else
+                        <span class="small-notif larger">{{$user_notifications->notification}}</span>
+                        @endif
+                      @endforeach
                   </li> 
 
              </ul>
