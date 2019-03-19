@@ -47,6 +47,14 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+.info_icon{
+    text-align: end;
+    color: #d61857;
+}
+.info_icon a{
+    
+    color: #d61857;
+}
 .female_subpage_title{
   text-align: center;
   background: #d61857;
