@@ -192,7 +192,7 @@
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="cisitorpopup" files="true" novalidate>
+      <form name="visitorpopup" files="true" novalidate>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
           <h2>Register</h2>

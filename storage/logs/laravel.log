@@ -460,3 +460,6 @@ Stack trace:
 #62 /opt/lampp/htdocs/casualstar_new/casualstar/public/index.php(54): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
 #63 /opt/lampp/htdocs/casualstar_new/casualstar/server.php(21): require_once('/opt/lampp/htdo...')
 #64 {main}  
+[2019-03-19 07:22:18] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
