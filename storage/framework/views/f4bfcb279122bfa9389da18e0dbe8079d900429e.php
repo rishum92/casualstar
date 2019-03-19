@@ -200,9 +200,10 @@
                   </li>  -->
 
                   <li><a class="<?php if(Route::is('offers') || Route::is('offers')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('offers')); ?>"><i class="ion-star"></i>Offer</a>
-                     
-                  
-                    <span class="small-notif larger">99+</span>
+                    
+                    <?php foreach($notification_data as $user_notifications): ?>
+                    <span class="small-notif larger"><?php echo e($user_notifications->notification); ?></span>
+                    <?php endforeach; ?>
                  
                   </li> 
 
@@ -501,6 +502,17 @@ function myofferinterestedcount(post_id){
     success: function(data){
       $('#myofferpost').modal('toggle');
       $('#myoffer_interested_model_id').html(data);
+    },
+  });
+}
+
+function my_logged_interested(post_id){
+  $.ajax({
+    url: 'logged_interested/'+post_id,
+    type: 'GET',
+    success: function(data){
+      $('#logged_interested').modal('toggle');
+      $('#my_logged_interested').html(data);
     },
   });
 }

@@ -21,7 +21,7 @@ class competitionController extends Controller
 {
     public function add(Request $request) 
         {
-    	    $data = Input::all();
+            $data = Input::all();
             $user = User::find(Auth::user()->id);
             $user_id = $user->id;
             $profilePhoto = $data['file'];
@@ -107,6 +107,13 @@ class competitionController extends Controller
        $updatedate= competition_user::updateexpirydate($date,$user_id);
 
       return view('competitions',['updatedate'=>$updatedate]);
+     }
+     public function termsstore(Request $request)
+     {
+         $user_id         = Auth::user()->id;
+         $termscondition  = $request->input('terms_condition');
+         $terms_condition = competition_user::termscondition($user_id,$termscondition);
+          return redirect('competitions');
      }
       
     public function destroy($id){

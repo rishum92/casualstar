@@ -9,18 +9,18 @@ class competition_user extends Model
 {
    public static function insert($user_id,$encrypted_image)
    {
-   	    $insertdata = DB::table('competition_interested_users')
-   	                ->insert(['user_id'=>$user_id,'user_profile'=>$encrypted_image]);
-   	  return $insertdata;
+        $insertdata = DB::table('competition_interested_users')
+                    ->insert(['user_id'=>$user_id,'user_profile'=>$encrypted_image]);
+      return $insertdata;
    }
    public static function getdata()
    {
-    	$getuserdata = DB::table('competition_interested_users')
-    	            ->join('users','id','=','competition_interested_users.user_id')
-    	            ->select('users.username','competition_interested_users.*')
+      $getuserdata = DB::table('competition_interested_users')
+                  ->join('users','id','=','competition_interested_users.user_id')
+                  ->select('users.username','competition_interested_users.*')
                   ->paginate(20);
-    	           
-      return $getuserdata;	
+                 
+      return $getuserdata;  
    }
    public static function existuser($user_id){
     $exist =  DB::table('competition_interested_users')
@@ -43,6 +43,21 @@ class competition_user extends Model
                   ->get();
                  
       return $showdate;  
+   }
+   public static function termscondition($user_id,$termscondition)
+
+   {
+      $termscondition = DB::table('competiton_terms_condition')
+                     ->update(['user_id'=>$user_id,'termscondition'=>$termscondition]);
+
+      return $termscondition;die;
+   }
+   public static function showtermscondition()
+   {
+     $termscondtion = DB::table('competiton_terms_condition')
+                    ->select('termscondition')
+                    ->get();
+     return $termscondtion;
    }
 
 }
