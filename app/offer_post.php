@@ -46,7 +46,7 @@ class offer_post extends Model
 
    //fetch the post modal
    public static function getPost()
-   { 
+   {  
       $post_data = DB::table('offer_post')
                   ->join('users', 'offer_post.user_id', '=', 'users.id')
                   ->select('offer_post.id as post_id','offer_post.created_at as offer_post_date','offer_post.*','users.*')
