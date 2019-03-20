@@ -181,7 +181,9 @@
         </nav>
         
       </div>
+       
     </section>
+
     
     <!--Female Notice--->
     <div class="wrap" data-ng-if="user.gender == 'female'">
@@ -205,22 +207,23 @@ Ensure your email address is correct so you do not miss out on any possible Trib
     
     <!--Male Notice--->
     
+    
      <div class="wrap" data-ng-if="user.gender == 'male'">
       <div class="highlight">
-<h2><b>NOTICE BOARD:</b></h2> 
-<hr>
-<h3>TOP TIPS:</h3>Receive the most attention by adding a profile photo and being a generous and active Sub, This will also help you to become our Number One SuperSub.
-<br><br>
-Add a profile picture to gain even more attention.
-<p>
-</br><hr>
-         Be sure to select and add your interests located on your profile page, this will increase your visibility with users sharing and searching the same interests.
-         </br>
-</p>
-<br/>
+        <h2><b>NOTICE BOARD:</b></h2> 
+        <hr>
+        <h3>TOP TIPS:</h3>Receive the most attention by adding a profile photo and being a generous and active Sub, This will also help you to become our Number One SuperSub.
+        <br><br>
+          Add a profile picture to gain even more attention.
+           <p>
+              </br><hr>
+              Be sure to select and add your interests located on your profile page, this will increase your visibility with users sharing and searching the same interests.
+              </br>
+            </p>
+        <br/>
       </div>
     </div>
     
-  </div>
+
 
 @endsection

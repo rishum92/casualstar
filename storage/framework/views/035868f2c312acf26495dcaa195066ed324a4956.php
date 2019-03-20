@@ -1,10 +1,8 @@
-@extends('layouts.master')
-
-@section('meta')
+<?php $__env->startSection('meta'); ?>
   <title>Profile » CasualStar</title>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 
   <script type="text/javascript">
     var modal = $('#addCoverPhotoModal');
@@ -155,18 +153,18 @@
       }
     });
   </script>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
   <div data-ng-controller="ProfileController" class="profile-container"> 
-    @include('modals.addProfilePhoto')
-    @include('modals.addCoverPhoto')
-    @include('modals.addPhoto')
-    @include('modals.addPrivatePhoto')
+    <?php echo $__env->make('modals.addProfilePhoto', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <?php echo $__env->make('modals.addCoverPhoto', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <?php echo $__env->make('modals.addPhoto', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <?php echo $__env->make('modals.addPrivatePhoto', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     <section class="profile-main" data-ng-if="userLoaded" style="background-image:url([[getCoverPhotoUrl(user.cover)]])">
       
       <div class="image-controls">
-      <!--   <button type="button" data-ng-click="openModal('addCoverPhoto')"><i class="fa fa-picture-o"></i> {{ Lang::get('messages.changeCoverPhoto') }}</button> -->
+      <!--   <button type="button" data-ng-click="openModal('addCoverPhoto')"><i class="fa fa-picture-o"></i> <?php echo e(Lang::get('messages.changeCoverPhoto')); ?></button> -->
         <button type="button" data-ng-click="openModal('addProfilePhoto')"><i class="fa fa-camera"></i></button>
       </div>
 
@@ -178,31 +176,31 @@
                 <img data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic" />
               </a>
             </div>
-			@if(Auth()->user()->title!="ADMIN")
+			<?php if(Auth()->user()->title!="ADMIN"): ?>
 			<!--<div ng-if="[[user.verify_check]] == 'VERIFIED'" class="col-md-3 col-lg-3 col-sm-3 col-xs-3 col-md-offset-5 col-xs-offset-5">
 			  <i class="fa fa-check edit-button" aria-hidden="true">Verified</i>
 			</div>-->
-			@endif
+			<?php endif; ?>
           </div>
 		  <div class="clearfix"></div>
           <h1>
             <span class="verify-icon">
               [[user.username]] 
             </span>
-			@if(Auth()->user()->verify_check =="VERIFIED")
-				<img class="img-valign" src="{{URL::asset('img/verifiedBadge2018.png')}}" alt="" />	
-			@endif
+			<?php if(Auth()->user()->verify_check =="VERIFIED"): ?>
+				<img class="img-valign" src="<?php echo e(URL::asset('img/verifiedBadge2018.png')); ?>" alt="" />	
+			<?php endif; ?>
           </h1>
           <p data-ng-if="user.description == ''">Share a statement here.</p>
           <p e-form="editableDescription" e-maxlength="200" onbeforesave="update($data, 'description', user.id)" editable-textarea="user.description">
             [[user.description]] 
             <button type="button" class="edit-button" ng-click="editableDescription.$show()" ng-hide="editableDescription.$visible"><i class="ion-edit"></i></button>
           </p>
-			@if(Auth()->user()->verify_check =="")
+			<?php if(Auth()->user()->verify_check ==""): ?>
 		  <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >
-		    <a class=" pull-right text-info" href="{{ URL::route('verify') }}"><h1><span class="edit-button">Account Verification</span></h1></a>
+		    <a class=" pull-right text-info" href="<?php echo e(URL::route('verify')); ?>"><h1><span class="edit-button">Account Verification</span></h1></a>
 		  </div>
-			@endif
+			<?php endif; ?>
 
         </div>
       </div>
@@ -211,12 +209,12 @@
     <div class="stats">
       <div class="block-flex wrap-flex vertical-center-flex row-center-flex">
         <div class="stat age">
-          <small class="user-age">{{ Lang::get('age') }}</small>
+          <small class="user-age"><?php echo e(Lang::get('age')); ?></small>
           <span class="user-age">[[user.age]]</span>
         </div>
         <div class="stat status">
           <span class="indicator active"></span>
-          <small>{{ Lang::get('messages.onlineNow') }}</small>
+          <small><?php echo e(Lang::get('messages.onlineNow')); ?></small>
         </div>
         <div class="stat location"> 
           <i class="ion-ios-location" data-ng-click="editing($event)"></i>
@@ -231,7 +229,7 @@
 
   
     <div class="profile-gallery">
-      <h2>{{ Lang::get('messages.morePhotos') }}</h2>
+      <h2><?php echo e(Lang::get('messages.morePhotos')); ?></h2>
       
       <!-- Female only -->
       <div class="wrap" data-ng-if="user.gender == 'female' && user.photos.length == 0">
@@ -255,13 +253,13 @@
             </a>
             <div class="controls">
               <button type="button" class="edit-button"><i class="ion-arrow-move"></i></button>
-              <button type="button" class="edit-button" mwl-confirm="" title="{{ Lang::get('messages.removePhoto') }}" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="destroyPhoto(photo)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><i class="ion-trash-a"></i></button>
+              <button type="button" class="edit-button" mwl-confirm="" title="<?php echo e(Lang::get('messages.removePhoto')); ?>" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="destroyPhoto(photo)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><i class="ion-trash-a"></i></button>
             </div>
           </div>
         </div>
       </div>
       <div class="add-gallery-photo">
-        <button type="button" data-ng-hide="user.photos.length > 3" data-ng-click="openModal('addPhoto')"><i class="fa fa-camera"></i> {{ Lang::get('messages.addPhoto') }}</button>
+        <button type="button" data-ng-hide="user.photos.length > 3" data-ng-click="openModal('addPhoto')"><i class="fa fa-camera"></i> <?php echo e(Lang::get('messages.addPhoto')); ?></button>
       </div>
     </div>
    
@@ -282,7 +280,7 @@
             </a>
             <div class="controls">
               <button type="button" class="edit-button"><i class="ion-arrow-move"></i></button>
-              <button type="button" class="edit-button" mwl-confirm="" title="{{ Lang::get('messages.removePhoto') }}" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="destroyPrivatePhoto(photo)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><i class="ion-trash-a"></i></button>
+              <button type="button" class="edit-button" mwl-confirm="" title="<?php echo e(Lang::get('messages.removePhoto')); ?>" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="destroyPrivatePhoto(photo)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><i class="ion-trash-a"></i></button>
             </div>
           </div>
         </div>
@@ -295,13 +293,13 @@
       </div>
       <div class="private-note"><label class="private-note-label" style= "padding-left: 2px; padding-right: 2px;">Note: Your Private Gallery will NOT be seen by visitors unless you grant them access.</label></div></div>
      
-    @if((isset($user->cashme_url) && $user->cashme_url != '') || (isset($user->paypal_url) && $user->paypal_url != '') || $user->alt_url == 1)
+    <?php if((isset($user->cashme_url) && $user->cashme_url != '') || (isset($user->paypal_url) && $user->paypal_url != '') || $user->alt_url == 1): ?>
       <div class="donate-btn-box">
         <div class="wrap">
           <button class="main-btn donate-btn" data-toggle="modal" data-target="#donateModal">PAY ME</button>
         </div>
       </div>
-    @endif
+    <?php endif; ?>
     <section class="rec-members service-list-section" ng-if="serviceList.length>0">
         <div class="wrap">
             <h3>All Available Services</h3>
@@ -334,17 +332,17 @@
             </div>
         </div>
     </section>
-	@if(Auth::user()->gender == 'female')
+	<?php if(Auth::user()->gender == 'female'): ?>
 	<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" ng-if="[[user.verify_check]] != 'VERIFIED'"><!--NEED TO CHECK FOR IF THEY HAVE ALREADY ACTIVATE THEIR TWITTER AUTO TWEETS... DISPLAY IF NO & DO NOT DISPLAY IF YES---->
-		<a class="pull-right text-info" href="{{ URL::route('twit.account') }}"><h5><span class="ion-social-twitter">Click to promote on your Twitter</span></h5></a>
+		<a class="pull-right text-info" href="<?php echo e(URL::route('twit.account')); ?>"><h5><span class="ion-social-twitter">Click to promote on your Twitter</span></h5></a>
 	</div>                   
-	@endif
+	<?php endif; ?>
 
     <div class="tags">
       <div class="wrap">
-        <h2>{{ Lang::get('messages.iEnjoy') }}</h2>
+        <h2><?php echo e(Lang::get('messages.iEnjoy')); ?></h2>
         <ui-select multiple data-ng-click="searchInterests('')" ng-model="results.selected" theme="bootstrap">
-          <ui-select-match name="search" placeholder="{{ Lang::get('messages.selectInterests') }}">
+          <ui-select-match name="search" placeholder="<?php echo e(Lang::get('messages.selectInterests')); ?>">
             <button type="button">[[$item.name]]</button>
           </ui-select-match>
           <ui-select-choices repeat="result in results" refresh="searchInterests($select.search)" refresh-delay="500">
@@ -357,7 +355,8 @@
     </div>
     <br>
     
-    @include('modals.donate')
+    <?php echo $__env->make('modals.donate', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
   </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
