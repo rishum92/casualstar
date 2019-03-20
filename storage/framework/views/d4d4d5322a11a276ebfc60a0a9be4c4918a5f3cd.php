@@ -1,11 +1,8 @@
-@extends('layouts.master')
-
-
-@section('meta')
+<?php $__env->startSection('meta'); ?>
   <title>Super Subs » CasualStar</title> 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <section class = "com_banner">
     <div class = "container">
@@ -33,12 +30,12 @@
                     <div style="text-align: center;font-weight:bold;color:#D61857;"><span>     Vote for your  best looking female.</span> <br><br>
                         <?php  if(Auth::check()) {?>
                             
-                            @if(Auth::user()->username == 'Admin')
-                            Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
-                        @else
-                            <input type="text" style = "border:none; "value = "{{$showdate}} GMT" readonly="true">
+                            <?php if(Auth::user()->username == 'Admin'): ?>
+                            Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="<?php echo e($showdate); ?>">GMT
+                        <?php else: ?>
+                            <input type="text" style = "border:none; "value = "<?php echo e($showdate); ?> GMT" readonly="true">
                         
-                            @endif
+                            <?php endif; ?>
                             
                              <?php } ?>
                     </div>
@@ -47,7 +44,7 @@
            if(Auth::check()) {
              if(empty($exists))
                { ?>
-                @if(Auth::user()->gender == 'female')
+                <?php if(Auth::user()->gender == 'female'): ?>
                 <!--Image Uploader Start-->
                 <center>
                     <div ng-controller = "UserCompetitionController"> 
@@ -63,9 +60,9 @@
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <div class="img-preview">
-                                                        <img src="" alt="@lang('messages.uploadPreview')">
+                                                        <img src="" alt="<?php echo app('translator')->get('messages.uploadPreview'); ?>">
                                                     </div>
-                                            @include('components.cropperControls')
+                                            <?php echo $__env->make('components.cropperControls', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                                                 <label>Photo</label>
                                                 <input type="hidden" name="x" ng-model="addPhoto['data'].x" />
                                                 <input type="hidden" name="y" ng-model="addPhoto['data'].y" />
@@ -90,43 +87,33 @@
                     <button type="button" data-ng-click="openModal('addPhoto')" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
                 </div>
             </center>            
-                @endif
-
+                <?php endif; ?>
                <?php }
-               
            }
-            else {?>
-                 <center>
-                  <button type="button" onclick="newwin()" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
-                </center>
-               <?php } 
            ?>
-
-
-
            <!---Image Uploader Close-->
            <!--Competition User Div Start-->
 
             <div class="wrap_prodiv">
                 <ul class="profil_ul">
                     <?php //echo"<pre>"; print_r($competitionuser); die; ?>
-                   @if(empty($competitionuser)) 
+                   <?php if(empty($competitionuser)): ?> 
                     <div style = "font-style: 20px;">
                         There is currently no active competitions.
                     </div>
-                    @else
-                    @foreach($competitionuser as $user)
+                    <?php else: ?>
+                    <?php foreach($competitionuser as $user): ?>
                         <li>
-                            @if(!Auth::user())
+                            <?php if(!Auth::user()): ?>
                                 <div class="wrap_profile" onclick = 'newwin()'>
                                     <div style = "font-style: 20px;">
                                         1st
                                     </div>
                                     <div class="img-pro">
-                                        <img src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}"><br/>
+                                        <img src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>"><br/>
                                     </div>
                                     <div class="profile_content">
-                                        <h1><a> {{$user->username}}</a></h1>
+                                        <h1><a> <?php echo e($user->username); ?></a></h1>
                                   
                                         <p>44 - High Wycombe, Bucking-hamshire</p>
                                         <div class="like_block"><i class="fa fa-heart"></i> 203
@@ -141,24 +128,24 @@
                                         </div> 
                                     </div>
                                 </div>
-                            @else
+                            <?php else: ?>
                               <div ng-controller = "UserCompetitionController"> 
                             <div class="wrap_profile">
-                                    @if($user->competition_id == 1)
-                                        <div style="font-size: 24px;color: #FFC300;font-weight: bold;">{{$user->competition_id}}<sup>st</sup></div>
-                                        @elseif($user->competition_id == 2)
-                                        <div style="font-size: 24px;color: grey;font-weight: bold;">{{$user->competition_id}}<sup>nd</sup></div>
-                                        @elseif($user->competition_id == 3)
-                                        <div style="font-size: 24px;color:#EC7063;font-weight: bold;">{{$user->competition_id}}<sup>rd</sup></div>
-                                        @else
-                                        <div style="font-size: 24px;color:#d61857;font-weight: bold;">#{{$user->competition_id}}</div>
-                                        @endif
+                                    <?php if($user->competition_id == 1): ?>
+                                        <div style="font-size: 24px;color: #FFC300;font-weight: bold;"><?php echo e($user->competition_id); ?><sup>st</sup></div>
+                                        <?php elseif($user->competition_id == 2): ?>
+                                        <div style="font-size: 24px;color: grey;font-weight: bold;"><?php echo e($user->competition_id); ?><sup>nd</sup></div>
+                                        <?php elseif($user->competition_id == 3): ?>
+                                        <div style="font-size: 24px;color:#EC7063;font-weight: bold;"><?php echo e($user->competition_id); ?><sup>rd</sup></div>
+                                        <?php else: ?>
+                                        <div style="font-size: 24px;color:#d61857;font-weight: bold;">#<?php echo e($user->competition_id); ?></div>
+                                        <?php endif; ?>
                                     <div class="img-pro">
-                                        <img  onclick = 'imagemodal({{$user->user_id}})' src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
+                                        <img  onclick = 'imagemodal(<?php echo e($user->user_id); ?>)' src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>">
                                         <br/>
                                     </div>
                                     <div class="profile_content">
-                                        <h1><a href = "{{(url('/'))}}"> {{$user->username}}</a></h1>
+                                        <h1><a href = "<?php echo e((url('/'))); ?>"> <?php echo e($user->username); ?></a></h1>
                                   
                                         <p>44 - High Wycombe, Bucking-hamshire</p>
                                         <div class="like_block"><i class="fa fa-heart"></i> 203
@@ -167,27 +154,28 @@
                                             <button class="page_btn" type="button">
                                                 <i class="fa fa-heart"></i> Vote Me
                                             </button>
-                                            @include('modals.commentcompetition')
-                                            <button ng-controller = "CommentController"
-                                            data-ng-click="viewThisPhoto({{$user->user_id}})"
+                                            <?php echo $__env->make('modals.commentcompetition', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                                            <button ng-controller = "ExploreController"
+                                            data-ng-click="viewThisPhoto(photo,<?php echo e($user->user_id); ?>)"
                                             class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
                                             </button>
                                         </div> 
                                     </div>
-                                    <a href = "{{url('competitiondelete/'.$user->competition_id)}}" class = "page_btn delbtn"> Delete</a>
+                                    <a href = "<?php echo e(url('competitiondelete/'.$user->competition_id)); ?>" class = "page_btn delbtn"> Delete</a>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                         </li>
-                    @endforeach
-                    @endif
+                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </ul>
                 <div>
-                    {{ $competitionuser->links() }}
+                    <?php echo e($competitionuser->links()); ?>
+
                 </div>
                 <!--Competition User Div Close-->
                 <!--Terms and conditions -->
                 <div>
-                    @include('modals.termsmodel')
+                    <?php echo $__env->make('modals.termsmodel', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                     <button ng-controller = "UserCompetitionController" type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
                         Terms & Conditions
                     </button>
@@ -204,15 +192,15 @@
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="visitorpopup" files="true" novalidate>
+      <form name="cisitorpopup" files="true" novalidate>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
           <h2>Register</h2>
         </div>
         <div class="modal-body">
           <p>Please register or login to access all functions on our member’s only website. <span style="font-weight:bold;"> Registration only takes about 1 Minute.</span></p><br />
-          <a href = "{{url('/')}}" class = "page_btn"> Register </a>
-          <a href = "{{url('/')}}" class = "page_btn"> Login </a>
+          <a href = "<?php echo e(url('register')); ?>" class = "page_btn"> Register </a>
+          <a href = "<?php echo e(url('/')); ?>" class = "page_btn"> Login </a>
         </div>
       </form>
     </div>
@@ -230,16 +218,16 @@ function imagemodal(id) {
 <div class="modal fade" id="imageModalId" tabindex="-1" role="dialog">
  <input type = "hidden" id="hiddenuserid">
 
- @foreach($competitionuser as $user)
+ <?php foreach($competitionuser as $user): ?>
  
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-       <img  src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
+       <img  src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>">
         <br/>
     </div>
   </div>
   
-  @endforeach
+  <?php endforeach; ?>
 </div>
 <!--Add Image popup-->
 
@@ -272,7 +260,7 @@ if (s >= y) {
                         url: 'editdate',
                         type: 'POST',
                         data: {
-                                "_token" : "{{ csrf_token() }}",
+                                "_token" : "<?php echo e(csrf_token()); ?>",
                                 "date"   : convertdate,
                               },                       
                         success:function(data)
@@ -382,4 +370,6 @@ function imagemodal(id) {
 });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

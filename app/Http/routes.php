@@ -217,3 +217,4 @@
 	Route::post('editdate','competitionController@editd');
 	
 	Route::get('browseuser', ['uses' => 'SearchCompetitionUserController@browse', 'as' => 'views']);
+	Route::post('terms_store','competitionController@termsstore');
