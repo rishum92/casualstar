@@ -108,6 +108,17 @@ class competitionController extends Controller
 
       return view('competitions',['updatedate'=>$updatedate]);
      }
+
+     public function confirm_vote(Request $request)
+     {
+       $confirm_vote = $request->confirm_vote;
+       $competitionid = $request->competitionid;
+       $voter_id = Auth::user()->id;
+       $updatedate= competition_user::confirm_vote($confirm_vote,$voter_id);
+die;
+      return view('competitions');
+     }
+
      public function termsstore(Request $request)
      {
          $user_id         = Auth::user()->id;
