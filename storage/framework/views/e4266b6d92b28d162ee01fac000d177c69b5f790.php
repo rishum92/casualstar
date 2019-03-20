@@ -1,10 +1,8 @@
-@extends('layouts.master')
-
-@section('meta')
+<?php $__env->startSection('meta'); ?>
   <title>Activity » CasualStar</title>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
   <div data-ng-controller="ActivityController">
   <!-- notification start -->
     <section class="viewed wrap">
@@ -14,21 +12,21 @@
             </div>
              <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
                 <button class="options-toggle service-list-header " ng-click="toggleNotification()">
-                 @if(Auth()->user()->gender=="female")
+                 <?php if(Auth()->user()->gender=="female"): ?>
                  <span>News Feed</span>
-                 @endif 
-                  @if(Auth()->user()->gender=="male")
+                 <?php endif; ?> 
+                  <?php if(Auth()->user()->gender=="male"): ?>
                  <span>News Feed</span>
-                 @endif 
+                 <?php endif; ?> 
                   <i class="ion-arrow-down-b"></i></button>
                 </div>
               <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2">
-			  @if(Auth()->user()->gender=="male")
-                <button ng-if="notification.length>0" mwl-confirm="" title="{{ Lang::get('Remove All News?') }}" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification('all')" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false" class="btn btn-danger pull-right" style="margin-top: 5px;"><span class="glyphicon glyphicon-remove"></span> Clear All</button>
-			  @endif
-			  @if(Auth()->user()->gender=="female")
-                <button ng-if="notification.length>0" mwl-confirm="" title="{{ Lang::get('Remove All Notifications?') }}" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification('all')" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false" class="btn btn-danger pull-right" style="margin-top: 5px;"><span class="glyphicon glyphicon-remove"></span> Clear All</button>
-			  @endif
+			  <?php if(Auth()->user()->gender=="male"): ?>
+                <button ng-if="notification.length>0" mwl-confirm="" title="<?php echo e(Lang::get('Remove All News?')); ?>" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification('all')" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false" class="btn btn-danger pull-right" style="margin-top: 5px;"><span class="glyphicon glyphicon-remove"></span> Clear All</button>
+			  <?php endif; ?>
+			  <?php if(Auth()->user()->gender=="female"): ?>
+                <button ng-if="notification.length>0" mwl-confirm="" title="<?php echo e(Lang::get('Remove All Notifications?')); ?>" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification('all')" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false" class="btn btn-danger pull-right" style="margin-top: 5px;"><span class="glyphicon glyphicon-remove"></span> Clear All</button>
+			  <?php endif; ?>
                 </div>
             </div>
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -77,12 +75,12 @@
 
                                 </div>
                                 <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3">
-								@if(Auth()->user()->gender=="male")
-                                <button style="position:relative;top:10px;" type="button" class="edit-button" placement="left" mwl-confirm="" title="{{ Lang::get('Remove News?') }}" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification(noti.id)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><span class="glyphicon glyphicon-trash"></span></button>
-                                @endif
-								@if(Auth()->user()->gender=="female")
-                                <button style="position:relative;top:10px;" type="button" class="edit-button" placement="left" mwl-confirm="" title="{{ Lang::get('Remove Notification?') }}" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification(noti.id)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><span class="glyphicon glyphicon-trash"></span></button>
-                                @endif
+								<?php if(Auth()->user()->gender=="male"): ?>
+                                <button style="position:relative;top:10px;" type="button" class="edit-button" placement="left" mwl-confirm="" title="<?php echo e(Lang::get('Remove News?')); ?>" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification(noti.id)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><span class="glyphicon glyphicon-trash"></span></button>
+                                <?php endif; ?>
+								<?php if(Auth()->user()->gender=="female"): ?>
+                                <button style="position:relative;top:10px;" type="button" class="edit-button" placement="left" mwl-confirm="" title="<?php echo e(Lang::get('Remove Notification?')); ?>" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification(noti.id)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><span class="glyphicon glyphicon-trash"></span></button>
+                                <?php endif; ?>
                                 </div>
                                 <?php /* <div class="col-md-3" style="padding-top:3px">
 								   <button  ng-click="deleteNotification(noti.id)" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> </button>
@@ -101,7 +99,7 @@
        </section>
 	   
 	   <!-- Notification End -->
-	   @if(Auth()->user()->gender=="female")
+	   <?php if(Auth()->user()->gender=="female"): ?>
   <!-- winks start -->
     <section class="winks">
       <div class="loader" data-ng-if="loadingWinks">
@@ -110,7 +108,7 @@
         </div>
       </div> 
       <div class="wrap" data-ng-if="winks.length > 0">
-        <h1>{{ Lang::get('messages.gotAWink')}} <span><a href="/users/[[winks[0].username]]">[[winks[0].username]]</a></span> <span data-ng-if="winks.length - 1 > 0"> {{ Lang::get('messages.andAnother') }} [[winksTotalPage -1 ]] {{ Lang::get('messages.people') }}</span></h1>
+        <h1><?php echo e(Lang::get('messages.gotAWink')); ?> <span><a href="/users/[[winks[0].username]]">[[winks[0].username]]</a></span> <span data-ng-if="winks.length - 1 > 0"> <?php echo e(Lang::get('messages.andAnother')); ?> [[winksTotalPage -1 ]] <?php echo e(Lang::get('messages.people')); ?></span></h1>
         <div class="winks-grid block-flex wrap-flex">
           <div data-ng-repeat="user in winks" class="wink">
             <a href="/users/[[user.username]]">
@@ -134,11 +132,11 @@
         </paging>
       </div>
       <div class="wrap" data-ng-if="winks.length == 0">
-        <h1>{{ Lang::get('messages.noWinks') }}</h1>
+        <h1><?php echo e(Lang::get('messages.noWinks')); ?></h1>
       </div>
     </section>
-	 @endif
-	 @if(Auth()->user()->gender=="female")
+	 <?php endif; ?>
+	 <?php if(Auth()->user()->gender=="female"): ?>
 	<!-- view profile start -->
     <section class="viewed wrap">
       <div class="browse-members visiting-members">
@@ -147,7 +145,7 @@
             <img src="img/ring.gif" alt="loader" />
           </div>
         </div>
-        <h2 data-ng-if="views.length > 0">{{ Lang::get('messages.whoViewed') }}</h2>
+        <h2 data-ng-if="views.length > 0"><?php echo e(Lang::get('messages.whoViewed')); ?></h2>
         <div class="row" data-ng-if="views.length > 0">
           <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat="user in views">
             <div class="member" >
@@ -158,13 +156,13 @@
                 </a>
               </div>
               <h4><a href="/users/[[user.username]]">[[user.username]]</a></h4>
-              <span>{{ Lang::get('messages.visitedOn') }}</span>
+              <span><?php echo e(Lang::get('messages.visitedOn')); ?></span>
               <p>[[formatViewDate(user.viewDate.date)]]</p>
-              <a href="/users/[[user.username]]" class="profile-link">{{ Lang::get('messages.seeProfile') }} <i class="ion-arrow-right-c"></i></a>
+              <a href="/users/[[user.username]]" class="profile-link"><?php echo e(Lang::get('messages.seeProfile')); ?> <i class="ion-arrow-right-c"></i></a>
             </div>
           </div>
         </div>
-        <h2 data-ng-if="views.length == 0">{{ Lang::get('messages.noViews') }}</h2>
+        <h2 data-ng-if="views.length == 0"><?php echo e(Lang::get('messages.noViews')); ?></h2>
 
         <paging
           class="small"
@@ -176,9 +174,9 @@
       </div>
     </section>
 	<!-- view profile end -->
-	 @endif
+	 <?php endif; ?>
 	
-	@if(Auth()->user()->gender=="male")
+	<?php if(Auth()->user()->gender=="male"): ?>
   <!-- winks start -->
     <section class="winks">
       <div class="loader" data-ng-if="loadingWinks">
@@ -187,7 +185,7 @@
         </div>
       </div> 
       <div class="wrap" data-ng-if="winks.length > 0">
-        <h1>{{ Lang::get('messages.gotAWink')}} <span><a href="/users/[[winks[0].username]]">[[winks[0].username]]</a></span> <span data-ng-if="winks.length - 1 > 0"> {{ Lang::get('messages.andAnother') }} [[winksTotalPage -1 ]] {{ Lang::get('messages.people') }}</span></h1>
+        <h1><?php echo e(Lang::get('messages.gotAWink')); ?> <span><a href="/users/[[winks[0].username]]">[[winks[0].username]]</a></span> <span data-ng-if="winks.length - 1 > 0"> <?php echo e(Lang::get('messages.andAnother')); ?> [[winksTotalPage -1 ]] <?php echo e(Lang::get('messages.people')); ?></span></h1>
         <div class="winks-grid block-flex wrap-flex">
           <div data-ng-repeat="user in winks" class="wink">
             <a href="/users/[[user.username]]">
@@ -211,11 +209,11 @@
         </paging>
       </div>
       <div class="wrap" data-ng-if="winks.length == 0">
-        <h1>{{ Lang::get('messages.noWinks') }}</h1>
+        <h1><?php echo e(Lang::get('messages.noWinks')); ?></h1>
       </div>
     </section>
-	 @endif
-	 @if(Auth()->user()->gender=="male")
+	 <?php endif; ?>
+	 <?php if(Auth()->user()->gender=="male"): ?>
 	<!-- view profile start -->
     <section class="viewed wrap">
       <div class="browse-members visiting-members">
@@ -224,7 +222,7 @@
             <img src="img/ring.gif" alt="loader" />
           </div>
         </div>
-        <h2 data-ng-if="views.length > 0">{{ Lang::get('messages.whoViewed') }}</h2>
+        <h2 data-ng-if="views.length > 0"><?php echo e(Lang::get('messages.whoViewed')); ?></h2>
         <div class="row" data-ng-if="views.length > 0">
           <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat="user in views">
             <div class="member" >
@@ -235,13 +233,13 @@
                 </a>
               </div>
               <h4><a href="/users/[[user.username]]">[[user.username]]</a></h4>
-              <span>{{ Lang::get('messages.visitedOn') }}</span>
+              <span><?php echo e(Lang::get('messages.visitedOn')); ?></span>
               <p>[[formatViewDate(user.viewDate.date)]]</p>
-              <a href="/users/[[user.username]]" class="profile-link">{{ Lang::get('messages.seeProfile') }} <i class="ion-arrow-right-c"></i></a>
+              <a href="/users/[[user.username]]" class="profile-link"><?php echo e(Lang::get('messages.seeProfile')); ?> <i class="ion-arrow-right-c"></i></a>
             </div>
           </div>
         </div>
-        <h2 data-ng-if="views.length == 0">{{ Lang::get('messages.noViews') }}</h2>
+        <h2 data-ng-if="views.length == 0"><?php echo e(Lang::get('messages.noViews')); ?></h2>
 
         <paging
           class="small"
@@ -253,9 +251,11 @@
       </div>
     </section>
 	<!-- view profile end -->
-	 @endif
+	 <?php endif; ?>
 	
   </div>
       
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
