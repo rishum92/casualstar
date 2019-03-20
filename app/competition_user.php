@@ -36,6 +36,14 @@ class competition_user extends Model
                   ->update(['user_id'=>$user_id,'ExpiryDate'=>$date]);
       return $insertdate;
    }
+
+   public static function confirm_vote($confirm_vote,$voter_id)
+   {
+      $insertvote = DB::table('competiton_vote')
+                  ->insert(['voter_id'=>$voter_id,'is_vote'=>$confirm_vote]);
+      return $insertvote;
+   }
+
    public static function showdate()
    {
       $showdate = DB::table('competition_expiry_date')

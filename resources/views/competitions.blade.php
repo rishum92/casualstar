@@ -154,7 +154,7 @@
                                         <div style="font-size: 24px;color:#d61857;font-weight: bold;">#{{$user->competition_id}}</div>
                                         @endif
                                     <div class="img-pro">
-                                        <img  onclick = 'imagemodal({{$user->user_id}})' src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
+                                        <img src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
                                         <br/>
                                     </div>
                                     <div class="profile_content">
@@ -164,7 +164,8 @@
                                         <div class="like_block"><i class="fa fa-heart"></i> 203
                                         </div>
                                         <div class="wrap_btn">
-                                            <button class="page_btn" type="button">
+                                          <input type="hidden" name="competitionid" id="competitionid" value="{{$user->competition_id}}">
+                                            <button class="page_btn" type="button" data-toggle="modal" data-target="#exampleModal" target="{{$user->competition_id}}">
                                                 <i class="fa fa-heart"></i> Vote Me
                                             </button>
                                             @include('modals.commentcompetition')
@@ -243,6 +244,28 @@ function imagemodal(id) {
 </div>
 <!--Add Image popup-->
 
+<!-- vote popup start -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Click Vote Now, to confirm your vote.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirm_vote" value="1">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- vote popup end -->
+
 <!--Add Photo-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
@@ -265,23 +288,41 @@ if (s >= y) {
 
 <!--Change Expiry Date -->
 <script>
-    $("#expiry").blur(function() {
-        var date = $("#expiry").val(); 
-        var convertdate = date.split("/").reverse().join("-");
-            $.ajax({
-                        url: 'editdate',
-                        type: 'POST',
-                        data: {
-                                "_token" : "{{ csrf_token() }}",
-                                "date"   : convertdate,
-                              },                       
-                        success:function(data)
-                          {
-                            alert(data);
-                          }
-                       });
-   });
-
+  $("#expiry").blur(function() {
+    var date = $("#expiry").val(); 
+    var convertdate = date.split("/").reverse().join("-");
+        $.ajax({
+          url: 'editdate',
+          type: 'POST',
+          data: {
+                  "_token" : "{{ csrf_token() }}",
+                  "date"   : convertdate,
+                },
+                success:function(data)
+                {
+                  alert(data);
+                }
+        });
+  });
+  // for confirmation vote
+  $("#confirm_vote").click(function() {
+    var confirm_vote = $("#confirm_vote").val();
+    var competitionid = $(this).attr("target"); 
+    alert(competitionid); return false;
+        $.ajax({
+          url: 'confirm_vote',
+          type: 'POST',
+          data: {
+                  "_token" : "{{ csrf_token() }}",
+                  "confirm_vote"   : confirm_vote,
+                  "competitionid"   : competitionid,
+                },
+                success:function(data)
+                {
+                  alert(data);
+                }
+        });
+  });
 </script>
 <!--Change Expiry Date -->
 <!--Visitor Model Popup Script -->

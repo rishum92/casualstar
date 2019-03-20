@@ -218,3 +218,5 @@
 	
 	Route::get('browseuser', ['uses' => 'SearchCompetitionUserController@browse', 'as' => 'views']);
 	Route::post('terms_store','competitionController@termsstore');
+	Route::post('competitioncomment','competitionController@storecomment');
+	Route::post('confirm_vote','competitionController@confirm_vote');
