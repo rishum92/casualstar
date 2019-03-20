@@ -87,7 +87,7 @@ first 10 interests will be logged for each Offer.</center>
     <div class="wrap">
        <div class="row">
          <div class="col-md-12">
-           <?php // echo "<pre>"; print_r($offerpost);die;?> 
+           <?php // echo "<pre>"; print_r($offerpost);die; ?> 
             @foreach($offerpost as $offers)
              <div class="col-md-6 offer_container_grid">
               
@@ -335,7 +335,9 @@ first 10 interests will be logged for each Offer.</center>
                   <div class="post_delete_date">
                     <a href="#">
                       <span >
-                        <?php echo date("d/m/Y", strtotime($myoffer->created_at) ); ?>
+                        <?php
+                          echo date("H:i ",strtotime($myoffer->created_at));
+                          echo date("d/m/Y", strtotime($myoffer->created_at) ); ?>
                       </span>
                     </a> &nbsp; 
                     <a href="{{url('deletemyoffer/'.$myoffer->id)}}">

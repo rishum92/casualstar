@@ -25,7 +25,7 @@ foreach ($myoffer_interested_users as $myoffersusers) {
   
   <div class="col-md-12" id="message_<?php echo e($myoffersusers->id); ?>" style="display: none;">
     <br/>
-    <textarea  class="form-control"  id="offer_message_<?php echo e($myoffersusers->id); ?>">Hello female <?php echo e($myoffersusers->username); ?>, you have shown interest in my offer (offer id #<?php echo e($myoffersusers->post_id); ?>) and I would like to discuss it with you please…?”.
+    <textarea  class="form-control"  id="offer_message_<?php echo e($myoffersusers->id); ?>">Hello <?php echo e($myoffersusers->username); ?>, you have shown interest in my offer (offer id #<?php echo e($myoffersusers->post_id); ?>) and I would like to discuss it with you please…?”.
     </textarea>
     <hr/>
     
