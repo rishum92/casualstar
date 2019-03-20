@@ -2327,3 +2327,24 @@ Stack trace:
 [2019-03-20 06:58:31] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
 Stack trace:
 #0 {main}  
+[2019-03-20 07:32:55] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:32:56] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:32:59] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:33:05] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:33:06] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:33:06] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:33:06] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
