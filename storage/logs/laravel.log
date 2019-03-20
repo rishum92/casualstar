@@ -3044,3 +3044,15 @@ Stack trace:
 >>>>>>> 02d91b168b05cc5f66b2aba43ed55d82fefdbd94
 Stack trace:
 #0 {main}  
+[2019-03-20 07:45:06] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:45:06] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:45:06] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
+[2019-03-20 07:45:07] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'MongoDB\Driver\Manager' not found' in /opt/lampp/htdocs/casualstar_new/casualstar/vendor/mongodb/mongodb/src/Client.php:56
+Stack trace:
+#0 {main}  
