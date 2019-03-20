@@ -88,9 +88,19 @@
                 </div>
             </center>            
                 <?php endif; ?>
+
                <?php }
+               
            }
+            else {?>
+                 <center>
+                  <button type="button" onclick="newwin()" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
+                </center>
+               <?php } 
            ?>
+
+
+
            <!---Image Uploader Close-->
            <!--Competition User Div Start-->
 
@@ -155,8 +165,8 @@
                                                 <i class="fa fa-heart"></i> Vote Me
                                             </button>
                                             <?php echo $__env->make('modals.commentcompetition', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                                            <button ng-controller = "ExploreController"
-                                            data-ng-click="viewThisPhoto(photo,<?php echo e($user->user_id); ?>)"
+                                            <button ng-controller = "CommentController"
+                                            data-ng-click="viewThisPhoto(<?php echo e($user->user_id); ?>)"
                                             class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
                                             </button>
                                         </div> 
@@ -192,14 +202,14 @@
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="cisitorpopup" files="true" novalidate>
+      <form name="visitorpopup" files="true" novalidate>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
           <h2>Register</h2>
         </div>
         <div class="modal-body">
           <p>Please register or login to access all functions on our member’s only website. <span style="font-weight:bold;"> Registration only takes about 1 Minute.</span></p><br />
-          <a href = "<?php echo e(url('register')); ?>" class = "page_btn"> Register </a>
+          <a href = "<?php echo e(url('/')); ?>" class = "page_btn"> Register </a>
           <a href = "<?php echo e(url('/')); ?>" class = "page_btn"> Login </a>
         </div>
       </form>
