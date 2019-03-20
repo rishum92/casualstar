@@ -154,7 +154,7 @@
                                         <div style="font-size: 24px;color:#d61857;font-weight: bold;">#{{$user->competition_id}}</div>
                                         @endif
                                     <div class="img-pro">
-                                        <img  onclick = 'imagemodal({{$user->user_id}})' src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
+                                        <img src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
                                         <br/>
                                     </div>
                                     <div class="profile_content">

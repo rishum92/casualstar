@@ -416,22 +416,6 @@ $http.get('/api/sendNotification/').then(function (response) {
     });
   }
 
-  $scope.getPhotoUrl = function(photo) {
-
-    if(photo != undefined) {
-      return '/img/competition_user/' + $scope.user.username + '/preview' + photo;
-    } else {
-      return '/img/' +'.jpg';
-    }
-  }
-
-  $scope.getPhotoPreviewUrl = function(photo) {
-        alert(23)
-    if(photo != undefined) {
-      return '/img/competition_user/' + $scope.user.username + '/previews/' + photo;
-    } else {
-      return '/img/' + '.jpg';
-    }
-  }
+ 
       });
 

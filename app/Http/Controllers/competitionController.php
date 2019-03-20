@@ -115,6 +115,10 @@ class competitionController extends Controller
          $terms_condition = competition_user::termscondition($user_id,$termscondition);
           return redirect('competitions');
      }
+     public function storecomment(Request $request)
+     {
+        echo "success";
+     }
       
     public function destroy($id){
         $execute = Photo::remove($id);

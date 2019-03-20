@@ -151,7 +151,7 @@
                                         <div style="font-size: 24px;color:#d61857;font-weight: bold;">#<?php echo e($user->competition_id); ?></div>
                                         <?php endif; ?>
                                     <div class="img-pro">
-                                        <img  onclick = 'imagemodal(<?php echo e($user->user_id); ?>)' src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>">
+                                        <img src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>">
                                         <br/>
                                     </div>
                                     <div class="profile_content">

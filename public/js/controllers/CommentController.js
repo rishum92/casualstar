@@ -103,11 +103,10 @@ CommentCtrl.controller('CommentController', ['$scope', '$http', '$location', '$r
     }
   }
 
-  $scope.viewThisPhoto = function(id) {
+  $scope.viewThisPhoto = function(photo) {
 
-    $scope.openModal('viewPhoto', 'id',id);
-    alert(id)
-    return false;
+    $scope.openModal('viewPhoto', 'photo',photo);
+  
 
     $scope.user = $scope.$parent.user;
 

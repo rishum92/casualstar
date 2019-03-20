@@ -1,9 +1,7 @@
-
-<
-<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
+<div class="modal fade" id="viewPhotoModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="viewPhoto" ng-submit="submitModal('commentcompetition')" files="true" novalidate>
+      <form name="viewPhoto" ng-submit="submitModal('viewPhoto')" files="true" novalidate>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
           
@@ -33,9 +31,9 @@
             <div class="form-group right comments">
               <!-- <h3>Comments</h3> -->
               <!-- [[photoComments.length]] -->
-              <form data-ng-submit="postComment(viewPhoto['data'].photo)">
-                <textarea data-ng-model="comment" maxlength="750" enter="postComment(viewPhoto['data'].photo)" shift class="form-control" placeholder="Type a comment here..."></textarea>
-          <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment(viewPhoto['data'].photo)" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
+              <form data-ng-submit="postComment()">
+                <textarea data-ng-model="comment" maxlength="750" enter="postComment()" shift class="form-control" placeholder="Type a comment here..."></textarea>
+          <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment(comment)" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
               </form>
               <ul class="conversation">
                 <li class="message block-flex wrap-flex" data-ng-class="partner" data-ng-repeat="comment in photoComments">
