@@ -103,12 +103,12 @@ CommentCtrl.controller('CommentController', ['$scope', '$http', '$location', '$r
     }
   }
 
-  $scope.viewThisPhoto = function(photo) {
+  $scope.viewThisPhoto = function(photo) { 
 
     $scope.openModal('viewPhoto', 'photo',photo);
   
-
     $scope.user = $scope.$parent.user;
+    $scope.user.user_id = photo;
 
     $scope.getLikes(photo);
     $scope.getComments(photo);
@@ -122,30 +122,18 @@ CommentCtrl.controller('CommentController', ['$scope', '$http', '$location', '$r
   }
 
 
-  $scope.getLikes = function(photo) {
+  $scope.getLikes = function(photo) { 
     console.log('refreshing likes');
-    $http.get('/api/photo-like/' + photo.id).then(function(response) {
+    $http.get('/api/photo-like/' + photo).then(function(response) {
       $scope.photoLikes = response.data;
     });
   }
 
   $scope.getComments = function(photo) {
     console.log('refreshing comments');
-    $http.get('/api/photo-comment/' + photo.id).then(function(response) {
+    $http.get('/api/photo-comment/' + photo).then(function(response) {
       $scope.photoComments = response.data;
     });
-  }
-
-  $scope.postComment = function(photo) {
-    if($scope.comment.length > 0) {
-      $('#postCommentButton').attr('disabled', 'disabled');
-      $http.post('/api/photo-comment', {photo_id: photo.id, user_id: photo.user.id, comment: $scope.comment}).then(function(response) {
-        notify(response.data.messageType, response.data.message);
-        $scope.getComments(photo);
-        $scope.comment = '';
-        $('#postCommentButton').removeAttr('disabled');
-      });
-    }
   }
 
   $scope.getCommentUserPhoto = function(comment) {

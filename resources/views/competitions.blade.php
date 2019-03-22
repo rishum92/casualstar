@@ -135,7 +135,7 @@
                                             <button class="page_btn" type="button">
                                                 <i class="fa fa-heart"></i> Vote Me
                                             </button>
-                                            <div>
+                                        <div>
                                             <button class="page_btn" type="button"><i class="fa fa-comments"></i> Comments
                                             </button>
                                         </div> 
@@ -153,6 +153,7 @@
                                         @else
                                         <div style="font-size: 24px;color:#d61857;font-weight: bold;">#{{$user->competition_id}}</div>
                                         @endif
+                                        <?php //echo '<pre>';print_r($user);//exit;?>
                                     <div class="img-pro">
                                         <img src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
                                         <br/>
@@ -164,12 +165,30 @@
                                         <div class="like_block"><i class="fa fa-heart"></i> 203
                                         </div>
                                         <div class="wrap_btn">
-                                          <input type="hidden" name="competitionid" id="competitionid" value="{{$user->competition_id}}">
-                                            <button class="page_btn" type="button" data-toggle="modal" data-target="#exampleModal" target="{{$user->competition_id}}">
-                                                <i class="fa fa-heart"></i> Vote Me
-                                            </button>
+                                          
+                                          
+                                            @if($voter_count < 2)
+                                              @foreach($voters as $voter)
+                                                @if($voter->competition_id == $user->competition_id || $user->user_id == Auth::user()->id)
+                                                  <button class="page_btn" type="button" disabled>
+                                                      <i class="fa fa-heart"></i> Vote Me
+                                                  </button>
+                                                  @else
+                                                  <button class="page_btn" type="button" onclick="confirm_vote_popup({{$user->competition_id}},{{$user->user_id}})">
+                                                      <i class="fa fa-heart"></i> Vote Me
+                                                  </button>
+                                                 @endif  
+                                                @endforeach
+                                            @else
+                                                <button class="page_btn" type="button" disabled>
+                                                    <i class="fa fa-heart"></i> Vote Me
+                                                </button>
+                                            @endif
+                                          
+                                          
+                                           
                                             @include('modals.commentcompetition')
-                                            <button ng-controller = "CommentController"
+                                            <button 
                                             data-ng-click="viewThisPhoto({{$user->user_id}})"
                                             class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
                                             </button>
@@ -245,6 +264,16 @@ function imagemodal(id) {
 <!--Add Image popup-->
 
 <!-- vote popup start -->
+
+<script>
+function confirm_vote_popup(id,competition_userid) {
+ $('#modalcompetitionid').val(id);
+ $('#competition_userid').val(competition_userid);
+ $('#competition_username').val(competition_username);
+ $('#exampleModal').modal('show');
+}
+</script>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -257,9 +286,17 @@ function imagemodal(id) {
       <div class="modal-body">
         Click Vote Now, to confirm your vote.
       </div>
+      <input type="hidden" name="modalcompetitionid" id="modalcompetitionid">
+      <input type="hidden" name="competition_userid" id="competition_userid">
+      <input type="hidden" name="competition_username" id="competition_username">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="confirm_vote" value="1">Ok</button>
+        <button type="button" class="btn btn-primary" target="" id="confirm_vote" value="1">Ok</button>
+        <div>
+          <span id = "messagedisplay" style = "display: none;">
+            Thank you for voting. Username is now in position 23 in the competition.You also have one more vote remaining.
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -300,6 +337,7 @@ if (s >= y) {
                 },
                 success:function(data)
                 {
+                  $("#messagedisplay").html();
                   alert(data);
                 }
         });
@@ -307,8 +345,10 @@ if (s >= y) {
   // for confirmation vote
   $("#confirm_vote").click(function() {
     var confirm_vote = $("#confirm_vote").val();
-    var competitionid = $(this).attr("target"); 
-    alert(competitionid); return false;
+    var competitionid = $("#modalcompetitionid").val(); 
+    var competition_userid = $("#competition_userid").val();
+    var competition_username = $("competition_username").val();
+   
         $.ajax({
           url: 'confirm_vote',
           type: 'POST',
@@ -316,10 +356,12 @@ if (s >= y) {
                   "_token" : "{{ csrf_token() }}",
                   "confirm_vote"   : confirm_vote,
                   "competitionid"   : competitionid,
+                  "competition_userid"   : competition_userid,
                 },
                 success:function(data)
                 {
-                  alert(data);
+                  JSON.parse(data);
+                  location.reload();
                 }
         });
   });

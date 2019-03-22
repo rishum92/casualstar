@@ -17,7 +17,7 @@ class competition_user extends Model
    {
       $getuserdata = DB::table('competition_interested_users')
                   ->join('users','id','=','competition_interested_users.user_id')
-                  ->select('users.username','competition_interested_users.*')
+                  ->select('users.username','competition_interested_users.*','users.*')
                   ->paginate(20);
                  
       return $getuserdata;  
@@ -37,11 +37,28 @@ class competition_user extends Model
       return $insertdate;
    }
 
-   public static function confirm_vote($confirm_vote,$voter_id)
+   public static function confirm_vote($confirm_vote,$voter_id,$competition_userid,$competitionid)
    {
       $insertvote = DB::table('competiton_vote')
-                  ->insert(['voter_id'=>$voter_id,'is_vote'=>$confirm_vote]);
+                  ->insert(['voter_id'=>$voter_id,'is_vote'=>$confirm_vote,'user_id'=>$competition_userid,'competition_id'=>$competitionid]);
       return $insertvote;
+   }
+
+   public static function voter_count($voter_id)
+   {
+      $votercount = DB::table('competiton_vote')
+                  ->where('voter_id',$voter_id)
+                  ->get();
+      //echo "<pre>"; print_r(); die;
+      return count($votercount);
+   }
+
+   public static function voters($voter_id)
+   {
+      $voters = DB::table('competiton_vote')
+                  ->get();
+      //echo "<pre>"; print_r(); die;
+      return $voters;
    }
 
    public static function showdate()

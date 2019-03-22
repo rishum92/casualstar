@@ -113,10 +113,11 @@ class competitionController extends Controller
      {
        $confirm_vote = $request->confirm_vote;
        $competitionid = $request->competitionid;
+       $competition_userid = $request->competition_userid;
        $voter_id = Auth::user()->id;
-       $updatedate= competition_user::confirm_vote($confirm_vote,$voter_id);
-die;
-      return view('competitions');
+       $voter= competition_user::confirm_vote($confirm_vote,$voter_id,$competition_userid, $competitionid);
+
+      return json_encode($voter);
      }
 
      public function termsstore(Request $request)

@@ -72,6 +72,73 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
     });
   }
 
+//comment start
+ $scope.viewThisPhoto = function(user_id) { 
+
+    $scope.openModal('viewPhoto', 'user_id',user_id);
+  
+    $scope.user = $scope.$parent.user;
+    $scope.user.user_id = user_id;
+
+    $scope.getLikes(user_id);
+    $scope.getComments(user_id);
+
+    $scope.refreshInterval = setInterval(function() {
+      if(!$scope.refreshPaused) {
+        $scope.getComments(user_id);
+        $scope.getLikes(user_id);
+      } 
+    }, 5000);
+  }
+
+
+  $scope.getLikes = function(user_id) { 
+    console.log('refreshing likes');
+    $http.get('/api/photo-like/' + user_id).then(function(response) {
+      $scope.photoLikes = response.data;
+    });
+  }
+
+  $scope.getComments = function(user_id) {
+    console.log('refreshing comments');
+    $http.get('/api/photo-comment/' + user_id).then(function(response) {
+      $scope.photoComments = response.data;
+    });
+  }
+
+ 
+  $scope.postComment = function(user_id) { alert(user_id)
+    if($scope.comment.length > 0) { 
+      $('#postCommentButton').attr('disabled', 'disabled');
+      $http.post('/api/profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
+        notify(response.data.messageType, response.data.message);
+        //$scope.getComments(user_id);
+        $scope.comment = '';
+        $('#postCommentButton').removeAttr('disabled');
+      });
+    }
+  }
+//comment end
+
+  $scope.getCommentUserPhoto = function(comment) {
+    if(comment.user.img != undefined) {
+      return '/img/users/' + comment.user.username + '/chat/' + comment.user.img;
+    } else {
+      return '/img/' + comment.user.gender + '.jpg';
+    }
+  }
+
+  $scope.getUserPhoto = function(user) {
+    if(user != undefined) {
+      if(user.img != undefined) {
+        return '/img/users/' + user.username + '/chat/' + user.img;
+      } else {
+        return '/img/' + user.gender + '.jpg';
+      }
+    }
+    
+  }
+
   $scope.searchInterests = function(searchString) {
       var params = {searchString: searchString};
       if($scope.results) {
@@ -418,4 +485,6 @@ $http.get('/api/sendNotification/').then(function (response) {
 
  
       });
+
+
 

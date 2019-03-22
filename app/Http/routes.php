@@ -159,6 +159,7 @@
 			Route::resource('photo', 'Api\PhotoController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::resource('photo-like', 'Api\PhotoLikeController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::resource('photo-comment', 'Api\PhotoCommentController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
+			Route::resource('profile-comment', 'Api\UserController@profile_comment', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::resource('privatePhoto', 'Api\PrivatePhotoController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::resource('favorite', 'Api\FavoriteController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::patch('photo-reorder', ['uses' => 'Api\PhotoController@reorder', 'as' => 'photo.reorder']);
