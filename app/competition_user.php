@@ -3,7 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\Filesystem;
 use DB;
+use Auth;
+use File;
 
 class competition_user extends Model
 {
@@ -16,10 +19,15 @@ class competition_user extends Model
    public static function getdata()
    {
       $getuserdata = DB::table('competition_interested_users')
+                  ->select('users.username','competition_interested_users.*','users.*', DB::raw('count(competiton_vote.id) as total_votes'))
                   ->join('users','id','=','competition_interested_users.user_id')
-                  ->select('users.username','competition_interested_users.*','users.*')
+                  ->leftJoin('competiton_vote', 'users.id', '=', 'competiton_vote.user_id')
+                  ->groupBy('users.id', 'competiton_vote.user_id')
+                  ->orderBy('total_votes', 'desc')
                   ->paginate(20);
-                 
+
+      //echo '<pre>';print_r($getuserdata);exit;
+     
       return $getuserdata;  
    }
    public static function existuser($user_id){
@@ -41,24 +49,23 @@ class competition_user extends Model
    {
       $insertvote = DB::table('competiton_vote')
                   ->insert(['voter_id'=>$voter_id,'is_vote'=>$confirm_vote,'user_id'=>$competition_userid,'competition_id'=>$competitionid]);
-      return $insertvote;
+      $votecount = DB::table('competiton_vote')
+                  ->select('is_vote')
+                  ->where('competition_id',$competitionid)
+                  ->get();
+      //echo"<pre>";print_r(count($votecount)); die;
+      return count($votecount);
    }
 
-   public static function voter_count($voter_id)
+   public static function vote_count($voter_id)
    {
-      $votercount = DB::table('competiton_vote')
+      $votes = DB::table('competiton_vote')
                   ->where('voter_id',$voter_id)
                   ->get();
-      //echo "<pre>"; print_r(); die;
-      return count($votercount);
-   }
-
-   public static function voters($voter_id)
-   {
-      $voters = DB::table('competiton_vote')
-                  ->get();
-      //echo "<pre>"; print_r(); die;
-      return $voters;
+      foreach ($votes as $vote) {
+        $votes_arr[] = $vote->user_id;
+      }
+      //return $votes_arr;
    }
 
    public static function showdate()
@@ -84,5 +91,27 @@ class competition_user extends Model
                     ->get();
      return $termscondtion;
    }
+
+  public static function removecompetition($competitionid) {
+      
+      DB::table('competition_interested_users')->where('competition_id', '=', $competitionid)->delete();
+        if(file_exists('img/competition_user/' . Auth::user()->username)) {
+          
+           File::deleteDirectory(public_path('img/competition_user/'. Auth::user()->username));
+        }
+     
+    }
+  public static function update_vote($user)
+  {
+    $update_vote = DB::table('competiton_vote')
+                -> where('voter_id',$user)
+                ->update(['is_vote'=>0]);
+  }
+  public static function delete_account($user)
+  {
+    $delete_account = DB::table('competition_interested_users')
+                    -> where('user_id',$user)
+                    ->update(['is_status'=>0]);
+  }
 
 }

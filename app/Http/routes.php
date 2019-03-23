@@ -214,10 +214,15 @@
 	//Competitions Controller  And Competition Date Routes
 	Route::post('competition-user','competitionController@add');
 	Route::get('popregister','competitionController@demo');
-	Route::get('competitiondelete/{id}','competitionController@delete');
+	Route::get('competitiondelete/{id}','competitionController@competitiondelete');
 	Route::post('editdate','competitionController@editd');
 	
 	Route::get('browseuser', ['uses' => 'SearchCompetitionUserController@browse', 'as' => 'views']);
 	Route::post('terms_store','competitionController@termsstore');
 	Route::post('competitioncomment','competitionController@storecomment');
 	Route::post('confirm_vote','competitionController@confirm_vote');
+	Route::get('expand_image/{id}','competitionController@expand_image');
+	Route::post('amount_edit','competitionController@amount_edit');
+
+
+

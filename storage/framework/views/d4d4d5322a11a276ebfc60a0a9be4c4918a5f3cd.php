@@ -27,7 +27,10 @@
                    
                 </div>  
             </form>
-                    <div style="text-align: center;font-weight:bold;color:#D61857;"><span>     Vote for your  best looking female.</span> <br><br>
+                    <div class="center_text">
+                      <span>Vote for your  best looking female.
+                      </span>
+                      <br><br>
                         <?php  if(Auth::check()) {?>
                             
                             <?php if(Auth::user()->username == 'Admin'): ?>
@@ -98,126 +101,29 @@
                 </center>
                <?php } 
            ?>
-
-
-
-           <!---Image Uploader Close-->
-           <!--Competition User Div Start-->
+            <!---Image Uploader Close-->
+            <!--Competition User Div Start-->
 
             <div class="wrap_prodiv">
-                <ul class="profil_ul">
-                    <?php //echo"<pre>"; print_r($competitionuser); die; ?>
-                   <?php if(empty($competitionuser)): ?> 
-                    <div style = "font-style: 20px;">
-                        There is currently no active competitions.
-                    </div>
-                    <?php else: ?>
-                    <?php foreach($competitionuser as $user): ?>
-                        <li>
-                            <?php if(!Auth::user()): ?>
-                                <div class="wrap_profile" onclick = 'newwin()'>
-                                    <div style = "font-style: 20px;">
-                                        1st
-                                    </div>
-                                    <div class="img-pro">
-                                        <img src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>"><br/>
-                                    </div>
-                                    <div class="profile_content">
-                                        <h1><a> <?php echo e($user->username); ?></a></h1>
-                                  
-                                        <p>44 - High Wycombe, Bucking-hamshire</p>
-                                        <div class="like_block"><i class="fa fa-heart"></i> 203
-                                        </div>
-                                        <div class="wrap_btn">
-                                            <button class="page_btn" type="button">
-                                                <i class="fa fa-heart"></i> Vote Me
-                                            </button>
-                                        <div>
-                                            <button class="page_btn" type="button"><i class="fa fa-comments"></i> Comments
-                                            </button>
-                                        </div> 
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                              <div ng-controller = "UserCompetitionController"> 
-                            <div class="wrap_profile">
-                                    <?php if($user->competition_id == 1): ?>
-                                        <div style="font-size: 24px;color: #FFC300;font-weight: bold;"><?php echo e($user->competition_id); ?><sup>st</sup></div>
-                                        <?php elseif($user->competition_id == 2): ?>
-                                        <div style="font-size: 24px;color: grey;font-weight: bold;"><?php echo e($user->competition_id); ?><sup>nd</sup></div>
-                                        <?php elseif($user->competition_id == 3): ?>
-                                        <div style="font-size: 24px;color:#EC7063;font-weight: bold;"><?php echo e($user->competition_id); ?><sup>rd</sup></div>
-                                        <?php else: ?>
-                                        <div style="font-size: 24px;color:#d61857;font-weight: bold;">#<?php echo e($user->competition_id); ?></div>
-                                        <?php endif; ?>
-                                        <?php //echo '<pre>';print_r($user);//exit;?>
-                                    <div class="img-pro">
-                                        <img src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>">
-                                        <br/>
-                                    </div>
-                                    <div class="profile_content">
-                                        <h1><a href = "<?php echo e((url('/'))); ?>"> <?php echo e($user->username); ?></a></h1>
-                                  
-                                        <p>44 - High Wycombe, Bucking-hamshire</p>
-                                        <div class="like_block"><i class="fa fa-heart"></i> 203
-                                        </div>
-                                        <div class="wrap_btn">
-                                          
-                                          
-                                            <?php if($voter_count < 2): ?>
-                                              <?php foreach($voters as $voter): ?>
-                                                <?php if($voter->competition_id == $user->competition_id || $user->user_id == Auth::user()->id): ?>
-                                                  <button class="page_btn" type="button" disabled>
-                                                      <i class="fa fa-heart"></i> Vote Me
-                                                  </button>
-                                                  <?php else: ?>
-                                                  <button class="page_btn" type="button" onclick="confirm_vote_popup(<?php echo e($user->competition_id); ?>,<?php echo e($user->user_id); ?>)">
-                                                      <i class="fa fa-heart"></i> Vote Me
-                                                  </button>
-                                                 <?php endif; ?>  
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <button class="page_btn" type="button" disabled>
-                                                    <i class="fa fa-heart"></i> Vote Me
-                                                </button>
-                                            <?php endif; ?>
-                                          
-                                          
-                                           
-                                            <?php echo $__env->make('modals.commentcompetition', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                                            <button 
-                                            data-ng-click="viewThisPhoto(<?php echo e($user->user_id); ?>)"
-                                            class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
-                                            </button>
-                                        </div> 
-                                    </div>
-                                    <a href = "<?php echo e(url('competitiondelete/'.$user->competition_id)); ?>" class = "page_btn delbtn"> Delete</a>
-                                </div>
-                            <?php endif; ?>
-                        </li>
-                    <?php endforeach; ?>
-                    <?php endif; ?>
-                </ul>
-                <div>
-                    <?php echo e($competitionuser->links()); ?>
-
-                </div>
+                <?php echo $__env->make('competition_users', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+               
                 <!--Competition User Div Close-->
                 <!--Terms and conditions -->
-                <div>
-                    <?php echo $__env->make('modals.termsmodel', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                    <button ng-controller = "UserCompetitionController" type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
-                        Terms & Conditions
-                    </button>
-                </div>
-                <div class="scroll-top scroll-is-not-visible" style = "float:right;">
-                    <a href="javascript:" id ="return-to-top"><i style = "font-size: 30px; color:#d61857;" class="fa fa-chevron-up" aria-hidden="true"></i></a>
-                </div>
+              <div>
+                  <?php echo $__env->make('modals.termsmodel', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                  <button ng-controller = "UserCompetitionController" type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
+                    Terms & Conditions
+                  </button>
+              </div>
+              <div class="scroll-top scroll-is-not-visible" style = "float:right;">
+                  <a href="javascript:" id ="return-to-top"><i style = "font-size: 30px; color:#d61857;" class="fa fa-chevron-up" aria-hidden="true"></i></a>
+              </div>
                 <!--Terms and conditions -->
             </div>
         </div>
     </div>
 </section>
+
 <!--VisitorPopup Modal-->
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -237,27 +143,36 @@
   </div>
 </div>
 <!--VisitorPopup Modal-->
-
-<!--Add Image popup-->
 <script>
-function imagemodal(id) {
- $('#hiddenuserid').val(id);
- $('#imageModalId').modal('show');
+function imagemodal(id){
+ 
+ $.ajax({
+   url: 'expand_image/'+id,
+   type: 'GET',
+  
+   success: function(data){ 
+ 
+     $('#imageModalId').modal('toggle');
+    $('#myimgprofile').attr('src','img/competition_user/'+data[0].username+'/previews/'+data[0].user_profile);
+   },
+ });
 }
 </script>
+<!--Add Image popup-->
+
 <div class="modal fade" id="imageModalId" tabindex="-1" role="dialog">
  <input type = "hidden" id="hiddenuserid">
 
- <?php foreach($competitionuser as $user): ?>
- 
+
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-       <img  src="<?php echo e(URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)); ?>">
+    <div class="modal-content-centered" style="margin-right: 300px;">
+       <img id="myimgprofile" style="width:100%;max-width:400px">
         <br/>
     </div>
   </div>
-  
-  <?php endforeach; ?>
+ 
+
+ 
 </div>
 <!--Add Image popup-->
 
@@ -289,9 +204,9 @@ function confirm_vote_popup(id,competition_userid) {
       <input type="hidden" name="competition_username" id="competition_username">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" target="" id="confirm_vote" value="1">Ok</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" target="" id="confirm_vote" value="1">Vote Now</button>
         <div>
-          <span id = "messagedisplay" style = "display: none;">
+          <span id = "messagedisplay" style = "display:none;">
             Thank you for voting. Username is now in position 23 in the competition.You also have one more vote remaining.
           </span>
         </div>
@@ -300,7 +215,37 @@ function confirm_vote_popup(id,competition_userid) {
   </div>
 </div>
 <!-- vote popup end -->
+<script>
+function deleteconfirmation(id) {
+ $('#deleteconfirmationbtn').modal('show');
+ $('#competitionid').val(id);
+}
+</script>
 
+
+<!--Delete Confirmation Popup-->
+<div class="modal fade" id="deleteconfirmationbtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Are you sure you want to delete this submission?
+      </div>
+      <input type="hidden" name="competitionid" id="competitionid">
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="confirm_delete">Yes</button>
+        <button class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Confirmation Popup End-->
 <!--Add Photo-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
@@ -326,20 +271,19 @@ if (s >= y) {
   $("#expiry").blur(function() {
     var date = $("#expiry").val(); 
     var convertdate = date.split("/").reverse().join("-");
-        $.ajax({
-          url: 'editdate',
-          type: 'POST',
-          data: {
-                  "_token" : "<?php echo e(csrf_token()); ?>",
-                  "date"   : convertdate,
-                },
-                success:function(data)
-                {
-                  $("#messagedisplay").html();
-                  alert(data);
-                }
-        });
-  });
+      $.ajax({
+        url: 'editdate',
+        type: 'POST',
+        data: {
+                "_token" : "<?php echo e(csrf_token()); ?>",
+                "date"   : convertdate,
+              },
+        success:function(data)
+        {
+                
+        }
+      });
+    });
   // for confirmation vote
   $("#confirm_vote").click(function() {
     var confirm_vote = $("#confirm_vote").val();
@@ -347,22 +291,57 @@ if (s >= y) {
     var competition_userid = $("#competition_userid").val();
     var competition_username = $("competition_username").val();
    
-        $.ajax({
-          url: 'confirm_vote',
-          type: 'POST',
-          data: {
-                  "_token" : "<?php echo e(csrf_token()); ?>",
-                  "confirm_vote"   : confirm_vote,
-                  "competitionid"   : competitionid,
-                  "competition_userid"   : competition_userid,
-                },
-                success:function(data)
-                {
-                  JSON.parse(data);
-                  location.reload();
-                }
-        });
+    $.ajax({
+      url: 'confirm_vote',
+      type: 'POST',
+      data: {
+              "_token" : "<?php echo e(csrf_token()); ?>",
+              "confirm_vote"   : confirm_vote,
+              "competitionid"   : competitionid,
+              "competition_userid"   : competition_userid,
+            },
+      success:function(data)
+      {
+        $("#messagedisplay").css({"display":"block"});
+        $(".wrap_prodiv").html(data);
+        //location.reload();
+      }
+    });
   });
+
+  //for confirmation delete
+
+   $("#confirm_delete").click(function() {
+    var competitionid = $("#competitionid").val();
+       $.ajax({
+        type: 'GET',
+        url: 'competitiondelete/'+competitionid,
+        
+        success:function(data)
+        {
+          location.reload();
+        }
+       });
+     });
+
+   $("#amount_edit").blur(function() {
+    var amount_edit = $("#amount_edit").val();
+    var hidden_user_id = $("#hidden_user_id").val();
+    alert(hidden_user_id);
+      $.ajax({
+        type: 'POST',
+        url: 'amount_edit',
+        data: {
+                "_token"          : "<?php echo e(csrf_token()); ?>",
+                "amount_edit"     : amount_edit,
+                "hidden_user_id"  : hidden_user_id,
+              },
+        success:function(data)
+        {
+          //location.reload();
+        }
+       });
+     });
 </script>
 <!--Change Expiry Date -->
 <!--Visitor Model Popup Script -->
@@ -375,10 +354,8 @@ function newwin() {
 //Visitor Model Popup Start
 
 //ImagePopup Script Start
-function imagemodal(id) {
- $('#hiddenuserid').val(id);
- $('#imageModalId').modal('show');
-}
+
+
 </script>
 <!--Image Popup Script Close-->
 <script type="text/javascript">

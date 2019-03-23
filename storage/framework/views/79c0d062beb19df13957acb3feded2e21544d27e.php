@@ -33,7 +33,7 @@
               <!-- <h3>Comments</h3> -->
               <!-- [[photoComments.length]] -->
               <form data-ng-submit="postComment()">
-           
+                <?php //echo '<pre>'; print_r($user);?>
                 <textarea data-ng-model="comment" maxlength="750" enter="postComment()" shift class="form-control" placeholder="Type a comment here..."></textarea>
                 <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment(<?php echo e($user->user_id); ?>)" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
                 

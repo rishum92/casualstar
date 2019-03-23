@@ -73,10 +73,10 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
   }
 
 //comment start
- $scope.viewThisPhoto = function(user_id) { 
+ $scope.viewThisPhoto = function(user_id) { alert(user_id);
 
-    $scope.openModal('viewPhoto', 'user_id',user_id);
-  
+    $scope.openModal('viewPhoto', 'user_id', user_id);
+  console.log($scope.$parent)
     $scope.user = $scope.$parent.user;
     $scope.user.user_id = user_id;
 
@@ -270,15 +270,15 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
           $scope.notify.update('progress', progressPercentage);
         }).then(function (response) {
           
-          console.log($scope.user);
-
+          //console.log($scope.user);
+          window.location.href = '/competitions';
           // $scope.lightGallery.data('lightGallery').destroy(true);
-          $scope.user = response.data.new;
+          //$scope.user = response.data.new;
           // $scope.initLightGallery();
 
-          $scope.notify.close();
+          //$scope.notify.close();
  
-          notify(response.data.messageType, response.data.message);
+          //notify(response.data.messageType, response.data.message);
         });
        
       break;

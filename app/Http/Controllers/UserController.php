@@ -19,7 +19,7 @@ use App\Models\DonationAttempt;
 use App\Models\Notification;
 use DateTime;
 use Geotools;
-
+use DB;
 class UserController extends BaseController
 {
   	public function show($username) {
@@ -112,10 +112,13 @@ class UserController extends BaseController
 	    }
   	}
 
-  	public function closeAccount() {
+  	public function closeAccount() {alert(11)
 	    $user = User::find(Auth::user()->id);
 	    $user->status = 0;
 	    $user->save();
+
+	    $update_vote 	=  comeptition_user::update_vote($user);
+	    $deleteaccount 	=  comeptition_user::delete_account($user);
 
 	    $notifications = Notification::where('from_id', Auth::user()->id)->where('is_read', 'FALSE')->get();
 	    foreach($notifications as $notification) {

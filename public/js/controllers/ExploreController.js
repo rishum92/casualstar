@@ -105,7 +105,7 @@ UserCtrl.controller('ExploreController', ['$scope', '$http', '$location', '$root
 
   $scope.viewThisPhoto = function(photo) {
     $scope.openModal('viewPhoto', 'photo', photo);
-
+console.log($scope.$parent)
     $scope.user = $scope.$parent.user;
 
     $scope.getLikes(photo);

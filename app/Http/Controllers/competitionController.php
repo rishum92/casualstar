@@ -76,10 +76,8 @@ class competitionController extends Controller
             $profilePhotoImage->save();
 
            $insertdata = DB::table('competition_interested_users')
-                        ->insert(['user_id'=>$user_id, 'username'=>$user->username,       'user_profile'=>$profilePhotoFile]);
+                        ->insert(['user_id'=>$user_id, 'username'=>$user->username, 'user_profile'=>$profilePhotoFile]);
                         
-                        print_r($insertdata);die;
-              
             $success = Lang::get('messages.photoAdded');
             $error = Lang::get('messages.errorMsg');
             
@@ -95,9 +93,11 @@ class competitionController extends Controller
       return view('competitions');
     }
     
-     public function delete(Request $request)
+     public function competitiondelete(Request $request)
      {
-        echo $id = $request->id;die;
+        $competitionid = $request->id;
+        $removecompetition= competition_user::removecompetition($competitionid);
+       return redirect('competitions');
      }
 
      public function editd(Request $request)
@@ -110,14 +110,27 @@ class competitionController extends Controller
      }
 
      public function confirm_vote(Request $request)
+    {
+        $confirm_vote = $request->confirm_vote;
+        $competitionid = $request->competitionid;
+        $competition_userid = $request->competition_userid;
+        $voter_id = Auth::user()->id;
+        $voter= competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
+        $getdata = competition_user::getdata();
+        $voter_count = competition_user::vote_count($voter_id);
+        //echo "<pre>";print_r($voter_count);die;
+        return view('competition_users',['competitionuser' =>$getdata,'voter_count'=>$voter_count]);
+     }
+     
+     public function expand_image(Request $request)
      {
-       $confirm_vote = $request->confirm_vote;
-       $competitionid = $request->competitionid;
-       $competition_userid = $request->competition_userid;
-       $voter_id = Auth::user()->id;
-       $voter= competition_user::confirm_vote($confirm_vote,$voter_id,$competition_userid, $competitionid);
+        $id = $request->id;
+        $expand_image = DB::table('competition_interested_users')
+                       ->select('user_profile','username')
+                       ->where('user_id',$id)
+                        ->get();
+    return $expand_image;
 
-      return json_encode($voter);
      }
 
      public function termsstore(Request $request)
@@ -125,7 +138,7 @@ class competitionController extends Controller
          $user_id         = Auth::user()->id;
          $termscondition  = $request->input('terms_condition');
          $terms_condition = competition_user::termscondition($user_id,$termscondition);
-          return redirect('competitions');
+         return redirect('competitions');
      }
      public function storecomment(Request $request)
      {
@@ -135,36 +148,19 @@ class competitionController extends Controller
     public function destroy($id){
         $execute = Photo::remove($id);
         $success = Lang::get('messages.photoRemoved');
-        $error = Lang::get('messages.errorMsg');
+        $error   = Lang::get('messages.errorMsg');
         
         return $this->response($execute, $success ,$error);
                 
         }
-
-
-    public function index() {
-        $page = Input::get('page');
-        $perPage = Input::get('perPage');
-        $photos = Photo::whereHas('user', function($q) {$q->where('status', 1);})->with('user')->where("created_at",">",Carbon::now()->subDay(30))->whereNull('deleted_at')->orderBy('created_at', 'DESC')->where('hidden', 0)->limit($perPage)->skip($page * $perPage - $perPage)->get();
-        $count = Photo::whereHas('user', function($q) {$q->where('status', 1);})->where("created_at",">",Carbon::now()->subDay(30))->whereNull('deleted_at')->orderBy('created_at', 'DESC')->where('hidden', 0)->count();
-
-        $data = new \stdClass;
-        $data->photos = $photos;
-        $data->count = $count;
-
-        return $this->response($data, '', '');
-    }
-
-    public function update($id) {
-        $execute = Photo::updateField($id, Input::all());
-        $success = Lang::get('messages.photoRemoved');
-        $error = Lang::get('messages.errorMsg');
-        
-        return $this->response($execute, $success ,$error);
-    }
-    public function search()
+    public function amount_edit(Request $request)
     {
-        return "success";
+        echo $amount     = $request->amount_edit;
+        echo $user_id    = $request->hidden_user_id;die;
+        $updatedate = competition_user::update_vote_amount($amount);
+
     }
+
+    
 }
 

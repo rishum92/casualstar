@@ -103,24 +103,6 @@ CommentCtrl.controller('CommentController', ['$scope', '$http', '$location', '$r
     }
   }
 
-  $scope.viewThisPhoto = function(photo) { 
-
-    $scope.openModal('viewPhoto', 'photo',photo);
-  
-    $scope.user = $scope.$parent.user;
-    $scope.user.user_id = photo;
-
-    $scope.getLikes(photo);
-    $scope.getComments(photo);
-
-    $scope.refreshInterval = setInterval(function() {
-      if(!$scope.refreshPaused) {
-        $scope.getComments(photo);
-        $scope.getLikes(photo);
-      } 
-    }, 5000);
-  }
-
 
   $scope.getLikes = function(photo) { 
     console.log('refreshing likes');
