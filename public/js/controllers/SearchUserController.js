@@ -1,8 +1,8 @@
-var UserCtrl = angular.module('SearchUserCtrl',[]);
+var SearchUserCtrl = angular.module('SearchUserCtrl',[]);
 
-UserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$rootScope' , '$timeout', 'Upload', function($scope, $http, $location, $rootScope, $timeout, Upload) {
+SearchUserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$rootScope' , '$timeout', 'Upload', function($scope, $http, $location, $rootScope, $timeout, Upload) {
   
-  $scope.perPageBrowse = 12;
+ $scope.perPageBrowse = 12;
   $scope.pageBrowse = 1;
 
   $scope.perPageFavorites = 3;
@@ -14,8 +14,7 @@ UserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$r
   $scope.results = [];
 
   $scope.userText = '';
-  
-  $scope.filters = 'jh';
+
   $scope.minAge = 18;
   $scope.maxAge = 100;
 
@@ -81,14 +80,14 @@ UserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$r
           $scope.sortBy = value;
           break;
         case 'userText':
-		  $scope.userText = value;
+      $scope.userText = value;
           break;
-	    case 'withAllGender':
+      case 'withAllGender':
           $scope.withAllGender = Boolean(value);  
           break;
       }
     }); 
-   $scope.searchFilterusers();
+   $scope.filterUsers();
   });
 
   $scope.$watch('results.selected', function(newValue, oldValue) {
@@ -99,30 +98,30 @@ UserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$r
     }
   }); 
 
-  $scope.searchFilterusers = function(override, rememberPage) {
-	  console.log("apply "+ $scope.applyingFilters);
+  $scope.filterUsers = function(override, rememberPage) {
+    //console.log("apply "+ $scope.applyingFilters);
     //if(!$scope.applyingFilters) {
       $scope.applyingFilters = true;
-      var filters = '';
-
+      var filters = "12345";
+   
       filters += '&withImagesOnly=' + $scope.withImagesOnly;
       filters += '&withAllGender=' + $scope.withAllGender;
       filters += '&onlineNow=' + $scope.onlineNow;
 
-	  if(!$scope.withAllGender){
-		if($scope.distance) {
-			filters += '&distance=' + $scope.distance;
-		}
-	  }
+    if(!$scope.withAllGender){
+    if($scope.distance) {
+      filters += '&distance=' + $scope.distance;
+    }
+    }
 
-	  if($scope.genderFemale) {
-		filters += '&genderFemale=' + true;
-	  }
+    if($scope.genderFemale) {
+    filters += '&genderFemale=' + true;
+    }
 
-	  if($scope.genderMale) {
-		filters += '&genderMale=' + true;
-	  }
-	  
+    if($scope.genderMale) {
+    filters += '&genderMale=' + true;
+    }
+    
       if($scope.minAge) {
         filters += '&minAge=' + $scope.minAge;
       }
@@ -131,10 +130,10 @@ UserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$r
         filters += '&maxAge=' + $scope.maxAge;
       }
 
-	  if($scope.userText != null && $scope.userText != '') {
+    if($scope.userText != null && $scope.userText != '') {
         filters += '&userText=' + $scope.userText;
       }
-	  
+    
       if($scope.results.selected) {
         if($scope.results.selected.length > 0) {
           filters += '&lookingFor=';
@@ -151,14 +150,16 @@ UserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$r
         $scope.pageBrowse = 1;
       }
 
-      var url = '/browseuser?page=' + $scope.pageBrowse + '&perPage=' + $scope.perPageBrowse + '&sortBy=' + $scope.sortBy + '&totalBrowse=' + $scope.totalBrowse;
+      var url = '/api/browse?page=' + $scope.pageBrowse + '&perPage=' + $scope.perPageBrowse + '&sortBy=' + $scope.sortBy + '&totalBrowse=' + $scope.totalBrowse;
       if(filters != '') {
         url += filters;
+
       }
       $http.get(url).then(function(response) {
         $scope.users = response.data.new.users;
         $scope.totalBrowse = response.data.new.count;
         $scope.applyingFilters = false;
+        
 
         if($scope.pageBrowseRemember != undefined && !override && $scope.pageBrowseRemember != $scope.pageBrowse) {
           $scope.changePageBrowse($scope.pageBrowseRemember , $scope.perPageBrowse, $scope.totalBrowse);
@@ -246,6 +247,6 @@ UserCtrl.controller('SearchUserController', ['$scope', '$http', '$location', '$r
   }
   
   $scope.getVerifySymbolUrl= function(){
-	  return '/img/verifiedBadge2018.png'; 
+    return '/img/verifiedBadge2018.png'; 
   }
 }]);
