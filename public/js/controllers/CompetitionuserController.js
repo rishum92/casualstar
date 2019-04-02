@@ -3,8 +3,8 @@ var CuserCtrl = angular.module('CuserCtrl',[]);
 CuserCtrl.controller('UserCompetitionController',function($scope, $http, $location, $rootScope, $timeout, Upload) {
    
     $http.get('competition_user').then(function(response) {
-    $scope.users = response.data;
-    console.log($scope.users);
+    $scope.competition_user = response.data;
+    console.log($scope.competition_user);
     //sssalert($scope.competition_users);
   });
 
@@ -106,6 +106,15 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
       zoom: false,
       download: false
     });
+  }
+  $scope.getUserPhotoPreviewUrl = function(user) {
+    if(competition_user != undefined) {
+      if(competition_user.img != undefined) {
+        return '/img/competition_users/' + competition_user.username + '/previews/' + competition_user.user_profile;
+      } else {
+        return '/img/' + user.gender + '.jpg';
+      }
+    }
   }
 });
 

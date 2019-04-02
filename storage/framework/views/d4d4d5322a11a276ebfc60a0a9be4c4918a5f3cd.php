@@ -113,7 +113,7 @@
     </div>
 </section>
 
-<!--VisitorPopup Modal-->
+<!--VisitorPopup Modal Start-->
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -132,7 +132,7 @@
   </div>
 </div>
                  
-<!--VisitorPopup Modal-->
+<!--VisitorPopup Modal End-->
 <script>
 function imagemodal(id){
 $.ajax({

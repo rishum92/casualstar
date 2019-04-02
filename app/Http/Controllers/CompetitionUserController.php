@@ -32,7 +32,7 @@ class CompetitionUserController extends Controller
     public function index() 
     {
 	 	$user = competition_user::getdata();
-	    return json_encode($user);
+	    return $user;
 	}
 	// }
 
