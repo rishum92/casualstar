@@ -112,10 +112,7 @@
           </div>
     </div>
 </section>
-dfkgnkgnjhgn
-<ul ng-controller="UserCompetitionController">
-  <li ng-repeat = "user in users track by $index">[[user]]</li>
-</ul>
+
 <!--VisitorPopup Modal-->
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">

@@ -1,8 +1,8 @@
 <ul class="profil_ul">
   <?php if(empty($competitonsetitionuser)): ?> 
-  <div style = "font-style: 20px;">
+  <div style = "font-size: 30px;text-align:center;">
       There is currently no active competition.
-  </div>
+  </div><br><br>
   <?php else: ?>
   <?php //echo"<pre>"; print_r($user); //die; ?>
     <li ng-repeat="competitons in competitonsetition_users">
