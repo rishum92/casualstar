@@ -497,7 +497,7 @@
 
       <!-- CasualStar Angular app -->
       <script src="{{ URL::asset('js/app.js') }}" type="text/javascript"></script>
-	  <script src="{{ URL::asset('js/bootbox.js') }}" type="text/javascript"></script>
+	    <script src="{{ URL::asset('js/bootbox.js') }}" type="text/javascript"></script>
       <!-- Socket.IO JS -->
       <script type="text/javascript" src="{{ URL::asset('js/socket.io.js') }}"></script>
     @else
