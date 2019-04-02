@@ -7,7 +7,7 @@ var app = angular.module('CasualStar', [
     'UserCtrl',
     'SearchUserCtrl',
     'CuserCtrl',
-    'CommentCtrl'
+    'CommentCtrl',
     'ProfileCtrl',
     'BannerAdsCtrl',
     'AdminBannerAdsCtrl',
