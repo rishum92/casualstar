@@ -25,12 +25,11 @@ foreach ($myoffer_interested_users as $myoffersusers) {
   
   <div class="col-md-12" id="message_{{$myoffersusers->id}}" style="display: none;">
     <br/>
-    <textarea  class="form-control"  id="offer_message_{{$myoffersusers->id}}">Hello female {{$myoffersusers->username}}, you have shown interest in my offer (offer id #{{$myoffersusers->post_id}}) and I would like to discuss it with you please…?”.
-    </textarea>
+    <textarea  class="form-control"  id="offer_message_{{$myoffersusers->id}}">Hello {{$myoffersusers->username}}, you have shown interest in my offer (offer id #{{$myoffersusers->post_id}}) and I would like to discuss it with you please…?</textarea>
     <hr/>
     
     <button type="button" class="btn btn-xs btn-default" onclick="$('#message_{{$myoffersusers->id}}').hide();">Close</button>
-    <button type="button" class="btn btn-xs btn-default btn_interested" onclick="send_offer_message({{$myoffersusers->post_id}}, {{$myoffersusers->id}}); $('#message_{{$myoffersusers->id}}').hide();">Send message</button>
+    <button type="submit" class="btn btn-xs btn-default btn_interested" onclick="send_offer_message({{$myoffersusers->post_id}}, {{$myoffersusers->id}}); $('#message_{{$myoffersusers->id}}').hide();">Send message</button>
   </div>
 </div>
 <?php 

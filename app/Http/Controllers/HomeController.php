@@ -59,9 +59,7 @@ class HomeController extends BaseController
     $myofferpost = offer_post::myofferPost();
     $myofferpostinterested = offer_post::myofferPostInterested();
     $notification_data = offer_post::offer_notification();
-
-    //echo "<pre>";print_r($notification_data);die;
-
+    
             DB::table('users')
             ->where('id', $user_id)
             ->update(['notification' => 0]);
@@ -86,8 +84,9 @@ class HomeController extends BaseController
     $fromEmail = Input::get('email');
     $telephone = Input::get('telephone');
 
-    if($name == "" || $emailMessage == "" || $fromEmail == "") {
-      return redirect()->back()->with('message', 'You need to fill out all the required fields.')->with('messageType', 'danger');
+    if($name == "" || $emailMessage == "" || $fromEmail == "") 
+    {
+        return redirect()->back()->with('message', 'You need to fill out all the required fields.')->with('messageType', 'danger');
     }
 
     // $toEmail = 'casualstar.uk.info@gmail.com';
@@ -109,12 +108,7 @@ class HomeController extends BaseController
       if(Auth::check()) {
         $user_id = Auth::user()->id;
         $getdata = competition_user::getdata();
-        
-        //echo '<pre>';print_r($getdata);exit;
         $exist = competition_user::existuser($user_id);
-        
-        $voter_count = competition_user::vote_count($user_id);
-        //echo '<pre>';print_r($voter_count);
         $showdate= competition_user::showdate();
         $updatedate = $showdate[0]->ExpiryDate;
         $date_array = explode("-",$updatedate); // split the array
@@ -122,11 +116,8 @@ class HomeController extends BaseController
         $var_month = $date_array[1]; //month segment
         $var_day = $date_array[2]; //year segment
         $new_date_format = "$var_day/$var_month/$var_year";
-        $showtermscondition= competition_user::showtermscondition();
-        //$showtermscondition = nl2br($showtermscondition);
-        //echo '<pre>';print_r($showtermscondition);exit;
         
-        return view('competitions',['competitionuser' =>$getdata,'exists'=>$exist,'showdate'=>$new_date_format,'termscondition'=>$showtermscondition,'voter_count'=>$voter_count]);
+        return view('competitions',['competitionuser' =>$getdata,'exists'=>$exist,'showdate'=>$new_date_format]);
     } else {
         $getdata = competition_user::getdata();
         $showdate= competition_user::showdate();

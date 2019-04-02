@@ -13,12 +13,21 @@
             <div id="userPhotoProfile">
                 <div class="image" lightgallery data-src="[[getUserPhotoUrl(user.img)]]">
                     <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
-                        <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{url('/')}}/img/female.jpg" alt="profile pic" />
+                        <!-- <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='female']]" src="{{ URL::to('/') }}/img/female.jpg" alt="profile pic"/>
+
+                        <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='male']]" src="{{ URL::to('/') }}/img/male.jpg" alt="profile pic"/> -->
+                        <div ng-switch="user.gender">
+                          <div ng-switch-when="female">
+                              <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{ URL::to('/') }}/img/female.jpg" alt="profile pic"/>
+                          </div>
+                          <div ng-switch-when="male">
+                              <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{ URL::to('/') }}/img/male.jpg" alt="profile pic"/>
+                          </div>
+                        </div>
                     </a>
                     <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
-                        <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" src="{{url('/')}}/img/male.jpg" alt="profile pic" />
+                        <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic"/>
                     </a>
-
                 </div><!--
 				@if(Auth()->user()->title!="ADMIN")
 				<div ng-if="[[user.verify_check]] == 'VERIFIED'" class="col-md-3 col-lg-3 col-sm-3 col-xs-3 col-md-offset-5">

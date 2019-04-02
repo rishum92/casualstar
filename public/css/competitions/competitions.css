@@ -15,112 +15,6 @@ body a:focus{
 
 
 /*=======  page css satrt here===========*/
-.iframecss
-{
-  display:block;
-}
-.onclicktext
-{
-  float:right;
-  color:grey;
-}
-.imgpopup
-{
-  width:100%;
-  max-width:200px;
-  margin-top:200px;
-}
-.center_text
-{
-  text-align:center;
-  font-weight:bold;
-  color:#D61857;
-}
-.edit_amount
-{
-  border:none;
-  width:84px;
-}
-.first_place{
-  font-size:24px;
-  color: #FFC300;
-  font-weight:bold;
-  border:none;
-  width:50%;
-}
-.second_place
-{
-  font-size:24px;
-  color:grey;
-  border:none;
-  font-weight:bold;
-  width:50%;
-}
-.third_place
-{
-  font-size:24px;
-  color:#EC7063;
-  border:none;
-  font-weight:bold;
-  width:50%;
-}
-.fourth_place
-{
-  font-size:24px;
-  color:#d61857;
-  border:none;
-  font-weight:bold;
-  width:50%;
-}
-.first_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  border:none;
-  color: #FFC300;
-  font-weight:bold;
-}
-.second_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  border:none;
-  color:grey;
-  font-weight:bold;
-}
-.third_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  color:#EC7063;
-  border:none;
-  font-weight:bold;
-}
-.fourth_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  color:#d61857;
-  border:none;
-  font-weight:bold;
-}
-.backtopbtn
-{
-  display: none;
-  position: fixed;
-  bottom: 20px; 
-  right: 20px;
-  z-index: 99;
-  border: none;
-  outline: none;
-  background-color: #d61857;
-  color: white;
-  cursor: pointer; 
-  padding: 15px;
-  border-radius: 10px; 
-  font-size: 18px;
-}
-
 .delbtn
 {
   margin-left: 88px !important;
@@ -138,6 +32,8 @@ body a:focus{
   text-align: center;
   width: 118px;
 }
+
+
 .imgbtn
 {
   position: absolute;

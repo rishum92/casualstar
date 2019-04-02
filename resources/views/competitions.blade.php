@@ -21,215 +21,219 @@
         <div class="headeing_search">
             <h2>Featured <span>Profile</span></h2>
             <form class="inputform">
-              <div class="form-group">
-                <input data-ng-model="userText" name="userText" data-ng-change="filterUsers()" ng-model-options="{updateOn: 'default change',debounce: {'default': 0,'change': 0}}" placeholder="Search by username" type="text" >
-                  <button class="btn_search" type="submit">
-                    <i class="fa fa-search"></i>
-                  </button>
-              </div>  
+                <div class="form-group">
+                  
+                        <input  type="text"placeholder="Search here...">
+                        <button class="btn_search" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                   
+                </div>  
             </form>
-            <div class="center_text">
-              <span>Vote for your  best looking female.
-              </span>
-              <br><br>
-                <?php  if(Auth::check()) {?>
-                    @if(Auth::user()->username == 'Admin')
-                    Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
-                    @else
-                    Expires:<input type="text" class = "inputfield" value = "{{$showdate}}" readonly="true">GMT
-                    @endif
-                <?php } ?>
-            </div>
+                    <div style="text-align: center;font-weight:bold;color:#D61857;"><span>     Vote for your  best looking female.</span> <br><br>
+                        <?php  if(Auth::check()) {?>
+                            
+                            @if(Auth::user()->username == 'Admin')
+                            Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
+                        @else
+                            <input type="text" style = "border:none; "value = "{{$showdate}} GMT" readonly="true">
+                        
+                            @endif
+                            
+                             <?php } ?>
+                    </div>
 
            <?php    
            if(Auth::check()) {
-             if(empty($exists) || date('d/m/Y') == $showdate)
-              { ?>
+             if(empty($exists))
+               { ?>
                 @if(Auth::user()->gender == 'female')
                 <!--Image Uploader Start-->
                 <center>
-                  <div ng-controller = "UserCompetitionController"> 
-                    <div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-labelledby="addPhotoModal">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <form name="addPhoto" ng-submit="submitModal('addPhoto')" files="true" novalidate>
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i>
-                              </button>
-                                  <h2>Add a new photo</h2>
+                    <div ng-controller = "UserCompetitionController"> 
+                        <div class="modal fade" id="addPhotoModal" tabindex="-1" role="dialog" aria-labelledby="addPhotoModal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form name="addPhoto" ng-submit="submitModal('addPhoto')" files="true" novalidate>
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i>
+                                            </button>
+                                                <h2>Add a new photo</h2>
+                                        </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <div class="img-preview">
+                                                        <img src="" alt="@lang('messages.uploadPreview')">
+                                                    </div>
+                                            @include('components.cropperControls')
+                                                <label>Photo</label>
+                                                <input type="hidden" name="x" ng-model="addPhoto['data'].x" />
+                                                <input type="hidden" name="y" ng-model="addPhoto['data'].y" />
+                                                <input type="hidden" name="width" ng-model="addPhoto['data'].width" />
+                                                <input type="hidden" name="height" ng-model="addPhoto['data'].height" />
+                                                <input type="hidden" name="rotate" ng-model="addPhoto['data'].rotate" />
+                                                <input type="hidden" name="type" ng-model="addPhoto['data'].type">
+                                                <input type="file" name="file" ng-model="addPhoto['data'].file" class="form-control" accept="image/*" valid-file required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Caption</label>
+                                                        <input type="text" name="title" ng-model="addPhoto['data'].title" maxlength=100 class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" ng-disabled="addPhoto.$invalid" class="form-btn main-btn stroke-btn"><i class="fa fa-check"></i></button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="modal-body">
-                              <div class="form-group">
-                                <div class="img-preview">
-                                  <img src="" alt="@lang('messages.uploadPreview')">
-                                </div>
-                                  @include('components.cropperControls')
-                                    <label>Photo</label>
-                                    <input type="hidden" name="x" ng-model="addPhoto['data'].x" />
-                                    <input type="hidden" name="y" ng-model="addPhoto['data'].y" />
-                                    <input type="hidden" name="width" ng-model="addPhoto['data'].width" />
-                                    <input type="hidden" name="height" ng-model="addPhoto['data'].height" />
-                                    <input type="hidden" name="rotate" ng-model="addPhoto['data'].rotate" />
-                                    <input type="hidden" name="type" ng-model="addPhoto['data'].type">
-                                    <input type="file" name="file" ng-model="addPhoto['data'].file" class="form-control" accept="image/*" valid-file required>
-                              </div>
-                              <div class="form-group">
-                                <label>Caption</label>
-                                  <input type="text" name="title" ng-model="addPhoto['data'].title" maxlength=100 class="form-control">
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="submit" ng-disabled="addPhoto.$invalid" class="form-btn main-btn stroke-btn"><i class="fa fa-check"></i></button>
-                            </div>
-                          </form>
                         </div>
-                      </div>
                     </div>
-                    <button type="button" data-ng-click="openModal('addPhoto')" class="page_btn"><i class="fa fa-camera"></i>Upload Photo
-                    </button>
-                  </div>
-                </center>            
+                    <button type="button" data-ng-click="openModal('addPhoto')" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
+                </div>
+            </center>            
                 @endif
-              <?php }
-            }
-            else {?>
-            <center>
-              <button type="button" onclick="newwin()" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
-            </center>
-           <?php } 
+               <?php }
+           }
            ?>
-            <!---Image Uploader Close-->
-            <!--Competition User Div Start-->
-              <div class="wrap_prodiv" ng-controller="UserCompetitionController">
-                @include('competition_users')
+           <!---Image Uploader Close-->
+           <!--Competition User Div Start-->
+
+            <div class="wrap_prodiv">
+                <ul class="profil_ul">
+                    <?php //echo"<pre>"; print_r($competitionuser); die; ?>
+                   @if(empty($competitionuser)) 
+                    <div style = "font-style: 20px;">
+                        There is currently no active competitions.
+                    </div>
+                    @else
+                    @foreach($competitionuser as $user)
+                        <li>
+                            @if(!Auth::user())
+                                <div class="wrap_profile" onclick = 'newwin()'>
+                                    <div style = "font-style: 20px;">
+                                        1st
+                                    </div>
+                                    <div class="img-pro">
+                                        <img src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}"><br/>
+                                    </div>
+                                    <div class="profile_content">
+                                        <h1><a> {{$user->username}}</a></h1>
+                                  
+                                        <p>44 - High Wycombe, Bucking-hamshire</p>
+                                        <div class="like_block"><i class="fa fa-heart"></i> 203
+                                        </div>
+                                        <div class="wrap_btn">
+                                            <button class="page_btn" type="button">
+                                                <i class="fa fa-heart"></i> Vote Me
+                                            </button>
+                                            <div>
+                                            <button class="page_btn" type="button"><i class="fa fa-comments"></i> Comments
+                                            </button>
+                                        </div> 
+                                    </div>
+                                </div>
+                            @else
+                              <div ng-controller = "UserCompetitionController"> 
+                            <div class="wrap_profile">
+                                    @if($user->competition_id == 1)
+                                        <div style="font-size: 24px;color: #FFC300;font-weight: bold;">{{$user->competition_id}}<sup>st</sup></div>
+                                        @elseif($user->competition_id == 2)
+                                        <div style="font-size: 24px;color: grey;font-weight: bold;">{{$user->competition_id}}<sup>nd</sup></div>
+                                        @elseif($user->competition_id == 3)
+                                        <div style="font-size: 24px;color:#EC7063;font-weight: bold;">{{$user->competition_id}}<sup>rd</sup></div>
+                                        @else
+                                        <div style="font-size: 24px;color:#d61857;font-weight: bold;">#{{$user->competition_id}}</div>
+                                        @endif
+                                    <div class="img-pro">
+                                        <img  onclick = 'imagemodal({{$user->user_id}})' src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
+                                        <br/>
+                                    </div>
+                                    <div class="profile_content">
+                                        <h1><a href = "{{(url('/'))}}"> {{$user->username}}</a></h1>
+                                  
+                                        <p>44 - High Wycombe, Bucking-hamshire</p>
+                                        <div class="like_block"><i class="fa fa-heart"></i> 203
+                                        </div>
+                                        <div class="wrap_btn">
+                                            <button class="page_btn" type="button">
+                                                <i class="fa fa-heart"></i> Vote Me
+                                            </button>
+                                            @include('modals.commentcompetition')
+                                            <button ng-controller = "ExploreController"
+                                            data-ng-click="viewThisPhoto(photo,{{$user->user_id}})"
+                                            class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
+                                            </button>
+                                        </div> 
+                                    </div>
+                                    <a href = "{{url('competitiondelete/'.$user->competition_id)}}" class = "page_btn delbtn"> Delete</a>
+                                </div>
+                            @endif
+                        </li>
+                    @endforeach
+                    @endif
+                </ul>
+                <div>
+                    {{ $competitionuser->links() }}
+                </div>
                 <!--Competition User Div Close-->
                 <!--Terms and conditions -->
                 <div>
-                  @include('modals.termsmodel')
-                    <button type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
-                    Terms & Conditions
+                    @include('modals.termsmodel')
+                    <button ng-controller = "UserCompetitionController" type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
+                        Terms & Conditions
                     </button>
                 </div>
+                <div class="scroll-top scroll-is-not-visible" style = "float:right;">
+                    <a href="javascript:" id ="return-to-top"><i style = "font-size: 30px; color:#d61857;" class="fa fa-chevron-up" aria-hidden="true"></i></a>
+                </div>
                 <!--Terms and conditions -->
-              </div>
-          </div>
+            </div>
+        </div>
     </div>
 </section>
-
-<!--VisitorPopup Modal Start-->
+<!--VisitorPopup Modal-->
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form name="visitorpopup" files="true" novalidate>
+      <form name="cisitorpopup" files="true" novalidate>
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
           <h2>Register</h2>
         </div>
         <div class="modal-body">
           <p>Please register or login to access all functions on our member’s only website. <span style="font-weight:bold;"> Registration only takes about 1 Minute.</span></p><br />
-          <a href = "{{url('/')}}" class = "page_btn"> Register </a>
+          <a href = "{{url('register')}}" class = "page_btn"> Register </a>
           <a href = "{{url('/')}}" class = "page_btn"> Login </a>
         </div>
       </form>
     </div>
   </div>
 </div>
-                 
-<!--VisitorPopup Modal End-->
+<!--VisitorPopup Modal-->
+
+<!--Add Image popup-->
 <script>
-function imagemodal(id){
-$.ajax({
-  url: 'expand_image/'+id,
-  type: 'GET',
-
-  success: function(data){ 
-
-  $('#imageModalId').modal('toggle');
-  $('#myimgprofile').attr('src','img/competition_user/'+data[0].username+'/previews/'+data[0].user_profile);
- },
- });
+function imagemodal(id) {
+ $('#hiddenuserid').val(id);
+ $('#imageModalId').modal('show');
 }
 </script>
-<!--Add Image popup-->
-
 <div class="modal fade" id="imageModalId" tabindex="-1" role="dialog">
  <input type = "hidden" id="hiddenuserid">
+
+ @foreach($competitionuser as $user)
+ 
   <div class="modal-dialog" role="document">
-    <div class="modal-content-centered" style="margin-right: 200px;">
-      <center>
-        <img class = "imgpopup" id="myimgprofile">
-      </center>
-      <br/>
+    <div class="modal-content">
+       <img  src="{{ URL::asset('img/competition_user/'.$user->username.'/previews/'.$user->user_profile)}}">
+        <br/>
     </div>
   </div>
+  
+  @endforeach
 </div>
 <!--Add Image popup-->
 
-<!-- vote popup start -->
-
-<script>
-function confirm_vote_popup(id,competition_userid) {
- $('#modalcompetitionid').val(id);
- $('#competition_userid').val(competition_userid);
- $('#competition_username').val(competition_username);
- $('#exampleModal').modal('show');
-}
-</script>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Click Vote Now, to confirm your vote.
-      </div>
-      <input type="hidden" name="modalcompetitionid" id="modalcompetitionid">
-      <input type="hidden" name="competition_userid" id="competition_userid">
-      <input type="hidden" name="competition_username" id="competition_username">
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary" data-dismiss="modal" target="" id="confirm_vote" value="1">Vote Now</button>
-      </div>
-    </div>
-  </div>
-</div>
-<span id = "messagedisplay" style = "display:none;">
-  Thank you for voting. +data[0].username+ is now in position 23 in the competition.You also have one more vote remaining.
-</span>
-<!-- vote popup end -->
-<!--Delete Confirmation Popup Start-->
-<script>
-function deleteconfirmation(id) {
- $('#deleteconfirmationbtn').modal('show');
- $('#competitionid').val(id);
-}
-</script>
-<!--Delete Confirmation Popup Close-->
-<div class="modal fade" id="deleteconfirmationbtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this submission?
-      </div>
-      <input type="hidden" name="competitionid" id="competitionid">
-      <div class="modal-footer">
-        <button class="btn btn-primary" id="confirm_delete">Yes</button>
-        <button class="btn btn-secondary" data-dismiss="modal">No</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--Delete Confirmation Popup End-->
+<!--Add Photo-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -251,85 +255,41 @@ if (s >= y) {
 
 <!--Change Expiry Date -->
 <script>
-  $("#expiry").blur(function() {
-    var date = $("#expiry").val(); 
-    var convertdate = date.split("/").reverse().join("-");
-      $.ajax({
-        url: 'editdate',
-        type: 'POST',
-        data: {
-                "_token" : "{{ csrf_token() }}",
-                "date"   : convertdate,
-              },
-        success:function(data)
-        {
-                
-        }
-      });
-    });
-  // for confirmation vote
-  $("#confirm_vote").click(function() {
-    var confirm_vote = $("#confirm_vote").val();
-    var competitionid = $("#modalcompetitionid").val(); 
-    var competition_userid = $("#competition_userid").val();
-    var competition_username = $("competition_username").val();
-    $.ajax({
-      url: 'confirm_vote',
-      type: 'POST',
-      data: {
-              "_token"              : "{{ csrf_token() }}",
-              "confirm_vote"        : confirm_vote,
-              "competitionid"       : competitionid,
-              "competition_userid"  : competition_userid,
-            },
-      success:function(data)
-      {
-        $("#messagedisplay").removeAttr("style");
-        //$("#messagedisplay").css({"display":"block"});
-        $(".wrap_prodiv").html(data);
-        //location.reload();
-      }
-    });
-  });
+    $("#expiry").blur(function() {
+        var date = $("#expiry").val(); 
+        var convertdate = date.split("/").reverse().join("-");
+            $.ajax({
+                        url: 'editdate',
+                        type: 'POST',
+                        data: {
+                                "_token" : "{{ csrf_token() }}",
+                                "date"   : convertdate,
+                              },                       
+                        success:function(data)
+                          {
+                            alert(data);
+                          }
+                       });
+   });
 
-  //for confirmation delete
-
-  $("#confirm_delete").click(function() {
-    var competitionid = $("#competitionid").val();
-    $.ajax({
-      type: 'GET',
-      url: 'competitiondelete/'+competitionid,
-      success:function(data)
-      {
-        location.reload();
-      }
-    });
-  });
-  //amount edit
-  $("#firstplace_amount").blur(function() {
-    var firstplace_amount = $("#firstplace_amount").val();
-    var hidden_user_id = $("#hidden_user_id").val();
-      $.ajax({
-        type: 'POST',
-        url: 'amount_edit',
-        data: {
-              "_token"              : "{{ csrf_token() }}",
-              "firstplace_amount"   : firstplace_amount,
-              "hidden_user_id"      : hidden_user_id,
-              },
-        success:function(data)
-        {
-          location.reload();
-        }
-      });
-    });
 </script>
+<!--Change Expiry Date -->
 <!--Visitor Model Popup Script -->
 <script>
+
 function newwin() {
-  $('#visitorpopupModal').modal('show');
+
+ $('#visitorpopupModal').modal('show');
+}
+//Visitor Model Popup Start
+
+//ImagePopup Script Start
+function imagemodal(id) {
+ $('#hiddenuserid').val(id);
+ $('#imageModalId').modal('show');
 }
 </script>
+<!--Image Popup Script Close-->
 <script type="text/javascript">
     var modal = $('#addPhotoModal');
 
@@ -367,19 +327,49 @@ function newwin() {
       }
     });
 </script>
-<!--back top button start-->
-<button class = "backtopbtn" onclick="scrollToTop()" id="scrollToTopButton"><i class="ion-arrow-up-a"></i></button>
 <script type="text/javascript">
-  window.onscroll = function() {
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-      $('#scrollToTopButton').fadeIn();
-    } else {
-      $('#scrollToTopButton').fadeOut();
-    }
-  };
-  function scrollToTop() {
-    $('html,body').animate({scrollTop: 0}, 300);
-  }
+    var modal = $('#imageModalId');
+
+    modal.on('hidden.bs.modal', function () {
+      cleanModalData($(this));
+    });
+
+    modal.find('input[type="file"]').change(function() {
+      var formGroup = $(this).parent();
+      var modalPreview = formGroup.find('img');
+      var oFReader = new FileReader();
+   
+      if(this.files[0]) {
+        $(modalPreview).cropper('destroy');
+        oFReader.readAsDataURL(this.files[0]);
+        oFReader.onload = function (oFREvent) {
+          modalPreview.parent().fadeIn();
+          modalPreview.attr('src', oFREvent.target.result);
+          formGroup.find('.photo-controls').fadeIn();
+          
+          modalPreview.cropper({
+            aspectRatio: 1 / 1,
+            dragMode: 'none',
+            viewMode: 1,
+            crop: function(data) {
+              setCropData(this, data);
+            }
+          });
+        }
+      } else {
+        modalPreview.find('img').cropper('destroy');
+        modalPreview.attr('src','');
+        modalPreview.parent().fadeOut();
+        formGroup.find('.photo-controls').fadeOut();
+      }
+    });
 </script>
-<!--back top button close-->
+<script type="text/javascript">
+    $('#return-to-top').click(function() {      // When arrow is clicked
+    $('body,html').animate({
+        scrollTop : 0                       // Scroll to top of body
+    }, 500);
+});
+</script>
+
 @endsection

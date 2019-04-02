@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\CanResetPassword;
 class User extends Authenticatable
 {
@@ -26,10 +25,10 @@ class User extends Authenticatable
     ];
 
     public static function get_user_data($user_id)
-    {
-        $users  = DB::table('users')
-                ->where('id', $user_id)
-                ->get(); 
+    {echo $user_id;exit;
+        $users = DB::table('users')
+                          ->where('id', $user_id)
+                          ->get(); 
         return $users;
     }
 }

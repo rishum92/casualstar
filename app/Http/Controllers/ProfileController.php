@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Models\Chat;
 use App\Models\User;
 use App\Models\ProfileView;
+use App\offer_post;
 use App\Models\Wink;
 use App\Models\Order;
 use App\Models\Plan;
@@ -133,15 +134,18 @@ class ProfileController extends BaseController
 
   public function activity() {
     $profileViews = ProfileView::where('user_id', Auth::user()->id)->where('seen', 0)->get();
-    foreach($profileViews as $profileView) {
+    
+    foreach($profileViews as $profileView) 
+    {
       $oldDate = $profileView->updated_at;
       $profileView->timestamps = false;
       $profileView->seen = true;
       $profileView->save();
     }
+
     Wink::where('user_id', Auth::user()->id)->update(['seen' => true]);
-     
-    return view('activity', []);
+    $check_count_point = offer_post::count_points(Auth::user()->id);
+    return view('activity', ['check_count_point'=>$check_count_point]);
   }
 
   public function settings() {

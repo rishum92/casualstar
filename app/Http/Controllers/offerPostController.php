@@ -9,6 +9,7 @@ use DB;
 use App\offer_post;
 use Redirect;
 use Auth;
+use Mail;
 
 class offerPostController extends Controller
 {
@@ -36,23 +37,40 @@ class offerPostController extends Controller
     }
 
     //either intrested or note
-    public function intrested(Request $Request)
+    public function interested(Request $Request)
     { 
+        //for email
+        $user_id        = $Request->user_id;
+        $user  = offer_post::get_user_data($user_id);
+        $user_name      = $user->username;
+        $user_email     = $user->email;//for email
+        $emailMessage = $user_name;
+
+
         $post_id       = $Request->id;
         $intrested_id  = Auth::user()->id;
-        $check_result  = offer_post::checkStatus($post_id,$intrested_id);
-        $interested_count = count($check_result);
+        $check_result  = offer_post::checkStatus($post_id, $intrested_id);
         
-
         if(empty($check_result))
         {
-          offer_post::intresteUser($post_id,$intrested_id);
-          return redirect('offers')->with('message', 'Your interested to this post')->with('messageType', 'success');
-        } else
-        {
+          $count_points = offer_post::interest_user($post_id, $intrested_id, $user_id);
+
+          if($count_points >= 1000)
+          {
+            $fromEmail = 'casualstar.uk.info@gmail.com'; 
+            $toEmail = 'manifest.pankaj.k@gmail.com';
+
+            Mail::send('emails.pgp', ['emailMessage' => $emailMessage], function($email) use( $fromEmail, $toEmail) {
+                $email->from($fromEmail)->to($toEmail)->subject('CasualStar: New message');
+            });
+          }               
           
+          return redirect('offers')->with('message', 'Your interested to this post')->with('messageType', 'success');
+        } 
+        else
+        {
          return redirect('offers')->with('message', 'You have already shown interest for this post.')->with('messageType', 'success');
-         }
+        }
     } 
 
     //post intrested users
@@ -97,13 +115,32 @@ class offerPostController extends Controller
       offer_post::deletemyOffer($post_id);
       return redirect('offers')->with('message', 'My offer delete successfully')->with('messageType', 'success');
     }
+    public function delete_logged_interest(Request $Request)
+    {
+      $post_id = $Request->id;
+      offer_post::delete_logged_interest($post_id);
+      return redirect('offers')->with('message', 'Logged interest delete successfully')->with('messageType', 'success');
+    }
 
     public function send_offer_message(Request $Request)
     {
       $post_data = $Request->all();
+      $post_id   =  $Request->post_id;
+      $receiver_id   =  $Request->receiver_id;
+      $offer_message   =  $Request->offer_message;
+      $sender_id = $Request->sender_id;
+
       $post_data['sender_id']  = Auth::user()->id;
-      echo '<pre>';print_r($post_data);exit;
       offer_post::send_offer_message($post_data);
-      
+
+      return redirect('offers')->with('message', 'Message send successfully')->with('messageType', 'success');
+    }
+
+    //pgp activation
+    public function pgp_activation()
+    {
+      offer_post::pgp_activation();
+
+      return redirect('activity')->with('message', 'Process is successfully activated for 24 hrs')->with('messageType', 'success');           
     }
 }

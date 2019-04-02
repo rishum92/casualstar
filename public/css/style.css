@@ -7,7 +7,8 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, u, i, center, 
+small, strike, strong, sub, sup, tt, var, 
+b, u, i, center, 
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,  
 table, caption, tbody, tfoot, thead, tr, th, td,  
@@ -27,7 +28,6 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-
 body {
 	line-height: 1;
   word-wrap:break-word;
@@ -46,6 +46,13 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+.pgp_counter{
+    border: 1px solid;
+    padding: 1%;
+    margin-left: 5px;
+    font-weight: bold;
+    color: #f21d84;
 }
 .info_icon{
     text-align: end;
@@ -128,6 +135,10 @@ table {
 {
    border: #d61857 1px solid;
 }
+.offer_content_shadow_default
+{
+   border: rgba(202, 202, 202, 0.25) 1px solid;
+}
 .offer_delete{
   float: right;
   color: #d61857;
@@ -155,6 +166,7 @@ table {
 .offer_cont_shadow{
     padding: 3%;
     box-shadow: black 1px 1px 2px;
+
 }
 
 .offer_left{
@@ -973,11 +985,11 @@ header .menu-toggle {
   visibility: hidden; 
   opacity: 0; 
   width: 160px;
-  height: 160px;
+  height: 290px;
   background: #f1f1f1;
   position: absolute;
   z-index: 2;
-  bottom: -166px;
+  bottom: -287px;
   border-radius: 10px;
   margin-left: -54px;
   text-align: center;
@@ -4423,7 +4435,8 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, u, i, center, 
+small, strike, strong, sub, sup, tt, var, 
+b, u, i, center, 
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,  
 table, caption, tbody, tfoot, thead, tr, th, td,  
@@ -5237,11 +5250,11 @@ header .menu-toggle {
   visibility: hidden; 
   opacity: 0; 
   width: 160px;
-  height: 267px;
+  height: 291px;
   background: #f1f1f1;
   position: absolute;
   z-index: 2;
-  bottom: -256px;
+  bottom: -283px;
   border-radius: 10px;
   margin-left: -54px;
   text-align: center;
@@ -8903,7 +8916,7 @@ input:checked + .slider:before {
 .user-menu .image_ver_twit .logout {
     width: 160px;
     height: auto;
-    bottom: -321px;
+    bottom: -339px;
 }
 
 @media all and (min-width: 960px) {
