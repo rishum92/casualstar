@@ -172,8 +172,14 @@
         <div class="wrap">
           <div id="userPhotoProfile"> 
             <div class="image" lightgallery data-src="[[getPhotoUrl(user.img)]]">
-              <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+              <!-- <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
                 <img data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic" />
+              </a> -->
+              <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+                <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="img/male.jpg" alt="profile pic" />
+              </a>
+               <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+                <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic" />
               </a>
             </div>
 			<?php if(Auth()->user()->title!="ADMIN"): ?>
@@ -353,10 +359,13 @@
         </ui-select>
       </div>
     </div>
-    <br>
-    
     <?php echo $__env->make('modals.donate', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
   </div>
+  <br>
+  <center>
+    <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private    Galleries
+    </button>
+  </center>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
