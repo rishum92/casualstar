@@ -13,8 +13,12 @@
             <div id="userPhotoProfile">
                 <div class="image" lightgallery data-src="[[getUserPhotoUrl(user.img)]]">
                     <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
-                        <img data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic" />
+                        <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{url('/')}}/img/female.jpg" alt="profile pic" />
                     </a>
+                    <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+                        <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" src="{{url('/')}}/img/male.jpg" alt="profile pic" />
+                    </a>
+
                 </div><!--
 				@if(Auth()->user()->title!="ADMIN")
 				<div ng-if="[[user.verify_check]] == 'VERIFIED'" class="col-md-3 col-lg-3 col-sm-3 col-xs-3 col-md-offset-5">

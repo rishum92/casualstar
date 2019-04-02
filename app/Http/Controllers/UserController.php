@@ -112,7 +112,7 @@ class UserController extends BaseController
 	    }
   	}
 
-  	public function closeAccount() {alert(11)
+  	public function closeAccount() {
 	    $user = User::find(Auth::user()->id);
 	    $user->status = 0;
 	    $user->save();

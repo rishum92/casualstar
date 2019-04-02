@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="viewPhotoModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -9,7 +10,6 @@
             <a class="userImage" href="/users/[[viewPhoto['data'].photo.user.username]]?explore=true">
               <img data-ng-src="[[getUserPhoto(viewPhoto['data'].photo.user)]]" alt="[[viewPhoto['data'].photo.user.username]]" />
             </a>
-           
             &nbsp;&nbsp;
             <h2>
               [[viewPhoto['data'].photo.user.username]]
@@ -32,11 +32,9 @@
             <div class="form-group right comments">
               <!-- <h3>Comments</h3> -->
               <!-- [[photoComments.length]] -->
-              <form data-ng-submit="postComment()">
-                <?php //echo '<pre>'; print_r($user);?>
-                <textarea data-ng-model="comment" maxlength="750" enter="postComment()" shift class="form-control" placeholder="Type a comment here..."></textarea>
-                <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment({{$user->user_id}})" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
-                
+              <form data-ng-submit="postComment(viewPhoto['data'].photo)">
+                <textarea data-ng-model="comment" maxlength="750" enter="postComment(viewPhoto['data'].photo)" shift class="form-control" placeholder="Type a comment here..."></textarea>
+          <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment({{$user->user_id}})" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
               </form>
               <ul class="conversation">
                 <li class="message block-flex wrap-flex" data-ng-class="partner" data-ng-repeat="comment in photoComments">
@@ -60,5 +58,4 @@
     </div>
   </div>
 </div>
-
 

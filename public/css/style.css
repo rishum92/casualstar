@@ -7,8 +7,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, 
-b, u, i, center, 
+small, strike, strong, sub, sup, tt, var, u, i, center, 
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,  
 table, caption, tbody, tfoot, thead, tr, th, td,  
@@ -28,72 +27,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-.center_text
-{
-  text-align:center;
-  font-weight:bold;
-  color:#D61857;
-}
-.edit_amount
-{
-  border:none;
-  width:84px;
-}
-.first_place{
-  font-size:24px;
-  color: #FFC300;
-  font-weight:bold;
-  width:50%;
-}
-.second_place
-{
-  font-size:24px;
-  color:grey;
-  font-weight:bold;
-  width:50%;
-}
-.third_place
-{
-  font-size:24px;
-  color:#EC7063;
-  font-weight:bold;
-  width:50%;
-}
-.fourth_place
-{
-  font-size:24px;
-  color:#d61857;
-  font-weight:bold;
-  width:50%;
-}
-.first_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  color: #FFC300;
-  font-weight:bold;
-}
-.second_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  color:grey;
-  font-weight:bold;
-}
-.third_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  color:#EC7063;
-  font-weight:bold;
-}
-.fourth_place_amount
-{
-  float:right;
-  margin-top:-22px;
-  color:#d61857;
-  font-weight:bold;
-}
+
 body {
 	line-height: 1;
   word-wrap:break-word;
@@ -4489,8 +4423,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, 
-b, u, i, center, 
+small, strike, strong, sub, sup, tt, var, u, i, center, 
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,  
 table, caption, tbody, tfoot, thead, tr, th, td,  
@@ -5308,7 +5241,7 @@ header .menu-toggle {
   background: #f1f1f1;
   position: absolute;
   z-index: 2;
-  bottom: -216px;
+  bottom: -256px;
   border-radius: 10px;
   margin-left: -54px;
   text-align: center;
@@ -8970,7 +8903,7 @@ input:checked + .slider:before {
 .user-menu .image_ver_twit .logout {
     width: 160px;
     height: auto;
-    bottom: -256px;
+    bottom: -321px;
 }
 
 @media all and (min-width: 960px) {
