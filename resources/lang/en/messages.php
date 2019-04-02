@@ -2,6 +2,7 @@
 return array(
     'login' => 'Login',
     'logout' => 'Logout',
+    'loginbtn' => 'Login Button',
     'createAccount' => 'Create account',
     'accountLocked' => 'Your account is locked.',
     'accountCompletion' => 'Complete Your Profile to Active Account.',

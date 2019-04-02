@@ -7,8 +7,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, 
-b, u, i, center, 
+small, strike, strong, sub, sup, tt, var, u, i, center, 
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,  
 table, caption, tbody, tfoot, thead, tr, th, td,  
@@ -28,6 +27,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
   word-wrap:break-word;
@@ -4423,8 +4423,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, 
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, 
-b, u, i, center, 
+small, strike, strong, sub, sup, tt, var, u, i, center, 
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,  
 table, caption, tbody, tfoot, thead, tr, th, td,  
@@ -5242,7 +5241,7 @@ header .menu-toggle {
   background: #f1f1f1;
   position: absolute;
   z-index: 2;
-  bottom: -216px;
+  bottom: -256px;
   border-radius: 10px;
   margin-left: -54px;
   text-align: center;
@@ -8904,7 +8903,7 @@ input:checked + .slider:before {
 .user-menu .image_ver_twit .logout {
     width: 160px;
     height: auto;
-    bottom: -256px;
+    bottom: -321px;
 }
 
 @media all and (min-width: 960px) {

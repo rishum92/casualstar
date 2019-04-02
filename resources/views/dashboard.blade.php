@@ -103,7 +103,7 @@
               <h3 class="explanation" data-ng-if="totalBrowse == 0">{{ Lang::get('messages.noMatchingUsers') }}</h3>
             </div>
             
-            <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat="user in users">
+            <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat = "user in users">
               [[user.img]] 
               <div data-ng-if="totalBrowse > 0" class="member">
                 <div class="image">

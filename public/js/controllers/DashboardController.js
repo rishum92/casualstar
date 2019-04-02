@@ -172,7 +172,6 @@ UserCtrl.controller('DashboardController', ['$scope', '$http', '$location', '$ro
     var selected = $scope.results.selected;
     $scope.searchString = searchString;
     $scope.results = [];
-
     $http.get('/api/interest', {params: params}).then(function(response) {
       $(response.data).each(function(key,item) {
         $scope.results.push(item);

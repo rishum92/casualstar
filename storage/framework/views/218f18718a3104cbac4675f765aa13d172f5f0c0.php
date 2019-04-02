@@ -101,7 +101,7 @@
               <h3 class="explanation" data-ng-if="totalBrowse == 0"><?php echo e(Lang::get('messages.noMatchingUsers')); ?></h3>
             </div>
             
-            <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat="user in users">
+            <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat = "user in users">
               [[user.img]] 
               <div data-ng-if="totalBrowse > 0" class="member">
                 <div class="image">
@@ -179,7 +179,9 @@
         </nav>
         
       </div>
+       
     </section>
+
     
     <!--Female Notice--->
     <div class="wrap" data-ng-if="user.gender == 'female'">
@@ -203,23 +205,24 @@ Ensure your email address is correct so you do not miss out on any possible Trib
     
     <!--Male Notice--->
     
+    
      <div class="wrap" data-ng-if="user.gender == 'male'">
       <div class="highlight">
-<h2><b>NOTICE BOARD:</b></h2> 
-<hr>
-<h3>TOP TIPS:</h3>Receive the most attention by adding a profile photo and being a generous and active Sub, This will also help you to become our Number One SuperSub.
-<br><br>
-Add a profile picture to gain even more attention.
-<p>
-</br><hr>
-         Be sure to select and add your interests located on your profile page, this will increase your visibility with users sharing and searching the same interests.
-         </br>
-</p>
-<br/>
+        <h2><b>NOTICE BOARD:</b></h2> 
+        <hr>
+        <h3>TOP TIPS:</h3>Receive the most attention by adding a profile photo and being a generous and active Sub, This will also help you to become our Number One SuperSub.
+        <br><br>
+          Add a profile picture to gain even more attention.
+           <p>
+              </br><hr>
+              Be sure to select and add your interests located on your profile page, this will increase your visibility with users sharing and searching the same interests.
+              </br>
+            </p>
+        <br/>
       </div>
     </div>
     
-  </div>
+
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
