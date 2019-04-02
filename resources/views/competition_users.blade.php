@@ -1,15 +1,15 @@
 <ul ng-controller="UserCompetitionController">
   <li ng-repeat="users in competition_user">
     [[users]].
-    [[users[0].username]]
-    [[users[0].user_id]]
-    [[users[0].competition_id]]
-    [[users[0].user_profile]]
+    [[users[0].username]]"+"
+    [[users[0].user_id]]"+"
+    [[users[0].competition_id]]"+"
+    [[users[0].user_profile]]"+"
     [[users[0].total_votes]]
   </li>
  </ul>  
 <ul class="profil_ul">
-  <li ng-repeat= "competitions in data">
+  <li ng-repeat= "competitions in competition_users">
       [[$index]]
       @if(!Auth::user())
         <div class="wrap_profile" onclick = 'newwin()' >

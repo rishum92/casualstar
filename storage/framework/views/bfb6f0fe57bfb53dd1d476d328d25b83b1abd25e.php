@@ -9,7 +9,7 @@
   </li>
  </ul>  
 <ul class="profil_ul">
-  <li ng-repeat= "competitions in data">
+  <li ng-repeat= "competitions in competition_users">
       [[$index]]
       <?php if(!Auth::user()): ?>
         <div class="wrap_profile" onclick = 'newwin()' >
