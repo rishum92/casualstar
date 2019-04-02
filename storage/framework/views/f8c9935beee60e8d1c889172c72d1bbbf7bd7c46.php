@@ -19,7 +19,7 @@
 <div data-ng-controller="SuperSubsController">
     <div class="wrap">
       <div class="highlight">
-       <center> Post Offer with a generous amount for any relevant desire you may have for a female to fulfil.interest you receive for your offers can eventually gain you access to ALL Private Galleries.</center>
+       <center> Post an Offer with a generous amount for any relevant desire you may have for a female to fulfil. Interest you receive for your Offers can eventually gain you access to ALL Private Galleries.</center>
        <hr/>
        <div class="row">
          <div class="col-md-12">
@@ -88,14 +88,14 @@ first 10 interests will be logged for each Offer.</center>
     <div class="wrap">
        <div class="row">
          <div class="col-md-12">
-           <?php // echo "<pre>"; print_r($offerpost);die;?> 
+           <?php // echo "<pre>"; print_r($offerpost);die; ?> 
             <?php foreach($offerpost as $offers): ?>
              <div class="col-md-6 offer_container_grid">
               
                 <?php if(in_array($offers->post_id, $user_posts)): ?>
-                  <div class=" offer_content_shadow2  offer_cont_shadow">
+                  <div class="offer_content_shadow2  offer_cont_shadow">
                 <?php else: ?>
-                  <div class="offer_cont_shadow">
+                  <div class="offer_cont_shadow offer_content_shadow_default">
                 <?php endif; ?> 
 
                     <div class="offer_left">
@@ -133,7 +133,7 @@ first 10 interests will be logged for each Offer.</center>
                      <?php else: ?>
 
                       <?php if($offers->intrest_count < 10): ?>
-                       <a href="<?php echo e(url('intrested/'.$offers->post_id)); ?>">
+                       <a href="<?php echo e(url('interested/'.$offers->post_id. '/' . $offers->id)); ?>">
                        <button type="submit" class="btn btn-default btn_interested">
                          <i class="fa fa-thumbs-up"></i> Interested
                        </button>
@@ -215,7 +215,7 @@ first 10 interests will be logged for each Offer.</center>
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Intrested Users</h4>
+                      <h4 class="modal-title">Interested Users</h4>
                     </div>
                     <div class="modal-body" id="interested_model_id"></div>
                     <div class="modal-footer">
@@ -249,12 +249,12 @@ first 10 interests will be logged for each Offer.</center>
        <br/>
       
       <?php if(Auth::user()->gender == 'male'): ?>
-       <?php //echo "<pre>";print_r($myofferpost);die;  ?>
+       <?php  //echo "<pre>";print_r($myofferpost);die;  ?>
        <!-- my offer post start -->
 
        <div class="row">
           <h1 class="my_offer_post">My offer post</h1>
-          <?php if(empty($myofferpost)): ?>
+          <?php if(empty($myofferpost->all())): ?>
             <p class="female_subpage_title">
               You currently have no closed or active Offers, Click Here (link to offers page) to Post an Offer today. The more interests you get, the faster you will achieve the PGa badge for your 24 hours access to ALL private galleries.
             </p>
@@ -268,15 +268,15 @@ first 10 interests will be logged for each Offer.</center>
             <div class="col-md-6 offer_container_grid">
               <div class="offer_cont_shadow">
                  <div class="offer_left">
-                    <a href="<?php echo e(url('users/'.$offers->username)); ?>">
+                    <a href="<?php echo e(url('users/'.Auth::user()->username)); ?>">
                     <?php if($offers->img == ''): ?>
                       <img src="img/59ce3646d240c.png" class="offer_pro_pic" />
                       <?php else: ?>
-                      <img src="img/<?php echo e($offers->img); ?>" class="offer_pro_pic" />
+                      <img src="img/<?php echo e(Auth::user()->img); ?>" class="offer_pro_pic" />
                     <?php endif; ?>
                     </a>
                     <h3>
-                      <a href="<?php echo e(url('users/'.$offers->username)); ?>"><span><?php echo e($offers->username); ?></span>
+                      <a href="<?php echo e(url('users/'.Auth::user()->username)); ?>"><span><?php echo e(Auth::user()->username); ?></span>
                       </a>
                     </h3>
                  </div>
@@ -339,7 +339,9 @@ first 10 interests will be logged for each Offer.</center>
                   <div class="post_delete_date">
                     <a href="#">
                       <span >
-                        <?php echo date("d/m/Y", strtotime($myoffer->created_at) ); ?>
+                        <?php
+                          echo date("H:i ",strtotime($myoffer->created_at));
+                          echo date("d/m/Y", strtotime($myoffer->created_at) ); ?>
                       </span>
                     </a> &nbsp; 
                     <a href="<?php echo e(url('deletemyoffer/'.$myoffer->id)); ?>">
@@ -349,11 +351,11 @@ first 10 interests will be logged for each Offer.</center>
                 </div>
             </div>
 
-            
-
-            
-
             <?php endforeach; ?>
+
+            <div class="col-md-12">
+                <center> <?php echo e($myofferpost->links()); ?> </center>
+            </div>
 
             <!-- popup my offer post start -->
             <div class="modal fade" id="myofferpost" role="dialog">
@@ -379,11 +381,18 @@ first 10 interests will be logged for each Offer.</center>
         </div>
        <!-- my offer post close -->
       <?php else: ?>
+       <?php // echo "<pre>";print_r($myofferpostinterested->all());die; ?>
         <div class="row">
           <h1 class="my_offer_post">Logged interests</h1>
-          <p class="female_subpage_title">
-            Below are the Offers that you have shown interest in.
-          </p> 
+          <?php if(empty($myofferpostinterested->all())): ?>
+            <p class="female_subpage_title">
+              Sorry, you currently have no logged interests.
+            </p>
+          <?php else: ?>
+            <p class="female_subpage_title">
+              Below are the Offers that you have shown interest in.
+            </p>
+          <?php endif; ?>
         <div class="col-md-12">
           <?php //echo "<pre>";print_r($myofferpostinterested);die; ?>
           <?php foreach($myofferpostinterested as $interested): ?>
@@ -459,11 +468,16 @@ first 10 interests will be logged for each Offer.</center>
                 <br/><br/>
                 <span class="offer_id" style="float:left;">Id: #<?php echo e($interested->id); ?></span>
                 <div class="post_delete_date">
-                  <a href="#">
-                    <span>
-                        <?php echo date("d/m/Y", strtotime($interested->created_at) ); ?>
-                    </span>
-                  </a>&nbsp;
+                    <a href="#">
+                      <span >
+                        <?php
+                          echo date("H:i ",strtotime($interested->created_at));
+                          echo date("d/m/Y", strtotime($interested->created_at) ); ?>
+                      </span>
+                    </a> &nbsp; 
+                    <a href="<?php echo e(url('delete_logged_interest/'.$interested->id)); ?>">
+                      <span><i class="fa fa-trash"></i></span>
+                    </a>
                 </div>
             </div>
           </div>
@@ -490,10 +504,10 @@ first 10 interests will be logged for each Offer.</center>
             <!-- popup my offer post close -->
 
        
-          <!-- pagination start -->
-            
-              
-
+            <!-- pagination start -->
+              <div class="col-md-12">
+                <center> <?php echo e($myofferpostinterested->links()); ?> </center>
+              </div> 
             <!-- pagination close -->
         
           <div class="col-md-12">

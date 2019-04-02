@@ -180,6 +180,11 @@
                     <span class="small-notif larger">99+</span>
                   <?php endif; ?>
                 <?php endif; ?>
+
+                <?php if($pgp_notification >= 1000): ?>
+                  <span class="small-notif">1</span>
+                <?php endif; ?>
+                
               </li>
               <li>
                 <a class="<?php if(Route::is('messages') || Route::is('messages')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('messages')); ?>"><i class="ion-chatbubbles"></i>Messages</a>
@@ -200,12 +205,17 @@
                   </li>  -->
 
                   <li><a class="<?php if(Route::is('offers') || Route::is('offers')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('offers')); ?>"><i class="ion-star"></i>Offer</a>
-                    
-                    <?php foreach($notification_data as $user_notifications): ?>
-                    <span class="small-notif larger"><?php echo e($user_notifications->notification); ?></span>
-                    <?php endforeach; ?>
-                 
+                  
+                      <?php foreach($notification_data as $user_notifications): ?>
+                       <?php if($user_notifications->notification == '0'): ?>
+                       <?php else: ?>
+                        <span class="small-notif larger"><?php echo e($user_notifications->notification); ?></span>
+                        <?php endif; ?>
+                      <?php endforeach; ?>
                   </li> 
+                  <!-- <li>
+                    <a href="#">0000</a>
+                  </li> -->
 
              </ul>
             <?php if($donationCount > 0): ?>
@@ -229,16 +239,20 @@
                 <?php else: ?>
                   <img id="userPhoto_uploade" src="<?php echo e(URL::asset('img/' . Auth::user()->gender . '.jpg')); ?>" alt="profile photo" />
                 <?php endif; ?>
+
+
+
               <div class="logout">
                 <a href="<?php echo e(URL::route('profile')); ?>"><i class="ion-person-stalker"></i>My profile</a>
                 <hr>
                 <?php if(Auth::user()->gender == 'female'): ?>
         				<a href="<?php echo e(URL::route('twit.account')); ?>"><i class="ion-social-twitter"></i>Auto-tweets</a>
-                <hr>
-				<a href="<?php echo e(URL::route('competitions')); ?>"><i class="ion-home"></i>Competitions</a>
-                <hr>
+                 <hr>
                 <?php endif; ?>
+               
                 <a href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-key"></i>Supersub</a>
+                <hr>
+                  <a href="<?php echo e(URL::route('competitions')); ?>"><i class="ion-home"></i>Competitions</a>
                 <hr>
                 <a href="<?php echo e(URL::route('account.details')); ?>"><i class="ion-key"></i>Account details</a>
                 <hr>
@@ -255,9 +269,20 @@
                 <a href="<?php echo e(URL::route('logout')); ?>"><i class="ion-android-exit"></i>Logout</a>
               </div>
             </div> <!--end of drop menu div container-->
+            <?php if(Auth::user()->gender == 'male'): ?>
+              <?php if($pgp_notification >= 1000): ?>
+                <span class="pgp_counter"><img src="<?php echo e(URL::to('/')); ?>/img/PGa.png" alt="Img" width="30px"></span>
+              <?php else: ?>
+                <span class="pgp_counter">PGP</br>
+                  <?php printf("%04d", $pgp_notification); ?>
+                </span>
+              <?php endif; ?>
+            <?php endif; ?>
+            
           </div>
+
         </div>
-      </div>
+       </div>
       <button class="menu-toggle">
         <i class="ion-android-menu">
           <span class="small-notif" data-ng-if="notificationCount +pending_count > 0 && notificationCount +pending_count < 100">[[notificationCount+ pending_count]]</span>
@@ -300,6 +325,7 @@
           <li><a class="<?php if(Route::is('explore') || Route::is('explore')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('explore')); ?>"><i class="ion-earth"></i>Explore</a></li>
           <li><a class="<?php if(Route::is('supersubs') || Route::is('supersubs')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-star"></i>Supersubs</a></li>
         </ul>
+
       </div>
     <?php endif; ?>
     <?php echo $__env->yieldContent('content'); ?>
@@ -465,8 +491,6 @@
       <script src="<?php echo e(URL::asset('js/controllers/CompitionuserController.js')); ?>" type="text/javascript"></script>
       <script src="<?php echo e(URL::asset('js/controllers/PostController.js')); ?>" type="text/javascript"></script>
 	    <script src="<?php echo e(URL::asset('js/controllers/CompetitionuserController.js')); ?>" type="text/javascript"></script>
-      <script src="<?php echo e(URL::asset('js/controllers/CommentController.js')); ?>" type="text/javascript"></script>
-      <script src="<?php echo e(URL::asset('js/controllers/SearchUserController.js')); ?>" type="text/javascript"></script>
 
       <!-- CasualStar Angular app -->
       <script src="<?php echo e(URL::asset('js/app.js')); ?>" type="text/javascript"></script>
@@ -525,7 +549,7 @@ $("popupmodal").blur(function(){
 
 
 function send_offer_message(post_id, receiver_id){
-  offer_message = $('#offer_message_'+receiver_id).html();
+  offer_message = $('textarea#offer_message_'+receiver_id).val();
   $.ajax({
     url: 'send_offer_message',
     type: 'POST',
