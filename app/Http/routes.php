@@ -159,6 +159,7 @@
 			Route::resource('photo', 'Api\PhotoController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::resource('photo-like', 'Api\PhotoLikeController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::resource('photo-comment', 'Api\PhotoCommentController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
+			Route::resource('profile-comment', 'Api\UserController@profile_comment');
 			Route::resource('privatePhoto', 'Api\PrivatePhotoController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::resource('favorite', 'Api\FavoriteController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 			Route::patch('photo-reorder', ['uses' => 'Api\PhotoController@reorder', 'as' => 'photo.reorder']);
@@ -216,8 +217,14 @@
 
 	//Competitions Controller  And Competition Date Routes
 	Route::post('competition-user','competitionController@add');
-	Route::get('popregister','competitionController@demo');
-	Route::get('competitiondelete/{id}','competitionController@delete');
+	Route::get('competitiondelete/{id}','competitionController@competitiondelete');
 	Route::post('editdate','competitionController@editd');
 	
 	Route::get('browseuser', ['uses' => 'SearchCompetitionUserController@browse', 'as' => 'views']);
+	Route::post('terms_store','competitionController@termsstore');
+	Route::post('competitioncomment','competitionController@storecomment');
+	Route::post('confirm_vote','competitionController@confirm_vote');
+	Route::get('expand_image/{id}','competitionController@expand_image');
+	Route::post('amount_edit','competitionController@amount_edit');
+	Route::resource('competition_user', 'CompetitionUserController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
+

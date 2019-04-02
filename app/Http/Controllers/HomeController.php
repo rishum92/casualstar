@@ -108,8 +108,12 @@ class HomeController extends BaseController
       if(Auth::check()) {
         $user_id = Auth::user()->id;
         $getdata = competition_user::getdata();
+        
+        //echo '<pre>';print_r($getdata);exit;
         $exist = competition_user::existuser($user_id);
+        
         $voter_count = competition_user::vote_count($user_id);
+        //echo '<pre>';print_r($voter_count);
         $showdate= competition_user::showdate();
         $updatedate = $showdate[0]->ExpiryDate;
         $date_array = explode("-",$updatedate); // split the array
@@ -117,6 +121,9 @@ class HomeController extends BaseController
         $var_month = $date_array[1]; //month segment
         $var_day = $date_array[2]; //year segment
         $new_date_format = "$var_day/$var_month/$var_year";
+        $showtermscondition= competition_user::showtermscondition();
+        //$showtermscondition = nl2br($showtermscondition);
+        //echo '<pre>';print_r($showtermscondition);exit;
         
         return view('competitions',['competitionuser' =>$getdata,'exists'=>$exist,'showdate'=>$new_date_format,'termscondition'=>$showtermscondition,'voter_count'=>$voter_count]);
     } else {
