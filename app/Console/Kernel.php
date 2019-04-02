@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
          Commands\BannerAdFilesCleanup::class,
+         Commands\InterestNotification::class,
     ];
 
     /**
@@ -47,5 +48,11 @@ class Kernel extends ConsoleKernel
 								->update(['status'=>'EXPIRED']); 
 		    /*****************************************************/
         })->everyMinute();
+
+       
+
+                $schedule->command('command:interestnotification')
+                   ->everyMinute();
+        
     }
 }

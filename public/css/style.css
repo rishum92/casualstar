@@ -27,7 +27,6 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-
 body {
 	line-height: 1;
   word-wrap:break-word;
@@ -46,6 +45,13 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+.pgp_counter{
+    border: 1px solid;
+    padding: 1%;
+    margin-left: 5px;
+    font-weight: bold;
+    color: #f21d84;
 }
 .info_icon{
     text-align: end;
@@ -128,6 +134,10 @@ table {
 {
    border: #d61857 1px solid;
 }
+.offer_content_shadow_default
+{
+   border: rgba(202, 202, 202, 0.25) 1px solid;
+}
 .offer_delete{
   float: right;
   color: #d61857;
@@ -155,6 +165,7 @@ table {
 .offer_cont_shadow{
     padding: 3%;
     box-shadow: black 1px 1px 2px;
+
 }
 
 .offer_left{

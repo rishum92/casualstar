@@ -598,7 +598,7 @@ class UserController extends MasterController
         }
     }
 	
-	public function addSelfiePhoto() {
+	 public function addSelfiePhoto() {
         $data = Input::all();
         $user = User::find(Auth::user()->id);
 
