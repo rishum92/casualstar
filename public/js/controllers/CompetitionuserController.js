@@ -2,12 +2,54 @@ var CuserCtrl = angular.module('CuserCtrl',[]);
 
 CuserCtrl.controller('UserCompetitionController',function($scope, $http, $location, $rootScope, $timeout, Upload) {
   
-    $http.get('competition_user').then(function(response) {
-    $scope.competition_user = response.data;
-    console.log($scope.competition_user);
-    //sssalert($scope.competition_users);
-    $scope.getUserPhotoUrl=null; 
-  
+  $http.get('competition_user').then(function(response) {
+  $scope.competition_user = response.data;
+  console.log($scope.competition_user);
+  //sssalert($scope.competition_users);
+
+  //Comment Section Start
+  $scope.viewThisPhoto = function(photo) {
+    $scope.openModal('viewPhoto', 'photo', photo);
+    $scope.user = $scope.$parent.user;
+   
+    $scope.getLikes(photo);
+    $scope.getComments(photo);
+
+    $scope.refreshInterval = setInterval(function() {
+      if(!$scope.refreshPaused) {
+        $scope.getComments(photo);
+        $scope.getLikes(photo);
+      } 
+    }, 5000);
+  }
+
+  $scope.getLikes = function(photo) {
+    console.log('refreshing likes');
+    $http.get('/api/photo-like/' + photo.id).then(function(response) {
+      $scope.photoLikes = response.data;
+    });
+  }
+
+  $scope.getComments = function(photo) {
+    console.log('refreshing comments');
+    $http.get('/api/photo-comment/' + photo.id).then(function(response) {
+      $scope.photoComments = response.data;
+    });
+  }
+
+  $scope.postComment = function(user_id) {alert(10)
+    if($scope.comment.length > 0) {
+      $('#postCommentButton').attr('disabled', 'disabled');
+      $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
+        notify(response.data.messageType, response.data.message);
+        $scope.getComments(photo);
+        $scope.comment = '';
+        $('#postCommentButton').removeAttr('disabled');
+      });
+    }
+  }
+  //Comment Section Close
+
   $scope.openModal = function(modalName, optionKey, optionValue) {
     if(optionKey) {
       var modal = $scope.$eval(modalName);
@@ -124,7 +166,7 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
     if(photo != undefined) {
       return '/img/competition_user/' + $scope.competition_user.username + '/previews/' + photo;
     } else {
-      return '/img/' +'.jpg';
+      return '/img/' +'female.jpg';
     }
   }
 
@@ -135,4 +177,6 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
       return '/img/' + '.jpg';
     }
   }
+
+
 });

@@ -1,22 +1,12 @@
 var CommentCtrl = angular.module('CommentCtrl',[]);
 
 CommentCtrl.controller('CommentController',function($scope, $http, $location, $rootScope, $timeout, $window) {
-  
-  alert(12)
-
   $scope.photos = [];
   $scope.comment = '';
   $scope.photoLikes = [];
   $scope.user = undefined;
   $scope.refreshInterval = undefined;
-
-
   
-
-  
-
-
-
   $scope.deleteComment = function(photo, comment_id) {
     $http.delete('/api/photo-comment/' + comment_id).then(function(response) {
       notify(response.data.messageType, response.data.message);
@@ -80,10 +70,10 @@ CommentCtrl.controller('CommentController',function($scope, $http, $location, $r
     });
   }
 
-  $scope.postComment = function(photo) {
+  $scope.postComment = function(user_id) {alert(10)
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
-      $http.post('/api/photo-comment', {photo_id: photo.id, user_id: photo.user.id, comment: $scope.comment}).then(function(response) {
+      $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
         notify(response.data.messageType, response.data.message);
         $scope.getComments(photo);
         $scope.comment = '';

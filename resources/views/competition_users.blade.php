@@ -1,7 +1,6 @@
 <ul class = "profil_ul" ng-controller="UserCompetitionController">
   <span ng-repeat="users in competition_user">
     <li ng-repeat="comp in users">
-      [[comp]]
       @if(Auth::user())
         <div class="img-pro">
           <img onclick = 'imagemodal()' data-ng-src="[[getPhotoUrl(comp.user_profile)]]">
@@ -20,8 +19,9 @@
                 <button class="page_btn" type="button">
                   <i class="fa fa-heart"></i> Vote Me
                 </button>
-                <button class="page_btn" type="button">
-                  <i class="fa fa-comments"></i> Comments
+                @include('modals.commentcompetition')
+                <button ng-controller = "CommentController" ng-click="viewThisPhoto([[comp.user_profile]])"
+                class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
                 </button>
               </div> 
           </div>
@@ -96,8 +96,7 @@
                   
                   </div>
               </div>
-       
-             @endif
+       @endif
     </li>
   </span>
 </ul>
