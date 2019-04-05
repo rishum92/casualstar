@@ -10,7 +10,7 @@
       <?php endif; ?>
     </div>
     <div class="view_users_link">
-       <h3><a href="#" class="view_users_link"><span><?php echo e($logged_user->username); ?></span></a></h3>
+       <h3><a href="<?php echo e(url('users/'.$logged_user->username)); ?>" class="view_users_link"><span><?php echo e($logged_user->username); ?></span></a></h3>
     </div> 
   </div>
 </div>

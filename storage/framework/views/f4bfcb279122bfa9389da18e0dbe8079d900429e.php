@@ -248,12 +248,13 @@
                 <?php if(Auth::user()->gender == 'female'): ?>
         				<a href="<?php echo e(URL::route('twit.account')); ?>"><i class="ion-social-twitter"></i>Auto-tweets</a>
                  <hr>
+                  <a href="<?php echo e(URL::route('competitions')); ?>"><i class="ion-home"></i>Competitions</a>
+                <hr>
                 <?php endif; ?>
                
                 <a href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-key"></i>Supersub</a>
                 <hr>
-                  <a href="<?php echo e(URL::route('competitions')); ?>"><i class="ion-home"></i>Competitions</a>
-                <hr>
+                 
                 <a href="<?php echo e(URL::route('account.details')); ?>"><i class="ion-key"></i>Account details</a>
                 <hr>
                 <a href="<?php echo e(URL::route('donations')); ?>"><i class="ion-cash"></i>Tributes</a>

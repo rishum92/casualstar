@@ -12,37 +12,37 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
     $scope.openModal('viewPhoto', 'photo', photo);
     $scope.user = $scope.$parent.user;
    
-    $scope.getLikes(photo);
-    $scope.getComments(photo);
+   // $scope.getLikes(photo);
+    //$scope.getComments(photo);
 
-    $scope.refreshInterval = setInterval(function() {
-      if(!$scope.refreshPaused) {
-        $scope.getComments(photo);
-        $scope.getLikes(photo);
-      } 
-    }, 5000);
+  //   $scope.refreshInterval = setInterval(function() {
+  //     if(!$scope.refreshPaused) {
+  //       $scope.getComments(photo);
+  //       $scope.getLikes(photo);
+  //     } 
+  //   }, 5000);
+  // }
+
+  // $scope.getLikes = function(photo) {
+  //   console.log('refreshing likes');
+  //   $http.get('/api/photo-like/' + photo.id).then(function(response) {
+  //     $scope.photoLikes = response.data;
+  //   });
+  // }
+
+  // $scope.getComments = function(photo) {
+  //   console.log('refreshing comments');
+  //   $http.get('/api/photo-comment/' + photo.id).then(function(response) {
+  //     $scope.photoComments = response.data;
+  //   });
   }
 
-  $scope.getLikes = function(photo) {
-    console.log('refreshing likes');
-    $http.get('/api/photo-like/' + photo.id).then(function(response) {
-      $scope.photoLikes = response.data;
-    });
-  }
-
-  $scope.getComments = function(photo) {
-    console.log('refreshing comments');
-    $http.get('/api/photo-comment/' + photo.id).then(function(response) {
-      $scope.photoComments = response.data;
-    });
-  }
-
-  $scope.postComment = function(user_id) {alert(10)
+  $scope.postComment = function(user_id) {alert(user_id)
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
       $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
         notify(response.data.messageType, response.data.message);
-        $scope.getComments(photo);
+        //$scope.getComments(photo);
         $scope.comment = '';
         $('#postCommentButton').removeAttr('disabled');
       });
@@ -88,19 +88,18 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
           $scope.notify.update('progress', progressPercentage);
         }).then(function (response) {
           
-          console.log($scope.user);
-
+          //console.log($scope.user);
+          window.location.href = '/competitions';
           // $scope.lightGallery.data('lightGallery').destroy(true);
-          $scope.user = response.data.new;
+          //$scope.user = response.data.new;
           // $scope.initLightGallery();
 
-          $scope.notify.close();
+          //$scope.notify.close();
  
-          notify(response.data.messageType, response.data.message);
+          //notify(response.data.messageType, response.data.message);
         });
        
       break;
-     
       }
 
     modal.data = [];
@@ -166,17 +165,30 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
     if(photo != undefined) {
       return '/img/competition_user/' + $scope.competition_user.username + '/previews/' + photo;
     } else {
-      return '/img/' +'female.jpg';
+      //return '/img/' +'female.jpg';
     }
   }
 
   $scope.getPhotoPreviewUrl = function(photo) {
     if(photo != undefined) {
-      return '/img/competition_user/' + $scope.user.username + '/previews/' + photo;
+      return '/img/competition_user/' + $scope.competition_user.username + '/previews/' + photo;
     } else {
-      return '/img/' + '.jpg';
+      //return '/img/' + 'female.jpg';
     }
   }
 
-
+  $scope.deleteconfirmation =function(id)
+  {
+    if(confirm("Are you sure want to delete this data ?"))
+    {
+      $http.get('competitiondelete/'+ id).then(function(data)
+      {
+        window.location.href = '/competitions';
+      });
+    }
+    else
+    {
+      return false;
+    }
+  }
 });

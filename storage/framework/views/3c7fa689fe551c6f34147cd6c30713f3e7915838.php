@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                 <div class=" service-list-inner" id="notificationList">
-                   
+                    
                     <div class="box col-md-12 col-lg-12 col-sm-12 col-xs-12">
                         <div class="box-body">
 
@@ -41,10 +41,18 @@
                                     No Record Found
                                 </div>
                             </div>
-
-                            
-                            <div class="row service-row" ng-repeat="noti in notification">
-
+                             <!-- pgp notification -->
+                             <?php if($check_count_point >= 1000): ?>
+                              <div class="row service-row">
+                                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9" style="padding:12px;font-size:17px">
+                                  <p>
+                                    Congratulations, you have reached 1000 Private Gallery Points (PGP), which means you are now able to gain access to all private galleries throughout our website. Please scroll down to the bottom of this page to activate and begin your 24 hours of free access.
+                                  </p>
+                                </div>
+                              </div>
+                              <?php endif; ?>
+                              <!-- pgp notification close -->
+                              <div class="row service-row" ng-repeat="noti in notification">
                                 <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9" style="padding:12px;font-size:17px">
                                 <span ng-if="noti.type=='PRIVATE_GALLERY'">
                                      New Private Gallery upload, by <a href="/users/[[noti.username]]">
@@ -82,11 +90,15 @@
                                 <button style="position:relative;top:10px;" type="button" class="edit-button" placement="left" mwl-confirm="" title="<?php echo e(Lang::get('Remove Notification?')); ?>" message="" confirm-text="<i class='ion-android-done'></i>" cancel-text="<i class='ion-android-close'></i>" placement="top" on-confirm="deleteNotification(noti.id)" on-cancel="vm.cancelClicked = true" confirm-button-type="danger" cancel-button-type="default" ng-click="vm.confirmClicked = false; vm.cancelClicked = false"><span class="glyphicon glyphicon-trash"></span></button>
                                 <?php endif; ?>
                                 </div>
+
+
                                 <?php /* <div class="col-md-3" style="padding-top:3px">
 								   <button  ng-click="deleteNotification(noti.id)" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> </button>
                                 </div> */ ?>
                             </div>
                             <!-- /.box-body -->
+
+                             
                         </div>
                         
 
@@ -252,8 +264,38 @@
     </section>
 	<!-- view profile end -->
 	 <?php endif; ?>
-	
   </div>
+  <?php if(Auth()->user()->gender=="male"): ?>
+  <center>
+     <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
+     </button>
+  </center>
+  <?php endif; ?>
+ <?php if($check_count_point >= 1000 && Auth::user()->pgp_status == 0): ?>
+  <div class="list-group text-danger"  ng-if="user.verify_check == 'VERIFIED'">
+    <div class="list-group-item list-group-item-sucess"><h5 class="text-center text-success">Click <a class="cursor-pointer" data-toggle="modal" data-target="#activeConfirmModal">Activate Now</a> to start your 24 hours of free Private Gallery Access.</h5></div>
+  </div>
+  <?php endif; ?>
+<!-- Modal -->
+<div class="modal fade" id="activeConfirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Activate Private Gallery</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to activate your free PGa now?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <a href="<?php echo e(url('activate')); ?>"><button type="button" class="btn btn-primary">Yes</button></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

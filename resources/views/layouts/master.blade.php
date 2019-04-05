@@ -249,12 +249,13 @@
                 @if(Auth::user()->gender == 'female')
         				<a href="{{ URL::route('twit.account') }}"><i class="ion-social-twitter"></i>Auto-tweets</a>
                  <hr>
+                  <a href="{{ URL::route('competitions') }}"><i class="ion-home"></i>Competitions</a>
+                <hr>
                 @endif
                
                 <a href="{{ URL::route('supersubs') }}"><i class="ion-key"></i>Supersub</a>
                 <hr>
-                  <a href="{{ URL::route('competitions') }}"><i class="ion-home"></i>Competitions</a>
-                <hr>
+                 
                 <a href="{{ URL::route('account.details') }}"><i class="ion-key"></i>Account details</a>
                 <hr>
                 <a href="{{ URL::route('donations') }}"><i class="ion-cash"></i>Tributes</a>

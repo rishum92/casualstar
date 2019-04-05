@@ -19,22 +19,21 @@
 <section class="compt_content">
     <div class="container">
         <div class="headeing_search">
-            <h2>Featured <span>Profile</span></h2>
-            <form class="inputform">
-              <div class="form-group">
-                <input data-ng-model="userText" name="userText" data-ng-change="filterUsers()" ng-model-options="{updateOn: 'default change',debounce: {'default': 0,'change': 0}}" placeholder="Search by username" type="text" >
-                  <button class="btn_search" type="submit">
-                    <i class="fa fa-search"></i>
-                  </button>
-              </div>  
-            </form>
-            <div class="center_text">
-              <span>Vote for your  best looking female.
-              </span>
+          <form class="inputform">
+            <div class="form-group">
+              <input data-ng-model="userText" name="userText" data-ng-change="filterUsers()" ng-model-options="{updateOn: 'default change',debounce: {'default': 0,'change': 0}}" placeholder="Search by username" type="text" >
+                <button class="btn_search" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+            </div>  
+          </form>
+          <?php  if(Auth::check()) {?>
+             @if(Auth::user()->username == 'Admin')
+              <div class="center_text">
+                <span>Vote for your  best looking female.
+                </span>
               <br><br>
-                <?php  if(Auth::check()) {?>
-                    @if(Auth::user()->username == 'Admin')
-                    Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
+                  Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
                     @else
                     Expires:<input type="text" class = "inputfield" value = "{{$showdate}}" readonly="true">GMT
                     @endif
@@ -200,36 +199,6 @@ function confirm_vote_popup(id,competition_userid) {
 <span id = "messagedisplay" style = "display:none;">
   Thank you for voting. +data[0].username+ is now in position 23 in the competition.You also have one more vote remaining.
 </span>
-<!-- vote popup end -->
-<!--Delete Confirmation Popup Start-->
-<script>
-function deleteconfirmation(id) {
- $('#deleteconfirmationbtn').modal('show');
- $('#competitionid').val(id);
-}
-</script>
-<!--Delete Confirmation Popup Close-->
-<div class="modal fade" id="deleteconfirmationbtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this submission?
-      </div>
-      <input type="hidden" name="competitionid" id="competitionid">
-      <div class="modal-footer">
-        <button class="btn btn-primary" id="confirm_delete">Yes</button>
-        <button class="btn btn-secondary" data-dismiss="modal">No</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!--Delete Confirmation Popup End-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -292,19 +261,6 @@ if (s >= y) {
     });
   });
 
-  //for confirmation delete
-
-  $("#confirm_delete").click(function() {
-    var competitionid = $("#competitionid").val();
-    $.ajax({
-      type: 'GET',
-      url: 'competitiondelete/'+competitionid,
-      success:function(data)
-      {
-        location.reload();
-      }
-    });
-  });
   //amount edit
   $("#firstplace_amount").blur(function() {
     var firstplace_amount = $("#firstplace_amount").val();
@@ -331,41 +287,41 @@ function newwin() {
 }
 </script>
 <script type="text/javascript">
-    var modal = $('#addPhotoModal');
+  var modal = $('#addPhotoModal');
 
-    modal.on('hidden.bs.modal', function () {
-      cleanModalData($(this));
-    });
+  modal.on('hidden.bs.modal', function () {
+    cleanModalData($(this));
+  });
 
-    modal.find('input[type="file"]').change(function() {
-      var formGroup = $(this).parent();
-      var modalPreview = formGroup.find('img');
-      var oFReader = new FileReader();
-   
-      if(this.files[0]) {
-        $(modalPreview).cropper('destroy');
-        oFReader.readAsDataURL(this.files[0]);
-        oFReader.onload = function (oFREvent) {
-          modalPreview.parent().fadeIn();
-          modalPreview.attr('src', oFREvent.target.result);
-          formGroup.find('.photo-controls').fadeIn();
-          
-          modalPreview.cropper({
-            aspectRatio: 1 / 1,
-            dragMode: 'none',
-            viewMode: 1,
-            crop: function(data) {
-              setCropData(this, data);
-            }
-          });
-        }
-      } else {
-        modalPreview.find('img').cropper('destroy');
-        modalPreview.attr('src','');
-        modalPreview.parent().fadeOut();
-        formGroup.find('.photo-controls').fadeOut();
+  modal.find('input[type="file"]').change(function() {
+    var formGroup = $(this).parent();
+    var modalPreview = formGroup.find('img');
+    var oFReader = new FileReader();
+ 
+    if(this.files[0]) {
+      $(modalPreview).cropper('destroy');
+      oFReader.readAsDataURL(this.files[0]);
+      oFReader.onload = function (oFREvent) {
+        modalPreview.parent().fadeIn();
+        modalPreview.attr('src', oFREvent.target.result);
+        formGroup.find('.photo-controls').fadeIn();
+        
+        modalPreview.cropper({
+          aspectRatio: 1 / 1,
+          dragMode: 'none',
+          viewMode: 1,
+          crop: function(data) {
+            setCropData(this, data);
+          }
+        });
       }
-    });
+    } else {
+      modalPreview.find('img').cropper('destroy');
+      modalPreview.attr('src','');
+      modalPreview.parent().fadeOut();
+      formGroup.find('.photo-controls').fadeOut();
+    }
+  });
 </script>
 <!--back top button start-->
 <button class = "backtopbtn" onclick="scrollToTop()" id="scrollToTopButton"><i class="ion-arrow-up-a"></i></button>

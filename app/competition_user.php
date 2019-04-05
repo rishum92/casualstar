@@ -93,9 +93,12 @@ class competition_user extends Model
               ->where('competition_id', '=', $competitionid)
               ->get();
     $user_name = $username[0]->username;
-              DB::table('competition_interested_users')
-              ->where('competition_id', '=', $competitionid)
-              ->delete();
+                DB::table('competition_interested_users')
+                ->where('competition_id', '=', $competitionid)
+                ->delete();
+                DB::table('competiton_vote')
+                ->where('competition_id', '=', $competitionid)
+                ->delete();
     if(file_exists('img/competition_user/' .$user_name)) {
       File::deleteDirectory(public_path('img/competition_user/'.$user_name));
     }

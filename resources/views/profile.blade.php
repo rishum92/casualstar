@@ -365,7 +365,7 @@
   </div>
   <br>
   <center>
-    <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private    Galleries
+    <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
     </button>
   </center>
 
