@@ -123,10 +123,9 @@ class HomeController extends BaseController
         $var_day = $date_array[2]; //year segment
         $new_date_format = "$var_day/$var_month/$var_year";
         $showtermscondition= competition_user::showtermscondition();
-        //$showtermscondition = nl2br($showtermscondition);
-        //echo '<pre>';print_r($showtermscondition);exit;
+        $get_title= competition_user::get_title();
         
-        return view('competitions',['competitionuser' =>$getdata,'exists'=>$exist,'showdate'=>$new_date_format,'termscondition'=>$showtermscondition,'voter_count'=>$voter_count]);
+        return view('competitions',['competitionuser' =>$getdata,'exists'=>$exist,'showdate'=>$new_date_format,'termscondition'=>$showtermscondition,'voter_count'=>$voter_count,'get_title'=>$get_title]);
     } else {
         $getdata = competition_user::getdata();
         $showdate= competition_user::showdate();

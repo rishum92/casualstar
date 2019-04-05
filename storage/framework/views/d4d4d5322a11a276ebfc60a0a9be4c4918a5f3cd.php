@@ -26,16 +26,17 @@
               </div>  
             </form>
             <div class="center_text">
-              <span>Vote for your  best looking female.
-              </span>
-              <br><br>
-                <?php  if(Auth::check()) {?>
-                    <?php if(Auth::user()->username == 'Admin'): ?>
-                    Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="<?php echo e($showdate); ?>">GMT
-                    <?php else: ?>
-                    Expires:<input type="text" class = "inputfield" value = "<?php echo e($showdate); ?>" readonly="true">GMT
-                    <?php endif; ?>
-                <?php } ?>
+              <?php  if(Auth::check()) {?>
+              <?php if(Auth::user()->username == 'Admin'): ?>
+                <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="<?php echo e($get_title); ?>">
+                <br />
+                Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="<?php echo e($showdate); ?>">GMT
+              <?php else: ?>
+                <input class = "titlediv" type="text" value="<?php echo e($get_title); ?>" readonly="true">
+                <br />
+                Expires:<input type="text" class = "inputfield" value = "<?php echo e($showdate); ?>"readonly="true">GMT
+              <?php endif; ?>
+              <?php } ?>
             </div>
 
            <?php    
@@ -113,7 +114,7 @@
     </div>
 </section>
 
-<!--VisitorPopup Modal-->
+<!--VisitorPopup Modal Start-->
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -132,7 +133,7 @@
   </div>
 </div>
                  
-<!--VisitorPopup Modal-->
+<!--VisitorPopup Modal End-->
 <script>
 function imagemodal(id){
 $.ajax({
@@ -264,6 +265,24 @@ if (s >= y) {
         }
       });
     });
+
+  //change the title
+  $("#competition_title").blur(function() {
+    var title = $("#competition_title").val(); 
+    $.ajax({
+      url: 'edit_title',
+      type: 'POST',
+      data: {
+              "_token" : "<?php echo e(csrf_token()); ?>",
+              "title"   : title,
+            },
+      success:function(data)
+      {
+              
+      }
+    });
+  }); 
+
   // for confirmation vote
   $("#confirm_vote").click(function() {
     var confirm_vote = $("#confirm_vote").val();

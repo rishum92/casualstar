@@ -165,5 +165,12 @@ class competitionController extends Controller
     {
         echo "success";
     }
+    public function edit_title(Request $request)
+    {
+        $edit_title         = $request->title;
+        $user_id            = Auth::user()->id;
+        $updateexpirydate   = competition_user::update_title($edit_title ,$user_id);
+        return view('competitions');
+    }
 }
 

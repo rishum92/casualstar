@@ -177,9 +177,13 @@
             paging-action="changePageFavorites(page, pageSize, total)">
             </paging>
         </nav>
-        
       </div>
-       
+      <?php if(Auth()->user()->gender=="male"): ?>
+      <div style = "float:right">
+        <button style = "background-color: #f21d84; color:white;margin-right: 170px;padding:10px 25px;">Access ALL Private Galleries
+        </button>
+      </div>
+      <?php endif; ?>
     </section>
 
     

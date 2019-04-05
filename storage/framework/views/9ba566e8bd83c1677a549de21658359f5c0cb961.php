@@ -353,8 +353,15 @@
         </ui-select>
       </div>
     </div>
+    <br>
+    
     <?php echo $__env->make('modals.donate', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
   </div>
-
+  <?php if(Auth()->user()->gender=="male"): ?>
+  <center>
+    <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
+    </button>
+  </center>
+  <?php endif; ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

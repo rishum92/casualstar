@@ -29,16 +29,17 @@
               </div>  
             </form>
             <div class="center_text">
-              <span>Vote for your  best looking female.
-              </span>
-              <br><br>
-                <?php  if(Auth::check()) {?>
-                    @if(Auth::user()->username == 'Admin')
-                    Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
-                    @else
-                    Expires:<input type="text" class = "inputfield" value = "{{$showdate}}" readonly="true">GMT
-                    @endif
-                <?php } ?>
+              <?php  if(Auth::check()) {?>
+              @if(Auth::user()->username == 'Admin')
+                <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="{{$get_title}}">
+                <br />
+                Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
+              @else
+                <input class = "titlediv" type="text" value="{{$get_title}}" readonly="true">
+                <br />
+                Expires:<input type="text" class = "inputfield" value = "{{$showdate}}"readonly="true">GMT
+              @endif
+              <?php } ?>
             </div>
 
            <?php    
@@ -267,6 +268,24 @@ if (s >= y) {
         }
       });
     });
+
+  //change the title
+  $("#competition_title").blur(function() {
+    var title = $("#competition_title").val(); 
+    $.ajax({
+      url: 'edit_title',
+      type: 'POST',
+      data: {
+              "_token" : "{{ csrf_token() }}",
+              "title"   : title,
+            },
+      success:function(data)
+      {
+              
+      }
+    });
+  }); 
+
   // for confirmation vote
   $("#confirm_vote").click(function() {
     var confirm_vote = $("#confirm_vote").val();

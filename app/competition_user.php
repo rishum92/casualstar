@@ -97,7 +97,7 @@ class competition_user extends Model
   public static function update_vote($user)
   {
     $update_vote = DB::table('competiton_vote')
-                -> where('voter_id',$user)
+                ->where('voter_id',$user)
                 ->update(['is_vote'=>0]);
   }
   public static function delete_account($user)
@@ -113,5 +113,17 @@ class competition_user extends Model
                     ->update(['vote_amount'=>$vote_amount]);
     return $update_amount;
   }
-
+  public static function update_title ($edit_title,$user_id)
+  {
+    $insert_title   = DB::table('competition_expiry_date')
+                    ->where('user_id',$user_id)
+                    ->update(['competition_title'=>$edit_title]);
+  }
+  public static function get_title()
+  {
+    $get_title  = DB::table('competition_expiry_date')
+                ->select('competition_title')
+                ->get();
+    return $get_title[0]->competition_title;
+  }
 }

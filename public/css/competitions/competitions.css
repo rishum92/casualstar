@@ -131,6 +131,15 @@ body a:focus{
   padding-left: 21px !important;
   padding-right: 21px !important;
 }
+
+.titlediv
+{
+  border: none;
+  font-size: 20px;
+  text-align: center;
+  width: 347px;
+  padding: 3px;
+}
 .inputfield
 {
   border: none; 
