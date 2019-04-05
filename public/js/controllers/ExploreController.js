@@ -105,7 +105,7 @@ UserCtrl.controller('ExploreController', ['$scope', '$http', '$location', '$root
 
   $scope.viewThisPhoto = function(photo) {
     $scope.openModal('viewPhoto', 'photo', photo);
-console.log($scope.$parent)
+
     $scope.user = $scope.$parent.user;
 
     $scope.getLikes(photo);
@@ -134,7 +134,7 @@ console.log($scope.$parent)
     });
   }
 
-  $scope.postComment = function(photo) { 
+  $scope.postComment = function(photo) {
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
       $http.post('/api/photo-comment', {photo_id: photo.id, user_id: photo.user.id, comment: $scope.comment}).then(function(response) {

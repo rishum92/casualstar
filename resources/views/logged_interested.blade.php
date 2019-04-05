@@ -10,7 +10,7 @@
       @endif
     </div>
     <div class="view_users_link">
-       <h3><a href="#" class="view_users_link"><span>{{$logged_user->username}}</span></a></h3>
+       <h3><a href="{{url('users/'.$logged_user->username)}}" class="view_users_link"><span>{{$logged_user->username}}</span></a></h3>
     </div> 
   </div>
 </div>

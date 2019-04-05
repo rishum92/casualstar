@@ -103,7 +103,7 @@
               <h3 class="explanation" data-ng-if="totalBrowse == 0">{{ Lang::get('messages.noMatchingUsers') }}</h3>
             </div>
             
-            <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat = "user in users">
+            <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat="user in users">
               [[user.img]] 
               <div data-ng-if="totalBrowse > 0" class="member">
                 <div class="image">
@@ -180,14 +180,19 @@
             </paging>
         </nav>
       </div>
+<<<<<<< HEAD
       @if(Auth()->user()->gender=="male")
+=======
+>>>>>>> 887068b544c9be807a467804041d21919c5b44d1
       <div style = "float:right">
         <button style = "background-color: #f21d84; color:white;margin-right: 170px;padding:10px 25px;">Access ALL Private Galleries
         </button>
       </div>
+<<<<<<< HEAD
       @endif
+=======
+>>>>>>> 887068b544c9be807a467804041d21919c5b44d1
     </section>
-
     
     <!--Female Notice--->
     <div class="wrap" data-ng-if="user.gender == 'female'">
@@ -211,23 +216,22 @@ Ensure your email address is correct so you do not miss out on any possible Trib
     
     <!--Male Notice--->
     
-    
      <div class="wrap" data-ng-if="user.gender == 'male'">
       <div class="highlight">
-        <h2><b>NOTICE BOARD:</b></h2> 
-        <hr>
-        <h3>TOP TIPS:</h3>Receive the most attention by adding a profile photo and being a generous and active Sub, This will also help you to become our Number One SuperSub.
-        <br><br>
-          Add a profile picture to gain even more attention.
-           <p>
-              </br><hr>
-              Be sure to select and add your interests located on your profile page, this will increase your visibility with users sharing and searching the same interests.
-              </br>
-            </p>
-        <br/>
+<h2><b>NOTICE BOARD:</b></h2> 
+<hr>
+<h3>TOP TIPS:</h3>Receive the most attention by adding a profile photo and being a generous and active Sub, This will also help you to become our Number One SuperSub.
+<br><br>
+Add a profile picture to gain even more attention.
+<p>
+</br><hr>
+         Be sure to select and add your interests located on your profile page, this will increase your visibility with users sharing and searching the same interests.
+         </br>
+</p>
+<br/>
       </div>
     </div>
     
-
+  </div>
 
 @endsection

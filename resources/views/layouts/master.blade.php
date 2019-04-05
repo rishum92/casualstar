@@ -181,6 +181,11 @@
                     <span class="small-notif larger">99+</span>
                   @endif
                 @endif
+
+                @if($pgp_notification >= 1000)
+                  <span class="small-notif">1</span>
+                @endif
+                
               </li>
               <li>
                 <a class="@if(Route::is('messages') || Route::is('messages')) active @endif" href="{{ URL::route('messages') }}"><i class="ion-chatbubbles"></i>Messages</a>
@@ -201,12 +206,17 @@
                   </li>  -->
 
                   <li><a class="@if(Route::is('offers') || Route::is('offers')) active @endif" href="{{ URL::route('offers') }}"><i class="ion-star"></i>Offer</a>
-                    
-                    @foreach($notification_data as $user_notifications)
-                    <span class="small-notif larger">{{$user_notifications->notification}}</span>
-                    @endforeach
-                 
+                  
+                      @foreach($notification_data as $user_notifications)
+                       @if($user_notifications->notification == '0')
+                       @else
+                        <span class="small-notif larger">{{$user_notifications->notification}}</span>
+                        @endif
+                      @endforeach
                   </li> 
+                  <!-- <li>
+                    <a href="#">0000</a>
+                  </li> -->
 
              </ul>
             @if($donationCount > 0)
@@ -230,16 +240,20 @@
                 @else
                   <img id="userPhoto_uploade" src="{{ URL::asset('img/' . Auth::user()->gender . '.jpg')}}" alt="profile photo" />
                 @endif
+
+
+
               <div class="logout">
                 <a href="{{ URL::route('profile') }}"><i class="ion-person-stalker"></i>My profile</a>
                 <hr>
                 @if(Auth::user()->gender == 'female')
         				<a href="{{ URL::route('twit.account') }}"><i class="ion-social-twitter"></i>Auto-tweets</a>
-                <hr>
-				<a href="{{ URL::route('competitions') }}"><i class="ion-home"></i>Competitions</a>
-                <hr>
+                 <hr>
                 @endif
+               
                 <a href="{{ URL::route('supersubs') }}"><i class="ion-key"></i>Supersub</a>
+                <hr>
+                  <a href="{{ URL::route('competitions') }}"><i class="ion-home"></i>Competitions</a>
                 <hr>
                 <a href="{{ URL::route('account.details') }}"><i class="ion-key"></i>Account details</a>
                 <hr>
@@ -256,9 +270,20 @@
                 <a href="{{ URL::route('logout') }}"><i class="ion-android-exit"></i>Logout</a>
               </div>
             </div> <!--end of drop menu div container-->
+            @if(Auth::user()->gender == 'male')
+              @if($pgp_notification >= 1000)
+                <span class="pgp_counter"><img src="{{ URL::to('/') }}/img/PGa.png" alt="Img" width="30px"></span>
+              @else
+                <span class="pgp_counter">PGP</br>
+                  <?php printf("%04d", $pgp_notification); ?>
+                </span>
+              @endif
+            @endif
+            
           </div>
+
         </div>
-      </div>
+       </div>
       <button class="menu-toggle">
         <i class="ion-android-menu">
           <span class="small-notif" data-ng-if="notificationCount +pending_count > 0 && notificationCount +pending_count < 100">[[notificationCount+ pending_count]]</span>
@@ -301,6 +326,7 @@
           <li><a class="@if(Route::is('explore') || Route::is('explore')) active @endif" href="{{ URL::route('explore') }}"><i class="ion-earth"></i>Explore</a></li>
           <li><a class="@if(Route::is('supersubs') || Route::is('supersubs')) active @endif" href="{{ URL::route('supersubs') }}"><i class="ion-star"></i>Supersubs</a></li>
         </ul>
+
       </div>
     @endif
     @yield('content')
@@ -526,7 +552,7 @@ $("popupmodal").blur(function(){
 
 
 function send_offer_message(post_id, receiver_id){
-  offer_message = $('#offer_message_'+receiver_id).html();
+  offer_message = $('textarea#offer_message_'+receiver_id).val();
   $.ajax({
     url: 'send_offer_message',
     type: 'POST',

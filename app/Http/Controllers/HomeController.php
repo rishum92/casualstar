@@ -59,9 +59,7 @@ class HomeController extends BaseController
     $myofferpost = offer_post::myofferPost();
     $myofferpostinterested = offer_post::myofferPostInterested();
     $notification_data = offer_post::offer_notification();
-
-    //echo "<pre>";print_r($notification_data);die;
-
+    
             DB::table('users')
             ->where('id', $user_id)
             ->update(['notification' => 0]);
@@ -86,8 +84,9 @@ class HomeController extends BaseController
     $fromEmail = Input::get('email');
     $telephone = Input::get('telephone');
 
-    if($name == "" || $emailMessage == "" || $fromEmail == "") {
-      return redirect()->back()->with('message', 'You need to fill out all the required fields.')->with('messageType', 'danger');
+    if($name == "" || $emailMessage == "" || $fromEmail == "") 
+    {
+        return redirect()->back()->with('message', 'You need to fill out all the required fields.')->with('messageType', 'danger');
     }
 
     // $toEmail = 'casualstar.uk.info@gmail.com';

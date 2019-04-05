@@ -12,7 +12,7 @@
 */
 	
 	Route::get('/', ['uses' => 'HomeController@index', 'as' => 'index']);
-	Route::get('conta', ['uses' => 'HomeController@contact', 'as' => 'contact']);
+	Route::get('contact', ['uses' => 'HomeController@contact', 'as' => 'contact']);
 	Route::get('about', ['uses' => 'HomeController@about', 'as' => 'about']);
 	Route::get('faq', ['uses' => 'HomeController@faq', 'as' => 'faq']);
 
@@ -201,13 +201,17 @@
 
 	//offer routes
 	Route::post('offerpost','offerPostController@offer');
-	Route::get('intrested/{id}','offerPostController@intrested');
+	Route::get('interested/{id}/{user_id}/','offerPostController@interested');
 	Route::get('delete/{id}','offerPostController@deletePost');
 	Route::get('deletemyoffer/{id}','offerPostController@deletemyoffer');
+	Route::get('delete_logged_interest/{id}','offerPostController@delete_logged_interest');
 	Route::get('offerpost/{id}','offerPostController@post_intrest_users');
 	Route::get('myofferpost/{id}','offerPostController@myoffer_intrest_users');
 	Route::post('send_offer_message','offerPostController@send_offer_message');
 	Route::get('logged_interested/{id}','offerPostController@logged_interested');
+
+	//pgp activation
+	Route::get('activate','offerPostController@pgp_activation');
 	
 	// Route::get('offersrr','offerPostController@getData');
 
@@ -224,5 +228,4 @@
 	Route::post('amount_edit','competitionController@amount_edit');
 	Route::resource('competition_user', 'CompetitionUserController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 	Route::post('edit_title','competitionController@edit_title');
-
 

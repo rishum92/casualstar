@@ -69,6 +69,7 @@ class competition_user extends Model
   }
   public static function termscondition($user_id,$termscondition)
   {
+    
     $termscondition = DB::table('competiton_terms_condition')
                    ->update(['user_id'=>$user_id,'termscondition'=>$termscondition]);
     return $termscondition;
@@ -78,6 +79,11 @@ class competition_user extends Model
     $termscondtion = DB::table('competiton_terms_condition')
                   ->select('termscondition')
                   ->get();
+    // if(!empty($termscondition)){
+    //   return $termscondtion[0]->termscondition;
+    // } else {
+    //   return $termscondtion;
+    // }
     return $termscondtion[0]->termscondition;
   }
   public static function competitiondelete($competitionid) 
