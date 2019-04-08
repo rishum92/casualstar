@@ -1,21 +1,13 @@
 var CommentCtrl = angular.module('CommentCtrl',[]);
 
 CommentCtrl.controller('CommentController',function($scope, $http, $location, $rootScope, $timeout, $window) {
-  
-  alert(12)
+
 
   $scope.photos = [];
   $scope.comment = '';
   $scope.photoLikes = [];
   $scope.user = undefined;
   $scope.refreshInterval = undefined;
-
-
-  
-
-  
-
-
 
   $scope.deleteComment = function(photo, comment_id) {
     $http.delete('/api/photo-comment/' + comment_id).then(function(response) {
