@@ -122,5 +122,12 @@ class competition_user extends Model
                     ->update(['vote_amount'=>$vote_amount]);
     return $update_amount;
   }
+  public static function get_title()
+  {
+    $get_title  = DB::table('competition_expiry_date')
+                ->select('competition_title')
+                ->get();
+    return $get_title[0]->competition_title;
+  }
 
 }

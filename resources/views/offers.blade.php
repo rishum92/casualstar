@@ -130,7 +130,7 @@ first 10 interests will be logged for each Offer.</center>
                        </button>
                      @else
 
-                      @if($offers->intrest_count < 10)
+                      @if($offers->intrest_count < 10 || $offers->offer_post_date == 0)
                        <a href="{{url('interested/'.$offers->post_id. '/' . $offers->id)}}">
                        <button type="submit" class="btn btn-default btn_interested">
                          <i class="fa fa-thumbs-up"></i> Interested

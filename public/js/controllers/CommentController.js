@@ -39,8 +39,8 @@ CommentCtrl.controller('CommentController',function($scope, $http, $location, $r
     }
   }
 
-  $scope.viewThisPhoto = function(photo) {
-    $scope.openModal('viewPhoto', 'photo', photo);
+  $scope.viewThisPhoto = function(user_id) {
+    $scope.openModal('viewPhoto', 'user_id', user_id);
 
     $scope.user = $scope.$parent.user;
 
@@ -70,7 +70,7 @@ CommentCtrl.controller('CommentController',function($scope, $http, $location, $r
     });
   }
 
-  $scope.postComment = function(user_id) {alert(10)
+  $scope.postComment = function(photo) {
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
       $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {

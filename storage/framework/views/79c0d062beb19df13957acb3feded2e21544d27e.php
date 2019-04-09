@@ -18,7 +18,7 @@
         </div>
         <div class="modal-body">
           <div class="explore-photo">
-            <a href="users/[[viewPhoto['data'].photo.user.username]]?explore=true"><img ng-src="[[getPhotoUrl(viewPhoto['data'].photo)]]" alt="user photo" /></a>
+            <a href="users/[[viewPhoto['data'].photo.user.username]]?explore=true"><img ng-src="[[getPhotoUrl(comp.user_profile)]]" alt="user photo" /></a>
           </div>
           <div class="explore-photo caption">
             <label>[[viewPhoto['data'].photo.title]]</label>
@@ -32,9 +32,9 @@
             <div class="form-group right comments">
               <!-- <h3>Comments</h3> -->
               <!-- [[photoComments.length]] -->
-              <form data-ng-submit="postComment()">
-                <textarea data-ng-model="comment" maxlength="300" enter="postComment()" shift class="form-control" placeholder="Type a comment here..."></textarea>
-                <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment([[comp.user_id]])" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
+              <form data-ng-submit="postComment([[comp.user_profile]])">
+                <textarea data-ng-model="comment" maxlength="750" enter="postComment([[comp.user_profile]])" shift class="form-control" placeholder="Type a comment here..."></textarea>
+          <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment([[comp.user_id]])" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
               </form>
               <ul class="conversation">
                 <li class="message block-flex wrap-flex" data-ng-class="partner" data-ng-repeat="comment in photoComments">

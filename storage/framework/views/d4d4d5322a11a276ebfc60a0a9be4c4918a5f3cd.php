@@ -16,26 +16,26 @@
 <section class="compt_content">
     <div class="container">
         <div class="headeing_search">
-            <h2>Featured <span>Profile</span></h2>
-            <form class="inputform">
-              <div class="form-group">
-                <input data-ng-model="userText" name="userText" data-ng-change="filterUsers()" ng-model-options="{updateOn: 'default change',debounce: {'default': 0,'change': 0}}" placeholder="Search by username" type="text" >
-                  <button class="btn_search" type="submit">
-                    <i class="fa fa-search"></i>
-                  </button>
-              </div>  
-            </form>
-            <div class="center_text">
-              <span>Vote for your  best looking female.
-              </span>
-              <br><br>
-                <?php  if(Auth::check()) {?>
-                    <?php if(Auth::user()->username == 'Admin'): ?>
-                    Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="<?php echo e($showdate); ?>">GMT
-                    <?php else: ?>
-                    Expires:<input type="text" class = "inputfield" value = "<?php echo e($showdate); ?>" readonly="true">GMT
-                    <?php endif; ?>
-                <?php } ?>
+          <form class="inputform">
+            <div class="form-group">
+              <input data-ng-model="userText" name="userText" data-ng-change="filterUsers()" ng-model-options="{updateOn: 'default change',debounce: {'default': 0,'change': 0}}" placeholder="Search by username" type="text" >
+                <button class="btn_search" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+            </div>  
+          </form>
+          <div class="center_text">
+              <?php  if(Auth::check()) {?>
+              <?php if(Auth::user()->username == 'Admin'): ?>
+                <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="<?php echo e($get_title); ?>">
+                <br />
+                Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="<?php echo e($showdate); ?>">GMT
+              <?php else: ?>
+                <input class = "titlediv" type="text" value="<?php echo e($get_title); ?>" readonly="true">
+                <br />
+                Expires:<input type="text" class = "inputfield" value = "<?php echo e($showdate); ?>"readonly="true">GMT
+              <?php endif; ?>
+              <?php } ?>
             </div>
 
            <?php    
@@ -97,7 +97,7 @@
            ?>
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
-              <div class="wrap_prodiv" ng-controller="UserCompetitionController">
+            <div class="wrap_prodiv" ng-controller="UserCompetitionController">
                 <?php echo $__env->make('competition_users', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                 <!--Competition User Div Close-->
                 <!--Terms and conditions -->
@@ -109,7 +109,7 @@
                 </div>
                 <!--Terms and conditions -->
               </div>
-          </div>
+            </div>
     </div>
 </section>
 
@@ -164,7 +164,7 @@ $.ajax({
 
 <!-- vote popup start -->
 
-<script>
+<!-- <script>
 function confirm_vote_popup(id,competition_userid) {
  $('#modalcompetitionid').val(id);
  $('#competition_userid').val(competition_userid);
@@ -197,7 +197,52 @@ function confirm_vote_popup(id,competition_userid) {
 <span id = "messagedisplay" style = "display:none;">
   Thank you for voting. +data[0].username+ is now in position 23 in the competition.You also have one more vote remaining.
 </span>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<!--Delete Confirmation Popup Start-->
+<script>
+function deleteconfirmation(id) {
+ $('#deleteconfirmationbtn').modal('show');
+ $('#competitionid').val(id);
+}
+</script>
+<!--Delete Confirmation Popup Close-->
+<div class="modal fade" id="deleteconfirmationbtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this submission?
+      </div>
+      <input type="hidden" name="competitionid" id="competitionid">
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss ="modal" id="confirm_delete">Yes</button>
+        <button class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Delete Confirmation Ajax-->
+<script>
+$("#confirm_delete").click(function() {
+    var competitionid = $("#competitionid").val();
+    $.ajax({
+      type: 'GET',
+      url: 'competitiondelete/'+competitionid,
+      success:function(data)
+      {
+        location.reload();
+      }
+    });
+  });
+</script>
+<!--Delete Confirmation Ajax Close-->
+<!--Delete Cnnfirmation Popup Close-->
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
@@ -234,31 +279,6 @@ if (s >= y) {
         }
       });
     });
-  // for confirmation vote
-  $("#confirm_vote").click(function() {
-    var confirm_vote = $("#confirm_vote").val();
-    var competitionid = $("#modalcompetitionid").val(); 
-    var competition_userid = $("#competition_userid").val();
-    var competition_username = $("competition_username").val();
-    $.ajax({
-      url: 'confirm_vote',
-      type: 'POST',
-      data: {
-              "_token"              : "<?php echo e(csrf_token()); ?>",
-              "confirm_vote"        : confirm_vote,
-              "competitionid"       : competitionid,
-              "competition_userid"  : competition_userid,
-            },
-      success:function(data)
-      {
-        $("#messagedisplay").removeAttr("style");
-        //$("#messagedisplay").css({"display":"block"});
-        $(".wrap_prodiv").html(data);
-        //location.reload();
-      }
-    });
-  });
-
   //amount edit
   $("#firstplace_amount").blur(function() {
     var firstplace_amount = $("#firstplace_amount").val();

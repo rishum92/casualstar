@@ -111,9 +111,9 @@ class competitionController extends Controller
 
     public function confirm_vote(Request $request)
     {
-        $confirm_vote = $request->confirm_vote;
-        $competitionid = $request->competitionid;
-        $competition_userid = $request->competition_userid;
+        echo $confirm_vote = $request->confirm_vote;
+        echo $competitionid = $request->competitionid;
+        echo $competition_userid = $request->competition_userid;die;
         $voter_id = Auth::user()->id;
         $voter= competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
         $getdata = competition_user::getdata();
@@ -161,9 +161,12 @@ class competitionController extends Controller
         $update_vote_amount     = competition_user::update_amount_edit($vote_amount,$user_id);
         return redirect('competitions');
     }
-    public function search_user(Request $request)
+    public function edit_title(Request $request)
     {
-        echo "success";
+        $edit_title         = $request->title;
+        $user_id            = Auth::user()->id;
+        $updateexpirydate   = competition_user::update_title($edit_title ,$user_id);
+        return view('competitions');
     }
 }
 

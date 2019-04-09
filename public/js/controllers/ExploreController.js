@@ -134,7 +134,7 @@ UserCtrl.controller('ExploreController', ['$scope', '$http', '$location', '$root
     });
   }
 
-  $scope.postComment = function(photo) {alert(photo)
+  $scope.postComment = function(photo) {
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
       $http.post('/api/photo-comment', {photo_id: photo.id, user_id: photo.user.id, comment: $scope.comment}).then(function(response) {

@@ -8,41 +8,41 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
   //sssalert($scope.competition_users);
 
   //Comment Section Start
-  $scope.viewThisPhoto = function(photo) {
-    $scope.openModal('viewPhoto', 'photo', photo);
+  $scope.viewThisPhoto = function(user_id) {
+    $scope.openModal('viewPhoto', 'user_id', user_id);
     $scope.user = $scope.$parent.user;
    
-   // $scope.getLikes(photo);
-    //$scope.getComments(photo);
+   $scope.getLikes(user_id);
+    $scope.getComments(user_id);
 
-  //   $scope.refreshInterval = setInterval(function() {
-  //     if(!$scope.refreshPaused) {
-  //       $scope.getComments(photo);
-  //       $scope.getLikes(photo);
-  //     } 
-  //   }, 5000);
-  // }
-
-  // $scope.getLikes = function(photo) {
-  //   console.log('refreshing likes');
-  //   $http.get('/api/photo-like/' + photo.id).then(function(response) {
-  //     $scope.photoLikes = response.data;
-  //   });
-  // }
-
-  // $scope.getComments = function(photo) {
-  //   console.log('refreshing comments');
-  //   $http.get('/api/photo-comment/' + photo.id).then(function(response) {
-  //     $scope.photoComments = response.data;
-  //   });
+    $scope.refreshInterval = setInterval(function() {
+      if(!$scope.refreshPaused) {
+        $scope.getComments(user_id);
+        $scope.getLikes(photo);
+      } 
+    }, 5000);
   }
 
-  $scope.postComment = function(user_id) {alert(user_id)
+  $scope.getLikes = function(user_id) {
+    console.log('refreshing likes');
+    $http.get('/api/photo-like/' + photo.id).then(function(response) {
+      $scope.photoLikes = response.data;
+    });
+  }
+
+  $scope.getComments = function(user_id) {
+    console.log('refreshing comments');
+    $http.get('/api/photo-comment/' + photo.id).then(function(response) {
+      $scope.photoComments = response.data;
+    });
+  }
+
+ $scope.postComment = function(user_id) {
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
       $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
         notify(response.data.messageType, response.data.message);
-        //$scope.getComments(photo);
+        $scope.getComments(user_id);
         $scope.comment = '';
         $('#postCommentButton').removeAttr('disabled');
       });
@@ -59,7 +59,7 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
 
       modal['data'][optionKey] = optionValue;
     }
-	console.log("opens " + modalName);
+  console.log("opens " + modalName);
     $('#' + modalName + 'Modal').modal('show');
   }
 
@@ -100,7 +100,7 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
         });
        
       break;
-      }
+    }
 
     modal.data = [];
     modal.$setPristine();
@@ -191,4 +191,10 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
       return false;
     }
   }
+  // $scope.confirm_vote_popup =function(competition_id,user_id)
+  // {
+  //   if(confirm("Click Vote Now, to confirm your vote."))
+  //   var confirm_vote = $("#confirm_vote").val();
+  //   $http.post('confirm_vote', {competition_id: competition_id, user_id: user_id,confirm_vote:confirm_vote})
+  // };
 });

@@ -22,17 +22,22 @@
                 [[comp.total_votes]]
             </div>
             <div class="wrap_btn">
-              <button class="page_btn" type="button">
+              <?php echo $__env->make('modals.vote_popup', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+              <input type="hidden" name="competition_userid" id="competition_userid" value="[[comp.user_id]]">
+              <input type="hidden" name="modalcompetitionid" id="modalcompetitionid" value="[[comp.competition_id]]">
+              <button class="page_btn" type="button" data-ng-click="openModal('vote_popup')">
                 <i class="fa fa-heart"></i> Vote Me
               </button>
               <?php echo $__env->make('modals.commentcompetition', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-              <button ng-controller = "CommentController" ng-click="viewThisPhoto([[comp.user_profile]])"
+              <button ng-controller = "UserCompetitionController" ng-click="viewThisPhoto([[comp.user_id]])"
               class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
               </button>
             </div>
             <?php if(Auth::user()->username == 'Admin'): ?> 
-              <i ng-click = "deleteconfirmation([[comp.competition_id]])" style="float:right; color:grey;" class = "fa fa-trash"></i>
-            <?php endif; ?> 
+            <div style="margin-top: 232px; margin-right: -13px;">
+              <i ng-click = "deleteconfirmation([[comp.competition_id]])" style="float:right; color:#d61857;" class = "fa fa-trash"></i>
+            <?php endif; ?>
+            </div> 
           </div>
         </div>
       <?php else: ?>
@@ -62,3 +67,7 @@
     </li>
   </span>
 </ul>
+<div>
+<?php echo e($competitionuser->links()); ?>
+
+</div>
