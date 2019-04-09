@@ -167,16 +167,32 @@
       <!--   <button type="button" data-ng-click="openModal('addCoverPhoto')"><i class="fa fa-picture-o"></i> <?php echo e(Lang::get('messages.changeCoverPhoto')); ?></button> -->
         <button type="button" data-ng-click="openModal('addProfilePhoto')"><i class="fa fa-camera"></i></button>
       </div>
-
+        <div class="pgp_icon">
+          <?php if(Auth::user()->gender == 'male'): ?>
+          <?php if($pgp_notification >= 1000): ?>
+            <span class="pgp_counter"><img src="<?php echo e(URL::to('/')); ?>/img/PGa.png" alt="Img" width="30px"></span>
+          <?php else: ?>
+            <span class="pgp_counter">PGP</br>
+              <?php printf("%04d", $pgp_notification); ?>
+            </span>
+          <?php endif; ?>
+          <?php endif; ?>
+        </div>
       <div class="profile-wrap">
         <div class="wrap">
           <div id="userPhotoProfile"> 
             <div class="image" lightgallery data-src="[[getPhotoUrl(user.img)]]">
-              <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+              <!-- <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
                 <img data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic" />
+              </a> -->
+              <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+                <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="img/male.jpg" alt="profile pic" />
+              </a>
+               <a href="[[getPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+                <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic" />
               </a>
             </div>
-			<?php if(Auth()->user()->title!="ADMIN"): ?>
+          <?php if(Auth()->user()->title!="ADMIN"): ?>
 			<!--<div ng-if="[[user.verify_check]] == 'VERIFIED'" class="col-md-3 col-lg-3 col-sm-3 col-xs-3 col-md-offset-5 col-xs-offset-5">
 			  <i class="fa fa-check edit-button" aria-hidden="true">Verified</i>
 			</div>-->
@@ -353,15 +369,14 @@
         </ui-select>
       </div>
     </div>
-    <br>
-    
     <?php echo $__env->make('modals.donate', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
   </div>
   <?php if(Auth()->user()->gender=="male"): ?>
   <center>
-    <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
-    </button>
+     <a href ="<?php echo e(url('offers')); ?>"><button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
+    </button></a>
   </center>
   <?php endif; ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

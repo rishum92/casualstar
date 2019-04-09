@@ -169,7 +169,17 @@
       <!--   <button type="button" data-ng-click="openModal('addCoverPhoto')"><i class="fa fa-picture-o"></i> {{ Lang::get('messages.changeCoverPhoto') }}</button> -->
         <button type="button" data-ng-click="openModal('addProfilePhoto')"><i class="fa fa-camera"></i></button>
       </div>
-
+        <div class="pgp_icon">
+          @if(Auth::user()->gender == 'male')
+          @if($pgp_notification >= 1000)
+            <span class="pgp_counter"><img src="{{ URL::to('/') }}/img/PGa.png" alt="Img" width="30px"></span>
+          @else
+            <span class="pgp_counter">PGP</br>
+              <?php printf("%04d", $pgp_notification); ?>
+            </span>
+          @endif
+          @endif
+        </div>
       <div class="profile-wrap">
         <div class="wrap">
           <div id="userPhotoProfile"> 
@@ -184,7 +194,7 @@
                 <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic" />
               </a>
             </div>
-			@if(Auth()->user()->title!="ADMIN")
+          @if(Auth()->user()->title!="ADMIN")
 			<!--<div ng-if="[[user.verify_check]] == 'VERIFIED'" class="col-md-3 col-lg-3 col-sm-3 col-xs-3 col-md-offset-5 col-xs-offset-5">
 			  <i class="fa fa-check edit-button" aria-hidden="true">Verified</i>
 			</div>-->
@@ -363,19 +373,11 @@
     </div>
     @include('modals.donate')
   </div>
-<<<<<<< HEAD
   @if(Auth()->user()->gender=="male")
   <center>
-    <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
-    </button>
+     <a href ="{{url('offers')}}"><button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
+    </button></a>
   </center>
   @endif
-=======
-  <br>
-  <center>
-    <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private    Galleries
-    </button>
-  </center>
 
->>>>>>> 887068b544c9be807a467804041d21919c5b44d1
 @endsection

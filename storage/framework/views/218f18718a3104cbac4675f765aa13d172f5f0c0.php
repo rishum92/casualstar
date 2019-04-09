@@ -70,11 +70,10 @@
                 <div class="form-group _custom_three range-group range-group block-flex wrap-flex vertical-center-flex" ng-show="getToggle()">
                   <input type="text" data-ng-model="distance" id="distance" readonly="readonly" class="form-control"><span>miles</span>
                 </div>
-			    <div class="form-group _custom_four images-only ">
+			          <div class="form-group _custom_four images-only ">
                   <input data-ng-change="filterUsers()" data-ng-model="withAllGender" name="withAllGender" id="gen_filter" type="checkbox" value="1" ng-checked="getCheckedTrue()" >
                   <label for="gen_filter"><span></span>WorldWide</label>
                 </div>
-
               </div>
             </form>
           </div>
@@ -102,7 +101,6 @@
             </div>
             
             <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat="user in users">
-              [[user.img]] 
               <div data-ng-if="totalBrowse > 0" class="member">
                 <div class="image">
                   <div data-ng-hide="!user.online" class="online-indicator"></div>
@@ -128,7 +126,6 @@
               </div>
             </div>
           </div>
-          
           <nav>
             <paging
             class="small pagination"
@@ -138,7 +135,6 @@
             paging-action="changePageBrowse(page, pageSize, total)">
             </paging>
           </nav>
-          
         </div>
       </div>
     </section>
@@ -175,23 +171,18 @@
             page-size="perPageFavorites" 
             total="totalFavorites"
             paging-action="changePageFavorites(page, pageSize, total)">
-            </paging>
+          </paging>
         </nav>
+        <?php if(Auth()->user()->gender=="male"): ?>
+        <div clas="menu-toggle">
+          <a href ="<?php echo e(url('offers')); ?>"><button style = "background-color:#f21d84; color:white;padding:10px 10px;float:right;">Access ALL Private 
+            Galleries
+            </button>
+          </a>
+        </div>
       </div>
-<<<<<<< HEAD
-      <?php if(Auth()->user()->gender=="male"): ?>
-=======
->>>>>>> 887068b544c9be807a467804041d21919c5b44d1
-      <div style = "float:right">
-        <button style = "background-color: #f21d84; color:white;margin-right: 170px;padding:10px 25px;">Access ALL Private Galleries
-        </button>
-      </div>
-<<<<<<< HEAD
       <?php endif; ?>
-=======
->>>>>>> 887068b544c9be807a467804041d21919c5b44d1
-    </section>
-    
+     </section>
     <!--Female Notice--->
     <div class="wrap" data-ng-if="user.gender == 'female'">
       <div class="highlight">

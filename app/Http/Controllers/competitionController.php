@@ -111,11 +111,12 @@ class competitionController extends Controller
 
     public function confirm_vote(Request $request)
     {
-        $confirm_vote = $request->confirm_vote;
-        $competitionid = $request->competitionid;
-        $competition_userid = $request->competition_userid;
-        $voter_id = Auth::user()->id;
-        $voter= competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
+        $data               = Input::all();
+        $competitionid     = $data['competition_id']['0']['0'];
+        $competition_userid = $data['user_id']['0']['0'];
+        $confirm_vote       = $request->confirm_vote;
+        $voter_id           = Auth::user()->id;die;
+        $voter_id           = competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
         $getdata = competition_user::getdata();
         $voter_count = competition_user::vote_count($voter_id);
         $showdate= competition_user::showdate();

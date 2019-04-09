@@ -160,16 +160,18 @@
               <li><a class="@if(Route::is('dashboard') || Route::is('dashboard')) active @endif" href="{{ URL::route('dashboard') }}"><i class="ion-home" ></i>Dashboard</a></li>
                @if(Auth()->user()->gender=="female")
               <li><a class="@if(Route::is('services') || Route::is('services')) active @endif" href="{{ URL::route('services') }}"><i class="ion-ios-rose" ></i>Services </a>
-				<span ng-if="pending_count">
-                    <span class="small-notif" ng-if="pending_count<100" >[[pending_count]]</span>
-              
-                    <span class="small-notif larger" ng-if="pending_count>99">99+</span>
+				        <span ng-if="pending_count">
+                  <span class="small-notif" ng-if="pending_count<100" >[[pending_count]]
+                  </span>
+                  <span class="small-notif larger" ng-if="pending_count>99">
+                  99+
+                  </span>
                 </span>
               </li>
                  @endif
 				 @if(Auth()->user()->gender=="male")
                 <li>
-                  <a class="@if(Route::is('competitions') || Route::is('competitions')) active @endif" href="{{URL ::route('competitions')}}"><i class="ion-home"></i> Competitions </a>
+                  <a class="@if(Route::is('competitions') || Route::is('competitions')) active @endif" href="{{URL ::route('competitions')}}"><i class="fa fa-tasks"></i> Competitions </a>
                 </li>
                 @endif
               <li>
@@ -248,12 +250,12 @@
                 <hr>
                 @if(Auth::user()->gender == 'female')
         				<a href="{{ URL::route('twit.account') }}"><i class="ion-social-twitter"></i>Auto-tweets</a>
-                 <hr>
+                <hr>
+                  <a href="{{ URL::route('competitions') }}"><i class="fa fa-tasks"></i>Competitions</a>
+                <hr>
                 @endif
                
                 <a href="{{ URL::route('supersubs') }}"><i class="ion-key"></i>Supersub</a>
-                <hr>
-                  <a href="{{ URL::route('competitions') }}"><i class="ion-home"></i>Competitions</a>
                 <hr>
                 <a href="{{ URL::route('account.details') }}"><i class="ion-key"></i>Account details</a>
                 <hr>
@@ -270,16 +272,6 @@
                 <a href="{{ URL::route('logout') }}"><i class="ion-android-exit"></i>Logout</a>
               </div>
             </div> <!--end of drop menu div container-->
-            @if(Auth::user()->gender == 'male')
-              @if($pgp_notification >= 1000)
-                <span class="pgp_counter"><img src="{{ URL::to('/') }}/img/PGa.png" alt="Img" width="30px"></span>
-              @else
-                <span class="pgp_counter">PGP</br>
-                  <?php printf("%04d", $pgp_notification); ?>
-                </span>
-              @endif
-            @endif
-            
           </div>
 
         </div>

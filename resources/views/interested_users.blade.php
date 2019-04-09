@@ -5,9 +5,9 @@ foreach ($interested_users as $user) {
 	<div class="col-md-12">
 	  <div>	
 	  	@if($user->img == '')
-	  		<img class="view_pro_pic" src="img/59ce3646d240c.png" />
+	  		<img class="view_pro_pic" src="img/female.jpg" />
 	  	@else	
-	    	<img class="view_pro_pic" src="img/{{$user->img}}" />
+	    	<img class="view_pro_pic" src="img/users/'. {{ $user->username }} . '/previews/'. {{$user->img}}" />
 	    @endif
 	  </div>
 	  <div class="view_users_link">

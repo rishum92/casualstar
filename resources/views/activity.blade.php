@@ -267,20 +267,14 @@
 	<!-- view profile end -->
 	 @endif
   </div>
-<<<<<<< HEAD
    @if(Auth()->user()->gender=="male")
   <center>
-     <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
+    <a href ="{{url('offers')}}">
+      <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private Galleries
      </button>
+    </a>
   </center>
   @endif
-   
-=======
-  <center>
-     <button style = "background-color: #f21d84; color:white; padding:10px 25px;">Access ALL Private    Galleries
-     </button>
-  </center>
- 
  @if($check_count_point >= 1000 && Auth::user()->pgp_status == 0)
   <div class="list-group text-danger"  ng-if="user.verify_check == 'VERIFIED'">
     <div class="list-group-item list-group-item-sucess"><h5 class="text-center text-success">Click <a class="cursor-pointer" data-toggle="modal" data-target="#activeConfirmModal">Activate Now</a> to start your 24 hours of free Private Gallery Access.</h5></div>
@@ -306,6 +300,4 @@
     </div>
   </div>
 </div>
->>>>>>> 887068b544c9be807a467804041d21919c5b44d1
-
 @endsection

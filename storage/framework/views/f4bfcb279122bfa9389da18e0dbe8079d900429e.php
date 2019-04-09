@@ -159,16 +159,18 @@
               <li><a class="<?php if(Route::is('dashboard') || Route::is('dashboard')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('dashboard')); ?>"><i class="ion-home" ></i>Dashboard</a></li>
                <?php if(Auth()->user()->gender=="female"): ?>
               <li><a class="<?php if(Route::is('services') || Route::is('services')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('services')); ?>"><i class="ion-ios-rose" ></i>Services </a>
-				<span ng-if="pending_count">
-                    <span class="small-notif" ng-if="pending_count<100" >[[pending_count]]</span>
-              
-                    <span class="small-notif larger" ng-if="pending_count>99">99+</span>
+				        <span ng-if="pending_count">
+                  <span class="small-notif" ng-if="pending_count<100" >[[pending_count]]
+                  </span>
+                  <span class="small-notif larger" ng-if="pending_count>99">
+                  99+
+                  </span>
                 </span>
               </li>
                  <?php endif; ?>
 				 <?php if(Auth()->user()->gender=="male"): ?>
                 <li>
-                  <a class="<?php if(Route::is('competitions') || Route::is('competitions')): ?> active <?php endif; ?>" href="<?php echo e(URL ::route('competitions')); ?>"><i class="ion-home"></i> Competitions </a>
+                  <a class="<?php if(Route::is('competitions') || Route::is('competitions')): ?> active <?php endif; ?>" href="<?php echo e(URL ::route('competitions')); ?>"><i class="fa fa-tasks"></i> Competitions </a>
                 </li>
                 <?php endif; ?>
               <li>
@@ -247,12 +249,12 @@
                 <hr>
                 <?php if(Auth::user()->gender == 'female'): ?>
         				<a href="<?php echo e(URL::route('twit.account')); ?>"><i class="ion-social-twitter"></i>Auto-tweets</a>
-                 <hr>
+                <hr>
+                  <a href="<?php echo e(URL::route('competitions')); ?>"><i class="fa fa-tasks"></i>Competitions</a>
+                <hr>
                 <?php endif; ?>
                
                 <a href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-key"></i>Supersub</a>
-                <hr>
-                  <a href="<?php echo e(URL::route('competitions')); ?>"><i class="ion-home"></i>Competitions</a>
                 <hr>
                 <a href="<?php echo e(URL::route('account.details')); ?>"><i class="ion-key"></i>Account details</a>
                 <hr>
@@ -269,16 +271,6 @@
                 <a href="<?php echo e(URL::route('logout')); ?>"><i class="ion-android-exit"></i>Logout</a>
               </div>
             </div> <!--end of drop menu div container-->
-            <?php if(Auth::user()->gender == 'male'): ?>
-              <?php if($pgp_notification >= 1000): ?>
-                <span class="pgp_counter"><img src="<?php echo e(URL::to('/')); ?>/img/PGa.png" alt="Img" width="30px"></span>
-              <?php else: ?>
-                <span class="pgp_counter">PGP</br>
-                  <?php printf("%04d", $pgp_notification); ?>
-                </span>
-              <?php endif; ?>
-            <?php endif; ?>
-            
           </div>
 
         </div>

@@ -4,31 +4,43 @@
 
 <div class="profile-container" data-ng-controller="UserController" data-ng-init="username='{{$username}}'">
 <div class="loader" data-ng-if="loadingWinks" style="position: fixed;">
-        <div class="spinner">
-          <img src="../img/ring.gif" alt="loader" />
-        </div>
-      </div> 
-    <section class="profile-main" data-ng-if="userLoaded">
-        <div class="profile-wrap">
-            <div id="userPhotoProfile">
-                <div class="image" lightgallery data-src="[[getUserPhotoUrl(user.img)]]">
-                    <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+    <div class="spinner">
+      <img src="../img/ring.gif" alt="loader" />
+    </div>
+</div>
+
+<section class="profile-main" data-ng-if="userLoaded">
+    <div class="pgp_icon">
+        @if(Auth::user()->gender == 'male')
+        @if($pgp_notification >= 1000)
+            <span class="pgp_counter"><img src="{{ URL::to('/') }}/img/PGa.png" alt="Img" width="30px"></span>
+        @else
+            <span class="pgp_counter">PGP<br>
+                <?php printf("%04d", $pgp_notification); ?>
+            </span>
+        @endif
+        @endif
+    </div>
+    <div class="profile-wrap">
+        <div id="userPhotoProfile">
+            <div class="image" lightgallery data-src="[[getUserPhotoUrl(user.img)]]">
+                <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
                         <!-- <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='female']]" src="{{ URL::to('/') }}/img/female.jpg" alt="profile pic"/>
 
                         <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='male']]" src="{{ URL::to('/') }}/img/male.jpg" alt="profile pic"/> -->
-                        <div ng-switch="user.gender">
-                          <div ng-switch-when="female">
-                              <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{ URL::to('/') }}/img/female.jpg" alt="profile pic"/>
-                          </div>
-                          <div ng-switch-when="male">
-                              <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{ URL::to('/') }}/img/male.jpg" alt="profile pic"/>
-                          </div>
+                    <div ng-switch="user.gender">
+                        <div ng-switch-when="female">
+                            <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{ URL::to('/') }}/img/female.jpg" alt="profile pic"/>
                         </div>
-                    </a>
-                    <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
-                        <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic"/>
-                    </a>
-                </div><!--
+                        <div ng-switch-when="male">
+                            <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="{{ URL::to('/') }}/img/male.jpg" alt="profile pic"/>
+                        </div>
+                    </div>
+                </a>
+                <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
+                    <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic"/>
+                </a>
+            </div><!--
 				@if(Auth()->user()->title!="ADMIN")
 				<div ng-if="[[user.verify_check]] == 'VERIFIED'" class="col-md-3 col-lg-3 col-sm-3 col-xs-3 col-md-offset-5">
 				  <i class="fa fa-check edit-button" aria-hidden="true">Verified</i>

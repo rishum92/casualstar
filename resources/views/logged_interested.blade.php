@@ -4,9 +4,9 @@
   <div class="col-md-12">
     <div> 
       @if($logged_user->img == '')
-      <img class="view_pro_pic" src="img/59ce3646d240c.png" />
+      <img class="view_pro_pic" src="img/female.jpg" />
       @else
-      <img class="view_pro_pic" src="img/{{ $logged_user->img }}" />
+      <img class="view_pro_pic" src="img/users/'.{{ $logged_user->username }}. '/previews/'. {{$logged_user->img}}" />
       @endif
     </div>
     <div class="view_users_link">

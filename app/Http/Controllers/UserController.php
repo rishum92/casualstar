@@ -17,6 +17,7 @@ use App\Models\Online;
 use App\Models\Activity;
 use App\Models\DonationAttempt;
 use App\Models\Notification;
+use App\offer_post;
 use DateTime;
 use Geotools;
 
@@ -30,6 +31,7 @@ class UserController extends BaseController
 		$age = $from->diff($to)->y;
 
 		$count = 0;
+		$pgp_notification  = offer_post::count_points(Auth::user()->id);
 		
 	    if($user) {
 	   //  	if((Auth::user()->gender == $user->gender && Auth::user()->gender == 'male') && Auth::user()->title !== 'ADMIN' && !isset($explore)) {
@@ -92,7 +94,7 @@ class UserController extends BaseController
 			      $subscribed = 1;
 			    }
 
-		    	return view('visitorProfile', ['username' => $user->username, 'isOnline' => $isOnline, 'lastLogin' => $lastLogin, 'similarUsers' => $similarUsers, 'subscribed' => $subscribed, 'plans' => $plans, 'user' => $user]);
+		    	return view('visitorProfile', ['username' => $user->username, 'isOnline' => $isOnline, 'lastLogin' => $lastLogin, 'similarUsers' => $similarUsers, 'subscribed' => $subscribed, 'plans' => $plans, 'user' => $user,'pgp_notification'=>$pgp_notification]);
 			} elseif($user->status == 0) {
 				if(Auth::user()) {
     				return redirect()->route('dashboard')->with('message', Lang::get('messages.accountDeactivated'))->with('messageType', 'warning');

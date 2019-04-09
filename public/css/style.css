@@ -47,15 +47,22 @@ table {
 	border-spacing: 0;
 }
 .pgp_counter{
-    border: 1px solid;
-    padding: 1%;
-    margin-left: 5px;
-    font-weight: bold;
-    color: #f21d84;
+  border:1px solid;
+  font-weight:bold;
+  color:#f21d84;
+  float:right;
+  margin-top:28px;
+  margin-right:-9px;
+  padding:8px;
+}
+.pgp_icon{
+  position:absolute;
+  right:25px;
 }
 .info_icon{
     text-align: end;
     color: #d61857;
+    margin-right:-15px;
 }
 .info_icon a{
     

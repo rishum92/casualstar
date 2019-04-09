@@ -129,7 +129,8 @@ class ProfileController extends BaseController
 
   public function profile() {
     $user = Auth::user();
-    return view('profile', ['user' => $user, 'username' => $user->username]);
+    $pgp_notification  = offer_post::count_points(Auth::user()->id);
+    return view('profile', ['user' => $user, 'username' => $user->username,'pgp_notification'=>$pgp_notification]);
   }
 
   public function activity() {

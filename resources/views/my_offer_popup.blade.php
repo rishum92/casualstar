@@ -10,7 +10,7 @@
                     <div class="row"> 
                     <div class="col-md-12">
                         <div> 
-                          <img class="view_pro_pic" src="img/59ce3646d240c.png" />
+                          <img class="view_pro_pic" src="img/female.jpg" />
                         </div>
                         <div class="view_users_link">
                            <h3><a href="#" class="view_users_link"><span>username</span></a></h3>
