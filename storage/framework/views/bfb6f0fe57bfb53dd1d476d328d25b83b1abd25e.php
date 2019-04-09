@@ -23,11 +23,13 @@
             </div>
             <div class="wrap_btn">
               <?php echo $__env->make('modals.vote_popup', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+              <input type="hidden" name="modalcompetitionid" id="modalcompetitionid" value="[[comp.competition_id]]">
+              <input type="hidden" name="competition_userid" id="competition_userid" value="[[comp.user_id]]">
               <button class="page_btn" type="button" ng-click ="openModal('vote_popup')">
                 <i class="fa fa-heart"></i> Vote Me
               </button>
               <?php echo $__env->make('modals.commentcompetition', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-              <button ng-controller = "CommentController" ng-click="viewThisPhoto([[comp.user_profile]])"
+              <button data-ng-click="viewThisPhoto([[comp.user_id]])"
               class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
               </button>
             </div>

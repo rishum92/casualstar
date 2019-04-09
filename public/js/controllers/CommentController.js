@@ -72,7 +72,7 @@ CommentCtrl.controller('CommentController',function($scope, $http, $location, $r
     });
   }
 
-  $scope.postComment = function(photo) {
+  $scope.postComment = function(user_id) {alert(user_id)
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
       $http.post('/api/photo-comment', {photo_id: photo.id, user_id: photo.user.id, comment: $scope.comment}).then(function(response) {

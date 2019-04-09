@@ -563,12 +563,58 @@ first 10 interests will be logged for each Offer.</center>
                           echo date("d/m/Y", strtotime($interested->created_at) ); ?>
                       </span>
                     </a> &nbsp; 
-                    <a href="<?php echo e(url('delete_logged_interest/'.$interested->id)); ?>">
+                    <a onclick = "delete_loggedoffer(<?php echo e($interested->id); ?>)">
                       <span><i class="fa fa-trash"></i></span>
                     </a>
                 </div>
             </div>
           </div>
+          <!--Delete Logged Offer Start-->
+          <script>
+            function delete_loggedoffer(id) {
+            $('#delete_loggedoffer_popup').modal('show');
+            $('#logged_interest_id').val(id);
+              }
+          </script>
+              <!--Delete Myoffer Confirmation Popup Start-->
+              <div class="modal fade" id="delete_loggedoffer_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to delete this interested offer?
+                    </div>
+                    <input type="hidden" name="logged_interest_id" id="logged_interest_id">
+                    <div class="modal-footer">
+                      <button class="btn btn-primary" data-dismiss="modal" id="confirm_offer">Yes</button>
+                      <button class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!--Delete Myoffer Confirmation Popup End-->
+            <!--Delete Myoffer Confirmation PopupAjax Start-->
+            <script>
+              $("#confirm_offer").click(function() {
+                var logged_interest_id = $("#logged_interest_id").val();
+                  $.ajax({
+                  type: 'GET',
+                  url: 'delete_logged_interest/'+logged_interest_id,
+                  success:function(data)
+                  {
+                    location.reload();
+                  }
+                });
+              });
+            </script>
+            <!--Delete Myoffer Confirmation PopupAjax Close-->
+            <!--Delete Logged Offer Start-->
+
           <?php endforeach; ?>
         </div>
         <!-- popup my offer post start -->

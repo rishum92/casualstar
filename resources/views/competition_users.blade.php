@@ -23,11 +23,13 @@
             </div>
             <div class="wrap_btn">
               @include('modals.vote_popup')
+              <input type="hidden" name="modalcompetitionid" id="modalcompetitionid" value="[[comp.competition_id]]">
+              <input type="hidden" name="competition_userid" id="competition_userid" value="[[comp.user_id]]">
               <button class="page_btn" type="button" ng-click ="openModal('vote_popup')">
                 <i class="fa fa-heart"></i> Vote Me
               </button>
               @include('modals.commentcompetition')
-              <button ng-controller = "CommentController" ng-click="viewThisPhoto([[comp.user_profile]])"
+              <button data-ng-click="viewThisPhoto([[comp.user_id]])"
               class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
               </button>
             </div>

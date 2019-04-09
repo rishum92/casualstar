@@ -37,7 +37,7 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
   //   });
   }
 
-  $scope.postComment = function(user_id) {alert(user_id)
+  $scope.postComment = function(photo) {
     if($scope.comment.length > 0) {
       $('#postCommentButton').attr('disabled', 'disabled');
       $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {

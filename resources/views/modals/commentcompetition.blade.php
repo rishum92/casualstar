@@ -1,4 +1,5 @@
-
+<?php //echo "<pre>";print_r($competitionuser);die;?>
+@foreach($competitionuser as $user)
 <div class="modal fade" id="viewPhotoModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -34,7 +35,7 @@
               <!-- [[photoComments.length]] -->
               <form data-ng-submit="postComment(viewPhoto['data'].photo)">
                 <textarea data-ng-model="comment" maxlength="750" enter="postComment(viewPhoto['data'].photo)" shift class="form-control" placeholder="Type a comment here..."></textarea>
-          <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment([[comp.user_id]])" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
+          <button ng-disabled="comment.length == 0" type="button" id="postCommentButton" ng-click="postComment({{$user->user_profile}})" ng-disabled="viewPhoto.$invalid" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
               </form>
               <ul class="conversation">
                 <li class="message block-flex wrap-flex" data-ng-class="partner" data-ng-repeat="comment in photoComments">
@@ -58,4 +59,4 @@
     </div>
   </div>
 </div>
-
+@endforeach

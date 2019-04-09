@@ -173,7 +173,7 @@ function confirm_vote_popup(id,competition_userid) {
  $('#exampleModal').modal('show');
 }
 </script>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -197,7 +197,7 @@ function confirm_vote_popup(id,competition_userid) {
 </div>
 <span id = "messagedisplay" style = "display:none;">
   Thank you for voting. +data[0].username+ is now in position 23 in the competition.You also have one more vote remaining.
-</span>
+</span> -->
 <!-- vote popup end -->
 <!--Delete Confirmation Popup Start-->
 <script>
@@ -284,29 +284,29 @@ if (s >= y) {
   }); 
 
   // for confirmation vote
-  $("#confirm_vote").click(function() {
-    var confirm_vote = $("#confirm_vote").val();
-    var competitionid = $("#modalcompetitionid").val(); 
-    var competition_userid = $("#competition_userid").val();
-    var competition_username = $("competition_username").val();
-    $.ajax({
-      url: 'confirm_vote',
-      type: 'POST',
-      data: {
-              "_token"              : "<?php echo e(csrf_token()); ?>",
-              "confirm_vote"        : confirm_vote,
-              "competitionid"       : competitionid,
-              "competition_userid"  : competition_userid,
-            },
-      success:function(data)
-      {
-        $("#messagedisplay").removeAttr("style");
-        //$("#messagedisplay").css({"display":"block"});
-        $(".wrap_prodiv").html(data);
-        //location.reload();
-      }
-    });
-  });
+  // $("#confirm_vote").click(function() {
+  //   var confirm_vote = $("#confirm_vote").val();
+  //   var competitionid = $("#modalcompetitionid").val(); 
+  //   var competition_userid = $("#competition_userid").val();
+  //   var competition_username = $("competition_username").val();
+  //   $.ajax({
+  //     url: 'confirm_vote',
+  //     type: 'POST',
+  //     data: {
+  //             "_token"              : "<?php echo e(csrf_token()); ?>",
+  //             "confirm_vote"        : confirm_vote,
+  //             "competitionid"       : competitionid,
+  //             "competition_userid"  : competition_userid,
+  //           },
+  //     success:function(data)
+  //     {
+  //       $("#messagedisplay").removeAttr("style");
+  //       //$("#messagedisplay").css({"display":"block"});
+  //       $(".wrap_prodiv").html(data);
+  //       //location.reload();
+  //     }
+  //   });
+  // });
 
   //for confirmation delete
 
