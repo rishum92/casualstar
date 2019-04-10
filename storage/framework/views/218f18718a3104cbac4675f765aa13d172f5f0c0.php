@@ -102,7 +102,6 @@
             </div>
             
             <div class="col-lg-3 col-md-3 col-xs-4" data-ng-repeat = "user in users">
-              [[user.img]] 
               <div data-ng-if="totalBrowse > 0" class="member">
                 <div class="image">
                   <div data-ng-hide="!user.online" class="online-indicator"></div>
@@ -225,4 +224,5 @@ Ensure your email address is correct so you do not miss out on any possible Trib
 
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.master', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

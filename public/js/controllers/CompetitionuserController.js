@@ -176,7 +176,7 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
 
   $scope.getPhotoPreviewUrl = function(photo) {
     if(photo != undefined) {
-      for(var i=0;i<3;i++)
+     
       {
       return '/img/competition_user/' + $scope.competition_user['data'][i].username + '/previews/' + photo;
     }
