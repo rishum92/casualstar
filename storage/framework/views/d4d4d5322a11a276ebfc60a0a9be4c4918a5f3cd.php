@@ -25,22 +25,23 @@
             </div>  
           </form>
           <div class="center_text">
-              <?php  if(Auth::check()) {?>
-              <?php if(Auth::user()->username == 'Admin'): ?>
-                <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="<?php echo e($get_title); ?>">
-                <br />
-                Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="<?php echo e($showdate); ?>">GMT
-              <?php else: ?>
-                <input class = "titlediv" type="text" value="<?php echo e($get_title); ?>" readonly="true">
-                <br />
-                Expires:<input type="text" class = "inputfield" value = "<?php echo e($showdate); ?>"readonly="true">GMT
-              <?php endif; ?>
-              <?php } ?>
-            </div>
-
-           <?php    
-           if(Auth::check()) {
-             if(empty($exists) || date('d/m/Y') == $showdate)
+            <?php  if(Auth::check()) {?>
+                <?php //echo "<pre>";print_r($get_title);die;?>
+            <?php if(Auth::user()->username == 'Admin'): ?>
+              <input class = "titlediv" type="text" id="competition_title" name = "competition_title" value="<?php echo e($get_title); ?>">
+              <br />
+              Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="<?php echo e($showdate); ?>">GMT
+            <?php else: ?>
+              <input class = "titlediv" type="text" value="<?php echo e($get_title); ?>" readonly="true">
+              <br />
+              Expires:<input type="text" class = "inputfield" value = "<?php echo e($showdate); ?>"readonly="true">GMT
+            <?php endif; ?>
+            <?php } ?>
+          </div>
+          <br />
+          <?php    
+          if(Auth::check()) {
+            if(empty($exists) || date('d/m/Y') == $showdate)
               { ?>
                 <?php if(Auth::user()->gender == 'female'): ?>
                 <!--Image Uploader Start-->
@@ -98,18 +99,16 @@
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
             <div class="wrap_prodiv" ng-controller="UserCompetitionController">
-                <?php echo $__env->make('competition_users', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                <!--Competition User Div Close-->
-                <!--Terms and conditions -->
-                <div>
-                  <?php echo $__env->make('modals.termsmodel', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                    <button type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
-                    Terms & Conditions
-                    </button>
-                </div>
-                <!--Terms and conditions -->
-              </div>
+              <?php echo $__env->make('competition_users', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <!--Competition User Div Close-->
+            <!--Terms and conditions -->
+                 <?php echo $__env->make('modals.termsmodel', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                <button ng-controller = "UserCompetitionController" type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
+                  Terms & Conditions
+                </button>
+            <!--Terms and conditions -->
             </div>
+        </div>
     </div>
 </section>
 
@@ -279,6 +278,23 @@ if (s >= y) {
         }
       });
     });
+  // change competition title
+   //change the title
+  $("#competition_title").blur(function() {
+    var title = $("#competition_title").val(); 
+    $.ajax({
+      url: 'edit_title',
+      type: 'POST',
+      data: {
+              "_token" : "<?php echo e(csrf_token()); ?>",
+              "title"   : title,
+            },
+      success:function(data)
+      {
+              
+      }
+    });
+  }); 
   //amount edit
   $("#firstplace_amount").blur(function() {
     var firstplace_amount = $("#firstplace_amount").val();

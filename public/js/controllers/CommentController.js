@@ -39,8 +39,8 @@ CommentCtrl.controller('CommentController',function($scope, $http, $location, $r
     }
   }
 
-  $scope.viewThisPhoto = function(user_id) {
-    $scope.openModal('viewPhoto', 'user_id', user_id);
+  $scope.viewThisPhoto = function(photo) {
+    $scope.openModal('viewPhoto', 'photo', photo);
 
     $scope.user = $scope.$parent.user;
 

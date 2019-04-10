@@ -15,6 +15,16 @@ body a:focus{
 
 
 /*=======  page css satrt here===========*/
+.delete_icon_style
+{
+  float:right;
+  color:#d61857;
+}
+.delete_icon_div
+{
+  margin-top: 232px; 
+  margin-right: -13px;
+}
 .iframecss
 {
   display:block;
@@ -133,11 +143,11 @@ body a:focus{
 }
 .titlediv
 {
-  border: none;
-  font-size: 20px;
-  text-align: center;
-  width: 347px;
-  padding: 3px;
+  border:none;
+  font-size:20px;
+  text-align:center;
+  width:100%;
+  padding:3px;
 }
 .inputfield
 {

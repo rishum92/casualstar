@@ -168,7 +168,7 @@
                  <?php endif; ?>
 				 <?php if(Auth()->user()->gender=="male"): ?>
                 <li>
-                  <a class="<?php if(Route::is('competitions') || Route::is('competitions')): ?> active <?php endif; ?>" href="<?php echo e(URL ::route('competitions')); ?>"><i class="ion-home"></i> Competitions </a>
+                  <a class="<?php if(Route::is('competitions') || Route::is('competitions')): ?> active <?php endif; ?>" href="<?php echo e(URL ::route('competitions')); ?>"><i class="fa fa-tasks"></i> Competitions </a>
                 </li>
                 <?php endif; ?>
               <li>
@@ -247,8 +247,8 @@
                 <hr>
                 <?php if(Auth::user()->gender == 'female'): ?>
         				<a href="<?php echo e(URL::route('twit.account')); ?>"><i class="ion-social-twitter"></i>Auto-tweets</a>
-                 <hr>
-                  <a href="<?php echo e(URL::route('competitions')); ?>"><i class="ion-home"></i>Competitions</a>
+                <hr>
+                  <a href="<?php echo e(URL::route('competitions')); ?>"><i class="fa fa-tasks"></i>Competitions</a>
                 <hr>
                 <?php endif; ?>
                

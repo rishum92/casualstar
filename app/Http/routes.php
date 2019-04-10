@@ -227,4 +227,4 @@
 	Route::get('expand_image/{id}','competitionController@expand_image');
 	Route::post('amount_edit','competitionController@amount_edit');
 	Route::resource('competition_user', 'CompetitionUserController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
-
+	Route::post('edit_title','competitionController@edit_title');

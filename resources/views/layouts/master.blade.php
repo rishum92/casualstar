@@ -169,7 +169,7 @@
                  @endif
 				 @if(Auth()->user()->gender=="male")
                 <li>
-                  <a class="@if(Route::is('competitions') || Route::is('competitions')) active @endif" href="{{URL ::route('competitions')}}"><i class="ion-home"></i> Competitions </a>
+                  <a class="@if(Route::is('competitions') || Route::is('competitions')) active @endif" href="{{URL ::route('competitions')}}"><i class="fa fa-tasks"></i> Competitions </a>
                 </li>
                 @endif
               <li>
@@ -248,8 +248,8 @@
                 <hr>
                 @if(Auth::user()->gender == 'female')
         				<a href="{{ URL::route('twit.account') }}"><i class="ion-social-twitter"></i>Auto-tweets</a>
-                 <hr>
-                  <a href="{{ URL::route('competitions') }}"><i class="ion-home"></i>Competitions</a>
+                <hr>
+                  <a href="{{ URL::route('competitions') }}"><i class="fa fa-tasks"></i>Competitions</a>
                 <hr>
                 @endif
                

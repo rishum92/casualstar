@@ -1,28 +1,28 @@
 
 <div class="modal fade" id="vote_popupModal" tabindex="-1" role="dialog" aria-labelledby="addPhotoModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i>
-        </button>
-        <h2>Confirmation</h2>
-      </div>
-      <div class="modal-body">
-        Click Vote Now, to confirm your vote.
-      </div>
-      <input type="hidden" name="modalcompetitionid" id="modalcompetitionid">
-      <input type="hidden" name="competition_userid" id="competition_userid">
-      <input type="hidden" name="competition_username" id="competition_username">
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary" data-dismiss="modal" target="" id="confirm_vote" value="1">Vote Now</button>
-      </div>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i>
+                </button>
+                <h4>Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                Click Vote Now, to confirm your vote.
+            </div>
+            <input type="hidden" name="competition_userid" id="competition_userid" value="[[users.user_id]]">
+            <input type="hidden" name="modalcompetitionid" id="modalcompetitionid" value="[[users.competition_id]]">
+            <input type="hidden" name="competition_username" id="competition_username">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" id="confirm_vote" value="1">Vote Now</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
 <script>
- $("#confirm_vote").click(function() {
+    $("#confirm_vote").click(function() {
     var confirm_vote = $("#confirm_vote").val();
     var competitionid = $("#modalcompetitionid").val(); 
     var competition_userid = $("#competition_userid").val();
@@ -43,5 +43,4 @@
       }
     });
   });
-
 </script>

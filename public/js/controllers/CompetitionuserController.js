@@ -4,50 +4,55 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
   
   $http.get('competition_user').then(function(response) {
   $scope.competition_user = response.data;
-  console.log($scope.competition_user);
+  console.log($scope.competition_user['data']);
   //sssalert($scope.competition_users);
 
-  //Comment Section Start
-  $scope.viewThisPhoto = function(user_id) {
+   $scope.viewThisPhoto = function(user_id) { alert(user_id);
+
     $scope.openModal('viewPhoto', 'user_id', user_id);
+  console.log($scope.$parent)
     $scope.user = $scope.$parent.user;
-   
-   $scope.getLikes(user_id);
+    $scope.user.user_id = user_id;
+
+    $scope.getLikes(user_id);
     $scope.getComments(user_id);
 
     $scope.refreshInterval = setInterval(function() {
       if(!$scope.refreshPaused) {
         $scope.getComments(user_id);
-        $scope.getLikes(photo);
+        $scope.getLikes(user_id);
       } 
     }, 5000);
   }
 
-  $scope.getLikes = function(user_id) {
+
+  $scope.getLikes = function(user_id) { 
     console.log('refreshing likes');
-    $http.get('/api/photo-like/' + photo.id).then(function(response) {
+    $http.get('/api/photo-like/' + user_id).then(function(response) {
       $scope.photoLikes = response.data;
     });
   }
 
   $scope.getComments = function(user_id) {
     console.log('refreshing comments');
-    $http.get('/api/photo-comment/' + photo.id).then(function(response) {
+    $http.get('/api/photo-comment/' + user_id).then(function(response) {
       $scope.photoComments = response.data;
     });
   }
 
- $scope.postComment = function(user_id) {
-    if($scope.comment.length > 0) {
+ 
+  $scope.postComment = function(user_id) { alert(user_id)
+    if($scope.comment.length > 0) { 
       $('#postCommentButton').attr('disabled', 'disabled');
-      $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
+      $http.post('/api/profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
         notify(response.data.messageType, response.data.message);
-        $scope.getComments(user_id);
+        //$scope.getComments(user_id);
         $scope.comment = '';
         $('#postCommentButton').removeAttr('disabled');
       });
     }
   }
+//comment end
   //Comment Section Close
 
   $scope.openModal = function(modalName, optionKey, optionValue) {
@@ -153,9 +158,9 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
   $scope.getUserPhotoPreviewUrl = function(user) {
     if(competition_user != undefined) {
       if(competition_user.img != undefined) {
-        return '/img/competition_users/' + competition_user.username + '/previews/' + competition_user.user_profile;
+        return '/img/competition_users/' + $scope.competition_user['data'].username + '/previews/' + competition_user.user_profile;
       } else {
-        return '/img/' + competition_user.gender + '.jpg';
+        return '/img/' + 'female.jpg';
       }
     }
   }
@@ -163,17 +168,20 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
   $scope.getPhotoUrl = function(photo) {
 
     if(photo != undefined) {
-      return '/img/competition_user/' + $scope.competition_user.username + '/previews/' + photo;
+      return '/img/competition_user/' + $scope.competition_user['data'].username + '/previews/' + photo;
     } else {
-      //return '/img/' +'female.jpg';
+      return '/img/' +'female.jpg';
     }
   }
 
   $scope.getPhotoPreviewUrl = function(photo) {
     if(photo != undefined) {
-      return '/img/competition_user/' + $scope.competition_user.username + '/previews/' + photo;
+      for(var i=0;i<3;i++)
+      {
+      return '/img/competition_user/' + $scope.competition_user['data'][i].username + '/previews/' + photo;
+    }
     } else {
-      //return '/img/' + 'female.jpg';
+      return '/img/' + 'female.jpg';
     }
   }
 

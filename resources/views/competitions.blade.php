@@ -28,22 +28,23 @@
             </div>  
           </form>
           <div class="center_text">
-              <?php  if(Auth::check()) {?>
-              @if(Auth::user()->username == 'Admin')
-                <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="{{$get_title}}">
-                <br />
-                Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
-              @else
-                <input class = "titlediv" type="text" value="{{$get_title}}" readonly="true">
-                <br />
-                Expires:<input type="text" class = "inputfield" value = "{{$showdate}}"readonly="true">GMT
-              @endif
-              <?php } ?>
-            </div>
-
-           <?php    
-           if(Auth::check()) {
-             if(empty($exists) || date('d/m/Y') == $showdate)
+            <?php  if(Auth::check()) {?>
+                <?php //echo "<pre>";print_r($get_title);die;?>
+            @if(Auth::user()->username == 'Admin')
+              <input class = "titlediv" type="text" id="competition_title" name = "competition_title" value="{{$get_title}}">
+              <br />
+              Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
+            @else
+              <input class = "titlediv" type="text" value="{{$get_title}}" readonly="true">
+              <br />
+              Expires:<input type="text" class = "inputfield" value = "{{$showdate}}"readonly="true">GMT
+            @endif
+            <?php } ?>
+          </div>
+          <br />
+          <?php    
+          if(Auth::check()) {
+            if(empty($exists) || date('d/m/Y') == $showdate)
               { ?>
                 @if(Auth::user()->gender == 'female')
                 <!--Image Uploader Start-->
@@ -101,18 +102,16 @@
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
             <div class="wrap_prodiv" ng-controller="UserCompetitionController">
-                @include('competition_users')
-                <!--Competition User Div Close-->
-                <!--Terms and conditions -->
-                <div>
-                  @include('modals.termsmodel')
-                    <button type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
-                    Terms & Conditions
-                    </button>
-                </div>
-                <!--Terms and conditions -->
-              </div>
+              @include('competition_users')
+            <!--Competition User Div Close-->
+            <!--Terms and conditions -->
+                 @include('modals.termsmodel')
+                <button ng-controller = "UserCompetitionController" type="button" class = "page_btn" data-ng-click="openModal('termsmodel')">
+                  Terms & Conditions
+                </button>
+            <!--Terms and conditions -->
             </div>
+        </div>
     </div>
 </section>
 
@@ -282,6 +281,23 @@ if (s >= y) {
         }
       });
     });
+  // change competition title
+   //change the title
+  $("#competition_title").blur(function() {
+    var title = $("#competition_title").val(); 
+    $.ajax({
+      url: 'edit_title',
+      type: 'POST',
+      data: {
+              "_token" : "{{ csrf_token() }}",
+              "title"   : title,
+            },
+      success:function(data)
+      {
+              
+      }
+    });
+  }); 
   //amount edit
   $("#firstplace_amount").blur(function() {
     var firstplace_amount = $("#firstplace_amount").val();
