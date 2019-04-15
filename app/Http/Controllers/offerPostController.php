@@ -10,20 +10,27 @@ use App\offer_post;
 use Redirect;
 use Auth;
 use Mail;
+use DateTime;
+use Carbon;
+
 
 class offerPostController extends Controller
 {
     //insert the post
     public function offer(Request $Request)
     {
-      $currency   = $Request->input('currency');
-      $rate   = $Request->input('offerrate');
-      $detail = $Request->input('offerdetails');
-      $user_id    =  Auth::user()->id;
+      
+      $currency     = $Request->input('currency');
+      $rate         = $Request->input('offerrate');
+      $detail       = $Request->input('offerdetails');
+      $user_id      =  Auth::user()->id;
       $user_name    =  Auth::user()->username;
-      $user_img    =  Auth::user()->img;
+      $user_img     =  Auth::user()->img;
+      date_default_timezone_set("Asia/Kolkata");
+      $date         =  date('Y-m-d H:i:s');
 
-      offer_post::addPost($rate,$detail,$user_id,$user_name,$user_img,$currency);
+      //print_r($date);die;
+      offer_post::addPost($rate,$detail,$user_id,$user_name,$user_img,$currency,$date);
       return redirect('offers')->with('message', 'Successfully Insert')->with('messageType', 'success');
 
     }
@@ -50,7 +57,7 @@ class offerPostController extends Controller
         $post_id       = $Request->id;
         $intrested_id  = Auth::user()->id;
         $check_result  = offer_post::checkStatus($post_id, $intrested_id);
-        
+        //echo "<pre>";print_r($check_result);die;
         if(empty($check_result))
         {
           $count_points = offer_post::interest_user($post_id, $intrested_id, $user_id);

@@ -6,7 +6,7 @@
       @if($logged_user->img == '')
       <img class="view_pro_pic" src="img/female.jpg" />
       @else
-      <img class="view_pro_pic" src="img/users/'.{{ $logged_user->username }}. '/previews/'. {{$logged_user->img}}" />
+      <img class="view_pro_pic" src="img/users/{{$logged_user->username}}/previews/{{$logged_user->img}}" />
       @endif
     </div>
     <div class="view_users_link">

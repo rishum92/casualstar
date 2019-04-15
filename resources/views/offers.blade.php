@@ -11,9 +11,10 @@
 
 @section('content')
 
-<?php date_default_timezone_set("Asia/Kolkata"); ?>
+<?php date_default_timezone_set("Asia/Kolkata");?>
  @if(Auth::user()->gender == 'male')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script>   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
 
  <!-- mal start -->
 <div data-ng-controller="SuperSubsController">
@@ -59,10 +60,15 @@
               <div class="form-group ">
                 <input type="text" class="form-control" maxlength="100" minlength="10" required="required" name="offerdetails"  placeholder="I would like to help with your bills."/>
                 <p class="info_icon">
-                <a href="#" data-toggle="tooltip" title="Use this box to briefly detail your desire for which you want a Femdom to fulfil. Examples: I desire a custom video of female in shower. Or, I wish to be owned. Or, I would like to help with your bills.etc">
-                  <i class="fa fa-info-circle" style="margin-right:-5px"></i>
+                <a href="#" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<div style='width:180px;'>Use this box to briefly detail your desire for which you want a Femdom to fulfil. Examples: I desire a custom video of female in shower. Or, I wish to be owned. Or, I would like to help with your bills.etc</div>">
+                  <i class="fa fa-info-circle"></i>
                 </a>
-              </p>
+                <script>
+                  $(document).ready(function(){
+                  $('[data-toggle="tooltip"]').tooltip();   
+                  });
+                </script>
+                </p>
               </div>
             </div>
             <div class="col-md-2">
@@ -76,6 +82,7 @@
       </div>
     </div>
   </div>
+  
   <!-- male end -->
   @else
    <!-- femal start -->
@@ -92,7 +99,7 @@ first 10 interests will be logged for each Offer.</center>
     <div class="wrap">
        <div class="row">
          <div class="col-md-12">
-           <?php // echo "<pre>"; print_r($offerpost);die; ?> 
+           <?php //echo "<pre>"; print_r($offerpost);die; ?> 
             @foreach($offerpost as $offers)
              <div class="col-md-6 offer_container_grid">
               
@@ -107,7 +114,7 @@ first 10 interests will be logged for each Offer.</center>
                         @if($offers->img == '')
                         <img src="img/male.jpg" class="offer_pro_pic" />
                         @else
-                        <img src="img/users/'. {{$offers->username}}. '/previews/' .$offers->img}}" class="offer_pro_pic" />
+                        <img src="img/users/{{$offers->username}}/previews/{{$offers->img}}" class="offer_pro_pic" />
                         @endif
                       </a>
                       <h3>
@@ -131,11 +138,11 @@ first 10 interests will be logged for each Offer.</center>
                      @else
 
                       @if($offers->intrest_count < 10)
-                       <a href="{{url('interested/'.$offers->post_id. '/' . $offers->id)}}">
-                       <button type="submit" class="btn btn-default btn_interested">
-                         <i class="fa fa-thumbs-up"></i> Interested
-                       </button>
-                       </a>
+                        <a href="{{url('interested/'.$offers->post_id. '/' . $offers->id)}}">
+                          <button type="submit" id="interested_btn{{$offers->post_id}}" class="btn btn-default btn_interested">
+                          <i class="fa fa-thumbs-up" ></i> Interested
+                          </button>
+                        </a>
                        @else
                        <a href="#">
                        <button type="submit" disabled class="btn btn-default btn_interested">
@@ -149,7 +156,7 @@ first 10 interests will be logged for each Offer.</center>
                       
                       <span class="viewOffers cursor-pointer" onclick="interestedcount(<?php echo $offers->post_id; ?>)">{{$offers->intrest_count}}</span>
                     <!-- pop call close -->  
-                   
+                      
                       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script>
                       @if($offers->intrest_count < 10)
                         <span class="post_remaining" id="clock{{$offers->post_id}}"></span>
@@ -158,12 +165,15 @@ first 10 interests will be logged for each Offer.</center>
                           $date_a = new DateTime(date("F j, Y, H:i:s"));
                           $date_b = new DateTime($offers->offer_post_date);
                           $interval = date_diff($date_a,$date_b);
+
                           $stop_date = date('Y-m-d H:i:s', strtotime($offers->offer_post_date . ' +1 day'));
                         
                           $interval_days = $interval->format('%a');
+                          //print_r($interval_days);
                           if ($interval_days > 0) 
                           {
                             echo '<font style="color:red;">Closed</font>';
+                            echo '<script> $("#interested_btn").attr("disabled","true"); </script>';
                           }
                           else
                           {
@@ -171,6 +181,7 @@ first 10 interests will be logged for each Offer.</center>
                           <script type="text/javascript">
                           $('#clock{{$offers->post_id}}').countdown("{{$stop_date}}", function(event) 
                           { 
+                            
                             var totalHours = event.offset.totalDays * 24 + event.offset.hours;
                             var totalMins = event.strftime('%M');
                             var totalSecs = event.strftime('%S');
@@ -180,9 +191,13 @@ first 10 interests will be logged for each Offer.</center>
                               $(this).css("color", "red").html();
                             }
                             if(totalHours==0 && totalMins==0 && totalSecs==0)
-                              $(this).html('<font style="color:red;">Closed</font>');
-                            else
+                            {
+                            $(this).html('<font style="color:red;">Closed</font>');
+                            $("#interested_btn{{$offers->post_id}}").attr("disabled","true");
+                          }
+                            else {
                               $(this).html(event.strftime(totalHours + ' : %M : %S Remaining'));
+                            }
                           });
                         </script>
                         <?php
@@ -191,7 +206,7 @@ first 10 interests will be logged for each Offer.</center>
                         </span>
                         
                       @else
-                       <span class="post_remaining">Close</span>
+                       <span style="color:red;">Closed</span>
                       @endif 
                       <br/><br/>
                     <span class="offer_id">Id: #{{$offers->post_id}}</span>
@@ -309,11 +324,7 @@ first 10 interests will be logged for each Offer.</center>
               <div class="offer_cont_shadow">
                  <div class="offer_left">
                     <a href="{{url('users/'.Auth::user()->username)}}">
-                    @if($offers->img == '')
-                      <img src="img/male.jpg" class="offer_pro_pic" />
-                      @else
-                      <img src="img/users/'. {{$offers->username}}. '/previews/' .$offers->img}}" class="offer_pro_pic" />
-                    @endif
+                    <img src="{{'img/users/'.Auth::user()->username.'/previews/'.Auth::user()->img}}" class="offer_pro_pic" />
                     </a>
                     <h3>
                       <a href="{{url('users/'.Auth::user()->username)}}"><span>{{Auth::user()->username}}</span>
@@ -486,7 +497,7 @@ first 10 interests will be logged for each Offer.</center>
                     @if($interested->img == '')
                       <img src="img/male.jpg" class="offer_pro_pic" />
                     @else
-                       <img src="img/users/'. {{$offers->username}}. '/previews/' .$offers->img}}" class="offer_pro_pic" />
+                      <img src="img/users/{{$interested->username}}/previews/{{$interested->img}}" class="offer_pro_pic" />
                     @endif
                     <h3><span>{{$interested->username}}</span></h3>
                 </div>
@@ -646,7 +657,7 @@ first 10 interests will be logged for each Offer.</center>
              </div>
        </div>
       @endif
-    <div class="wrap" ng-if="$parent.user.gender == 'female' && $parent.user.verify_check != 'VERIFIED'">
+    <!-- <div class="wrap" ng-if="$parent.user.gender == 'female' && $parent.user.verify_check != 'VERIFIED'">
       <div>
        <center><h4>Verified users only:</h4> This page has some of the most generous subs within our site, therefore it is only accessible to genuine Femdoms who have been checked and verified by the Casualstar team. Click the button bellow and complete your verifiction today within minutes, its super quick and easy.
         <br>
@@ -656,10 +667,7 @@ first 10 interests will be logged for each Offer.</center>
         </div>
       </div>
     </div>
-  </div>
-
-
-
+  </div> -->
 <button onclick="scrollToTop()" id="scrollToTopButton"><i class="ion-arrow-up-a"></i></button>
 
 <script type="text/javascript">

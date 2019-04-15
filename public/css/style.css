@@ -60,13 +60,12 @@ table {
   right:25px;
 }
 .info_icon{
-    text-align: end;
-    color: #d61857;
-    margin-right:-15px;
+  text-align: end;
+  color: #d61857;
+  margin-right:-15px;
 }
 .info_icon a{
-    
-    color: #d61857;
+  color: #d61857;
 }
 .female_subpage_title{
   text-align: center;

@@ -7,7 +7,7 @@ foreach ($interested_users as $user) {
 	  	@if($user->img == '')
 	  		<img class="view_pro_pic" src="img/female.jpg" />
 	  	@else	
-	    	<img class="view_pro_pic" src="img/users/'. {{ $user->username }} . '/previews/'. {{$user->img}}" />
+	    	<img class="view_pro_pic" src="img/users/{{ $user->username }}/previews/{{$user->img}}" />
 	    @endif
 	  </div>
 	  <div class="view_users_link">

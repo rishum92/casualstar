@@ -10,30 +10,35 @@
 </div>
 
 <section class="profile-main" data-ng-if="userLoaded">
-    <?php if(Auth::user()->gender == 'male'): ?>
-    <?php if($pgp_notification >= 1000): ?>
-      <span class="pgp_counter"><img src="<?php echo e(URL::to('/')); ?>/img/PGa.png" alt="Img" width="30px"></span>
-    <?php else: ?>
-      <span class="pgp_counter">PGP<br>
-        <?php printf("%04d", $pgp_notification); ?>
-      </span>
-    <?php endif; ?>
-    <?php endif; ?>
+    <div class="pgp_icon">
+        <?php //echo "<pre>";print_r($pgp_notification);die;?>
+        <?php if(Auth::user()->gender == 'female'): ?>
+        <?php if($gender == 'male'): ?>
+        <?php if($pgp_notification >= 1000): ?>
+            <span class="pgp_counter"><img src="<?php echo e(URL::to('/')); ?>/img/PGa.png" alt="Img" width="30px"></span>
+        <?php else: ?>
+            <span class="pgp_counter">PGP<br>
+                <?php printf("%04d", $pgp_notification); ?>
+            </span>
+        <?php endif; ?>
+        <?php endif; ?>
+        <?php endif; ?>
+    </div>
     <div class="profile-wrap">
         <div id="userPhotoProfile">
             <div class="image" lightgallery data-src="[[getUserPhotoUrl(user.img)]]">
                 <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
-                        <!-- <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='female']]" src="<?php echo e(URL::to('/')); ?>/img/female.jpg" alt="profile pic"/>
+                        <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='female']]" src="<?php echo e(URL::to('/')); ?>/img/female.jpg" alt="profile pic"/>
 
-                        <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='male']]" src="<?php echo e(URL::to('/')); ?>/img/male.jpg" alt="profile pic"/> -->
-                    <div ng-switch="user.gender">
+                        <img ng-if="[[getPhotoPreviewUrl(user.img == '') && user.gender=='male']]" src="<?php echo e(URL::to('/')); ?>/img/male.jpg" alt="profile pic"/>
+                   <!--  <div ng-switch="user.gender">
                         <div ng-switch-when="female">
                             <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="<?php echo e(URL::to('/')); ?>/img/female.jpg" alt="profile pic"/>
                         </div>
                         <div ng-switch-when="male">
                             <img ng-if="[[getPhotoPreviewUrl(user.img == '')]]" src="<?php echo e(URL::to('/')); ?>/img/male.jpg" alt="profile pic"/>
                         </div>
-                    </div>
+                    </div> -->
                 </a>
                 <a href="[[getUserPhotoUrl(user.img)]]" class="lightGallery" title="[[user.username]]">
                     <img ng-if="[[getPhotoPreviewUrl(user.img != '')]]" data-ng-src="[[getPhotoPreviewUrl(user.img)]]" alt="profile pic"/>

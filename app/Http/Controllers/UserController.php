@@ -29,9 +29,10 @@ class UserController extends BaseController
 	    $from = new DateTime($user->dob);
 		$to = new DateTime('today');
 		$age = $from->diff($to)->y;
-
 		$count = 0;
-		$pgp_notification  = offer_post::count_points(Auth::user()->id);
+
+		$pgp_notification  	= 	offer_post::count_pgp_points($user->id);
+		$gender				=	$user->gender;
 		
 	    if($user) {
 	   //  	if((Auth::user()->gender == $user->gender && Auth::user()->gender == 'male') && Auth::user()->title !== 'ADMIN' && !isset($explore)) {
@@ -94,7 +95,7 @@ class UserController extends BaseController
 			      $subscribed = 1;
 			    }
 
-		    	return view('visitorProfile', ['username' => $user->username, 'isOnline' => $isOnline, 'lastLogin' => $lastLogin, 'similarUsers' => $similarUsers, 'subscribed' => $subscribed, 'plans' => $plans, 'user' => $user,'pgp_notification'=>$pgp_notification]);
+		    	return view('visitorProfile', ['username' => $user->username, 'isOnline' => $isOnline, 'lastLogin' => $lastLogin, 'similarUsers' => $similarUsers, 'subscribed' => $subscribed, 'plans' => $plans, 'user' => $user,'pgp_notification'=>$pgp_notification,'gender'=>$gender]);
 			} elseif($user->status == 0) {
 				if(Auth::user()) {
     				return redirect()->route('dashboard')->with('message', Lang::get('messages.accountDeactivated'))->with('messageType', 'warning');

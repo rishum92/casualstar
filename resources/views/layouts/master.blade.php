@@ -128,7 +128,7 @@
           
           <ul class="menu">
             <li><a class="@if(Route::is('index') || Route::is('index')) active @endif" href="{{ URL::route('index') }}">Home</a></li>
-			<li><a href="{{ URL::route('competitions') }}">Competitions</a></li>
+			      <li><a href="{{ URL::route('competitions') }}">Competitions</a></li>
             <li><a href="{{ URL::route('about') }}">About us</a></li>
             <li><a href="{{ URL::route('faq') }}">FAQ Help</a></li>
             <li><a href="{{ URL::route('terms') }}">Terms &amp; Conditions</a></li>
@@ -207,7 +207,7 @@
                  @endif 
                   </li>  -->
 
-                  <li><a class="@if(Route::is('offers') || Route::is('offers')) active @endif" href="{{ URL::route('offers') }}"><i class="ion-star"></i>Offer</a>
+                  <li><a class="@if(Route::is('offers') || Route::is('offers')) active @endif" href="{{ URL::route('offers') }}"><i class="ion-star"></i>Offers</a>
                   
                       @foreach($notification_data as $user_notifications)
                        @if($user_notifications->notification == '0')
@@ -255,7 +255,7 @@
                 <hr>
                 @endif
                
-                <a href="{{ URL::route('supersubs') }}"><i class="ion-key"></i>Supersub</a>
+                <a href="{{ URL::route('supersubs') }}"><i class="ion-key"></i>Supersubs</a>
                 <hr>
                 <a href="{{ URL::route('account.details') }}"><i class="ion-key"></i>Account details</a>
                 <hr>
@@ -316,7 +316,15 @@
             </a>
           </li>
           <li><a class="@if(Route::is('explore') || Route::is('explore')) active @endif" href="{{ URL::route('explore') }}"><i class="ion-earth"></i>Explore</a></li>
-          <li><a class="@if(Route::is('supersubs') || Route::is('supersubs')) active @endif" href="{{ URL::route('supersubs') }}"><i class="ion-star"></i>Supersubs</a></li>
+          <!-- <li><a class="@if(Route::is('supersubs') || Route::is('supersubs')) active @endif" href="{{ URL::route('supersubs') }}"><i class="ion-star"></i>Supersubs</a></li> -->
+          <li><a class="@if(Route::is('offers') || Route::is('offers')) active @endif" href="{{ URL::route('offers') }}"><i class="ion-star"></i>Offer</a>
+              @foreach($notification_data as $user_notifications)
+               @if($user_notifications->notification == '0')
+               @else
+                <span class="small-notif larger">{{$user_notifications->notification}}</span>
+                @endif
+              @endforeach
+          </li> 
         </ul>
 
       </div>
@@ -326,7 +334,7 @@
     <footer>
       <ul class="footer-menu">
         <li><a href="{{ URL::route('index') }}">Home</a></li>
-		<li><a href="{{ URL::route('competitions') }}">Competitions</a></li>
+	     	<li><a href="{{ URL::route('competitions') }}">Competitions</a></li>
         <li><a href="{{ URL::route('about') }}">About us</a></li>
         <li><a href="{{ URL::route('faq') }}">FAQ Help</a></li>
         <li><a href="{{ URL::route('terms') }}">Terms &amp; Conditions</a></li>
@@ -338,10 +346,10 @@
             &nbsp;
           </li>
           <li>
-            <a href="{{ URL::route('admin') }}"><i class="ion-gear-b"></i> Admin</a>
+            <a href="{{ URL::route('admin') }}"><i class="ion-gear-b"></i>Admin</a>
           </li>
 		  <li>
-              <a href="{{ URL::route('admin2') }}"><i class="ion-checkmark"></i> Verifications</a>
+              <a href="{{ URL::route('admin2') }}"><i class="ion-checkmark"></i>Verifications</a>
           </li>
           <li>
 &nbsp;

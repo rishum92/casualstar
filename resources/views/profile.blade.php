@@ -166,10 +166,11 @@
     <section class="profile-main" data-ng-if="userLoaded" style="background-image:url([[getCoverPhotoUrl(user.cover)]])">
       
       <div class="image-controls">
-      <!--   <button type="button" data-ng-click="openModal('addCoverPhoto')"><i class="fa fa-picture-o"></i> {{ Lang::get('messages.changeCoverPhoto') }}</button> -->
-        <button type="button" data-ng-click="openModal('addProfilePhoto')"><i class="fa fa-camera"></i></button>
+        <button type="button" data-ng-click="openModal('addProfilePhoto')"><i class="fa fa-camera"></i>
+        </button>
       </div>
         <div class="pgp_icon">
+          
           @if(Auth::user()->gender == 'male')
           @if($pgp_notification >= 1000)
             <span class="pgp_counter"><img src="{{ URL::to('/') }}/img/PGa.png" alt="Img" width="30px"></span>

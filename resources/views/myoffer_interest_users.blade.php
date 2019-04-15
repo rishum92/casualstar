@@ -7,7 +7,7 @@ foreach ($myoffer_interested_users as $myoffersusers) {
       @if($myoffersusers->img == '')
       <img class="view_pro_pic" src="img/female.jpg" />
       @else
-      <img class="view_pro_pic" src="img/users/'. {{ $myoffersusers->username }} . '/previews/'. {{$myoffersusers->img}}" />
+      <img class="view_pro_pic" src="img/users/{{$myoffersusers->username}}/previews/{{$myoffersusers->img}}" />
       @endif
     </div>
     <div class="view_users_link">

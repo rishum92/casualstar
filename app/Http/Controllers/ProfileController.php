@@ -96,7 +96,8 @@ class ProfileController extends BaseController
           }
           $chat->partner = $user;
           $chat->unread = 0;
-          
+         
+         // echo "<pre>";print_r($get_message);die;
           // $MongoDt = new \MongoDate();
           // $stringDt =
           //    substr(

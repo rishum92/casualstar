@@ -127,7 +127,7 @@
           
           <ul class="menu">
             <li><a class="<?php if(Route::is('index') || Route::is('index')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('index')); ?>">Home</a></li>
-			<li><a href="<?php echo e(URL::route('competitions')); ?>">Competitions</a></li>
+			      <li><a href="<?php echo e(URL::route('competitions')); ?>">Competitions</a></li>
             <li><a href="<?php echo e(URL::route('about')); ?>">About us</a></li>
             <li><a href="<?php echo e(URL::route('faq')); ?>">FAQ Help</a></li>
             <li><a href="<?php echo e(URL::route('terms')); ?>">Terms &amp; Conditions</a></li>
@@ -206,7 +206,7 @@
                  <?php endif; ?> 
                   </li>  -->
 
-                  <li><a class="<?php if(Route::is('offers') || Route::is('offers')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('offers')); ?>"><i class="ion-star"></i>Offer</a>
+                  <li><a class="<?php if(Route::is('offers') || Route::is('offers')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('offers')); ?>"><i class="ion-star"></i>Offers</a>
                   
                       <?php foreach($notification_data as $user_notifications): ?>
                        <?php if($user_notifications->notification == '0'): ?>
@@ -254,7 +254,7 @@
                 <hr>
                 <?php endif; ?>
                
-                <a href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-key"></i>Supersub</a>
+                <a href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-key"></i>Supersubs</a>
                 <hr>
                 <a href="<?php echo e(URL::route('account.details')); ?>"><i class="ion-key"></i>Account details</a>
                 <hr>
@@ -315,7 +315,15 @@
             </a>
           </li>
           <li><a class="<?php if(Route::is('explore') || Route::is('explore')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('explore')); ?>"><i class="ion-earth"></i>Explore</a></li>
-          <li><a class="<?php if(Route::is('supersubs') || Route::is('supersubs')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-star"></i>Supersubs</a></li>
+          <!-- <li><a class="<?php if(Route::is('supersubs') || Route::is('supersubs')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('supersubs')); ?>"><i class="ion-star"></i>Supersubs</a></li> -->
+          <li><a class="<?php if(Route::is('offers') || Route::is('offers')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('offers')); ?>"><i class="ion-star"></i>Offer</a>
+              <?php foreach($notification_data as $user_notifications): ?>
+               <?php if($user_notifications->notification == '0'): ?>
+               <?php else: ?>
+                <span class="small-notif larger"><?php echo e($user_notifications->notification); ?></span>
+                <?php endif; ?>
+              <?php endforeach; ?>
+          </li> 
         </ul>
 
       </div>
@@ -325,7 +333,7 @@
     <footer>
       <ul class="footer-menu">
         <li><a href="<?php echo e(URL::route('index')); ?>">Home</a></li>
-		<li><a href="<?php echo e(URL::route('competitions')); ?>">Competitions</a></li>
+	     	<li><a href="<?php echo e(URL::route('competitions')); ?>">Competitions</a></li>
         <li><a href="<?php echo e(URL::route('about')); ?>">About us</a></li>
         <li><a href="<?php echo e(URL::route('faq')); ?>">FAQ Help</a></li>
         <li><a href="<?php echo e(URL::route('terms')); ?>">Terms &amp; Conditions</a></li>
@@ -337,10 +345,10 @@
             &nbsp;
           </li>
           <li>
-            <a href="<?php echo e(URL::route('admin')); ?>"><i class="ion-gear-b"></i> Admin</a>
+            <a href="<?php echo e(URL::route('admin')); ?>"><i class="ion-gear-b"></i>Admin</a>
           </li>
 		  <li>
-              <a href="<?php echo e(URL::route('admin2')); ?>"><i class="ion-checkmark"></i> Verifications</a>
+              <a href="<?php echo e(URL::route('admin2')); ?>"><i class="ion-checkmark"></i>Verifications</a>
           </li>
           <li>
 &nbsp;

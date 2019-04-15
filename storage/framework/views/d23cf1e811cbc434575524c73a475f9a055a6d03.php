@@ -7,7 +7,7 @@ foreach ($myoffer_interested_users as $myoffersusers) {
       <?php if($myoffersusers->img == ''): ?>
       <img class="view_pro_pic" src="img/female.jpg" />
       <?php else: ?>
-      <img class="view_pro_pic" src="img/users/'. <?php echo e($myoffersusers->username); ?> . '/previews/'. <?php echo e($myoffersusers->img); ?>" />
+      <img class="view_pro_pic" src="img/users/<?php echo e($myoffersusers->username); ?>/previews/<?php echo e($myoffersusers->img); ?>" />
       <?php endif; ?>
     </div>
     <div class="view_users_link">

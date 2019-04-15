@@ -6,7 +6,7 @@
       <?php if($logged_user->img == ''): ?>
       <img class="view_pro_pic" src="img/female.jpg" />
       <?php else: ?>
-      <img class="view_pro_pic" src="img/users/'.<?php echo e($logged_user->username); ?>. '/previews/'. <?php echo e($logged_user->img); ?>" />
+      <img class="view_pro_pic" src="img/users/<?php echo e($logged_user->username); ?>/previews/<?php echo e($logged_user->img); ?>" />
       <?php endif; ?>
     </div>
     <div class="view_users_link">

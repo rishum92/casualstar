@@ -6,11 +6,11 @@
 
 <section class = "com_banner">
     <div class = "container">
-        <div class = "table_block">
-            <div class = "table_cell">
-                <h1>Competi<span>tions</span></h1>
-            </div>
+      <div class = "table_block">
+        <div class = "table_cell">
+          <h1>Competi<span>tions</span></h1>
         </div>
+      </div>
     </div>    
 </section>
 <section class="compt_content">
