@@ -34,7 +34,7 @@ class CompetitionUserController extends Controller
 	 	$user = competition_user::getdata();
 	    return $user;
 	}
-	// }
+}
 
  //    public function supersubs() {
  //        $page = Input::get('page');
@@ -654,4 +654,4 @@ class CompetitionUserController extends Controller
  //        echo '<pre>';print_r($data);
  //        echo $user;exit;
  //    }
-}
+//}

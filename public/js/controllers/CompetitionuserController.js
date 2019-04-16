@@ -178,7 +178,7 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
     if(photo != undefined) {
      
       {
-      return '/img/competition_user/' + $scope.competition_user['data'][i].username + '/previews/' + photo;
+      return '/img/competition_user/' + $scope.competition_user['data'].username + '/previews/' + photo;
     }
     } else {
       return '/img/' + 'female.jpg';
