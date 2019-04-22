@@ -13,12 +13,14 @@ use Auth;
 use Lang;
 use Hash;
 use Session;
+use DB;
 use App\Models\User;
 use App\competition_user;
 
 class SearchCompetitionUserController extends Controller
 {
-     public function browse() {
+    public function browse() 
+    {
 
         $userfilters = Session::put('userfilters', Input::all());
         echo "<pre>"; print_r($userfilters); die;
@@ -129,5 +131,33 @@ class SearchCompetitionUserController extends Controller
 		// $data->qry = $qry;
         return $this->response($data, $users, $count);
 
+    }
+
+    public function action(Request $request)
+    {
+        if ($request->ajax()) {
+            
+            $query = $request->get('search');
+            if($query != '')
+            {   
+                $data = DB::table('competition_interested_users')
+                        ->select('competition_interested_users.*','competiton_vote.*',DB::raw('count(competiton_vote.id) as total_votes'))
+                        ->join('competiton_vote','competiton_vote.user_id','=','competition_interested_users.user_id')
+                        ->where('username','like','%'.$query.'%')
+                        ->get();
+                $data = array(
+                    'response' => $data
+                );
+                
+                return json_encode($data);
+            }
+            else
+            {
+               echo "Record not found"; 
+            }
+
+        }
+
+        
     }
 }

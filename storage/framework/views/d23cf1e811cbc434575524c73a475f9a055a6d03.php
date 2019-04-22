@@ -26,12 +26,12 @@ foreach ($myoffer_interested_users as $myoffersusers) {
   <div class="col-md-12" id="message_<?php echo e($myoffersusers->id); ?>" style="display: none;">
     <br/>
     <textarea  class="form-control"  id="offer_message_<?php echo e($myoffersusers->id); ?>">Hello <?php echo e($myoffersusers->username); ?>, you have shown interest in my offer (offer id #<?php echo e($myoffersusers->post_id); ?>) and I would like to discuss it with you please…?</textarea>
-    <hr/>
-    
-    <button type="button" class="btn btn-xs btn-default" onclick="$('#message_<?php echo e($myoffersusers->id); ?>').hide();">Close</button>
+   <br/>
+   <button type="button" class="btn btn-xs btn-default" onclick="$('#message_<?php echo e($myoffersusers->id); ?>').hide();">Close</button>
     <button type="submit" class="btn btn-xs btn-default btn_interested" onclick="send_offer_message(<?php echo e($myoffersusers->post_id); ?>, <?php echo e($myoffersusers->id); ?>); $('#message_<?php echo e($myoffersusers->id); ?>').hide();">Send message</button>
   </div>
 </div>
+<hr/>
 <?php 
 }
 ?>

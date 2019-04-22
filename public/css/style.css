@@ -202,6 +202,11 @@ table {
     margin-top: 2%;
     color: green;
 }
+.post_closed{
+    float: right;
+    margin-top: 2%;
+    color: red;
+}
 .pagi_align{
   text-align: center;
 }

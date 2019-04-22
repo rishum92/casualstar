@@ -174,8 +174,9 @@
           </paging>
         </nav>
         <?php if(Auth()->user()->gender=="male"): ?>
-        <div clas="menu-toggle">
-          <a href ="<?php echo e(url('offers')); ?>"><button style = "background-color:#f21d84; color:white;padding:10px 10px;float:right;">Access ALL Private 
+        <div>
+          <a href ="<?php echo e(url('offers')); ?>">
+            <button style = "background-color:#f21d84; color:white;padding:10px 10px;float:right;">Access ALL Private 
             Galleries
             </button>
           </a>

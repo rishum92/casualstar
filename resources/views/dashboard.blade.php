@@ -176,8 +176,9 @@
           </paging>
         </nav>
         @if(Auth()->user()->gender=="male")
-        <div clas="menu-toggle">
-          <a href ="{{url('offers')}}"><button style = "background-color:#f21d84; color:white;padding:10px 10px;float:right;">Access ALL Private 
+        <div>
+          <a href ="{{url('offers')}}">
+            <button style = "background-color:#f21d84; color:white;padding:10px 10px;float:right;">Access ALL Private 
             Galleries
             </button>
           </a>

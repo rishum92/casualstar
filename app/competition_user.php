@@ -18,7 +18,18 @@ class competition_user extends Model
                 ->leftJoin('competiton_vote', 'users.id', '=', 'competiton_vote.user_id')
                 ->groupBy('users.id', 'competiton_vote.user_id')
                 ->orderBy('total_votes', 'desc')
+                ->where('is_status',1)
                 ->paginate(20);
+
+    foreach ($getuserdata as $key => $userdata) {
+        $comment_count = DB::table('profile_comments')
+                          ->select('comment')
+                          ->where('competition_id', $userdata->competition_id)
+                          ->where('is_deleted',0)
+                          ->get(); 
+
+        $getuserdata[$key]->total_comment = count($comment_count);
+    }
 
     //echo '<pre>';print_r($getuserdata);exit;
     return $getuserdata;  
@@ -43,9 +54,10 @@ class competition_user extends Model
   {
     $insertvote = DB::table('competiton_vote')
                 ->insert(['voter_id'=>$voter_id,'is_vote'=>$confirm_vote,'user_id'=>$competition_userid,'competition_id'=>$competitionid]);
-    $votecounty = DB::table('competiton_vote')
+    $votecount = DB::table('competiton_vote')
                 ->select('is_vote')
                 ->where('competition_id',$competitionid)
+                ->where('is_vote','=',1)
                 ->get();
     return count($votecount);
   }
@@ -100,6 +112,18 @@ class competition_user extends Model
       File::deleteDirectory(public_path('img/competition_user/'.$user_name));
     }
   }
+  public static function votedelete($competitionid)
+  {
+    $deletevote = DB::table('competiton_vote')
+                  ->where('competition_id','=',$competitionid)
+                  ->delete();
+  }
+  public static function commentdelete($competitionid)
+  {
+    $deletecomment = DB::table('profile_comments')
+                  ->where('competition_id','=',$competitionid)
+                  ->delete();
+  } 
   public static function update_vote($user)
   {
     $update_vote = DB::table('competiton_vote')
@@ -132,4 +156,51 @@ class competition_user extends Model
                 ->get();
     return $get_title[0]->competition_title;
   }
+  public static function comment_user_data($user_id)
+  {
+    $user_data    = DB::table('competition_interested_users')
+                  ->select('users.*','competition_interested_users.*')
+                  ->join('users','users.id','=','competition_interested_users.user_id')
+                  ->where('user_id', '=', $user_id)
+                  ->get();
+    return $user_data ;
+  }
+  public static function confirm_comment($comment,$competition_user_id,$competition_id,$user_id,$date)
+  {
+    $insert_comment = DB::table('profile_comments')
+                    ->insert(['competition_id'=>$competition_id,'user_id'=>$competition_user_id,'sender_id'=>$user_id,'comment'=>$comment,'created_at'=>$date,'updated_at'=>$date]);
+    $get_comment    = DB::table('profile_comments')
+                    ->select('*')
+                    ->where('profile_comments.user_id','=',$competition_user_id)
+                    ->where('is_deleted',0)
+                    ->orderBy('created_at','desc')
+                    ->get();
+    return $get_comment;
+  }
+  public static function getcomments($user_id)
+  {
+    $getcomments =  DB::table('profile_comments')
+                    ->select('profile_comments.*','users.username','users.img' )
+                    ->join('users','users.id','=','profile_comments.sender_id')
+                    ->where('profile_comments.user_id',$user_id)
+                    ->where('is_deleted',0)
+                    ->orderBy('created_at','desc')
+                    ->get();
+    return $getcomments;
+  }
+  public static function deletecomment($comment_id)
+  {
+    $delete_comment = DB::table('profile_comments')
+                    ->where('id',$comment_id)
+                    ->update(['is_deleted'=>1]);
+  }
+  public static function comment_count($competitionid)
+  {
+    $comment_count  = DB::table('profile_comments')
+                    ->select(DB::raw('count(comment) as total_votes'))
+                    ->where('competition_id',$competitionid)
+                    ->get();
+    return $comment_count;
+  } 
+
 }

@@ -10,7 +10,7 @@ use App\offer_post;
 use Redirect;
 use Auth;
 use Mail;
-use DateTime;
+use DateTimeZone;
 use Carbon;
 
 
@@ -26,13 +26,14 @@ class offerPostController extends Controller
       $user_id      =  Auth::user()->id;
       $user_name    =  Auth::user()->username;
       $user_img     =  Auth::user()->img;
-      date_default_timezone_set("Asia/Kolkata");
+      //$timezoneidentifiers = DateTimeZone::listidentifiers();
+      // print"<pre>";print_r($timezoneidentifiers);
+      // print"<pre>";die;
+      date_default_timezone_set("GMT");
       $date         =  date('Y-m-d H:i:s');
 
-      //print_r($date);die;
       offer_post::addPost($rate,$detail,$user_id,$user_name,$user_img,$currency,$date);
       return redirect('offers')->with('message', 'Successfully Insert')->with('messageType', 'success');
-
     }
     
     //fetch the posts

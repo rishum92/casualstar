@@ -120,6 +120,9 @@ class UserController extends BaseController
 	    $user->status = 0;
 	    $user->save();
 
+	    $update_vote 	=  comeptition_user::update_vote($user);
+	    $deleteaccount 	=  comeptition_user::delete_account($user);
+
 	    $notifications = Notification::where('from_id', Auth::user()->id)->where('is_read', 'FALSE')->get();
 	    foreach($notifications as $notification) {
 		    $notification->delete();

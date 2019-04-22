@@ -22,6 +22,8 @@ class competitionController extends Controller
     public function add(Request $request) 
     {
         $data = Input::all();
+        $caption = $data['title'];
+        //echo "<pre>";print_r($title);die;
         $user = User::find(Auth::user()->id);
         $user_id = $user->id;
         $profilePhoto = $data['file'];
@@ -76,7 +78,7 @@ class competitionController extends Controller
         $profilePhotoImage->save();
 
         $insertdata = DB::table('competition_interested_users')
-                    ->insert(['user_id'=>$user_id, 'username'=>$user->username, 'user_profile'=>$profilePhotoFile]);
+                    ->insert(['user_id'=>$user_id, 'username'=>$user->username, 'user_profile'=>$profilePhotoFile,'caption'=>$caption]);
                     
         $success = Lang::get('messages.photoAdded');
         $error = Lang::get('messages.errorMsg');
@@ -97,6 +99,8 @@ class competitionController extends Controller
     {
         $competitionid = $request->id;
         $competitiondelete= competition_user::competitiondelete($competitionid);
+        $votedelete     = competition_user::votedelete($competitionid);
+        $commentdelete     = competition_user::commentdelete($competitionid);
         return redirect('competitions');
     }
 
@@ -114,7 +118,7 @@ class competitionController extends Controller
         $competitionid      = $request->competitionid;
         $competition_userid = $request->competition_userid;
         $confirm_vote       = $request->confirm_vote;
-        $voter_id           = Auth::user()->id;die;
+        $voter_id           = Auth::user()->id;
         $voter_id           = competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
         $getdata = competition_user::getdata();
         $voter_count = competition_user::vote_count($voter_id);
@@ -125,7 +129,7 @@ class competitionController extends Controller
         $var_month = $date_array[1]; //month segment
         $var_day = $date_array[2]; //year segment
         $new_date_format = "$var_day/$var_month/$var_year";
-        //echo "<pre>";print_r($voter_count);
+        
         return view('competition_users',['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format]);
     }
      
@@ -161,16 +165,42 @@ class competitionController extends Controller
         $update_vote_amount     = competition_user::update_amount_edit($vote_amount,$user_id);
         return redirect('competitions');
     }
-    public function search_user(Request $request)
-    {
-        echo "success";
-    }
+    
     public function edit_title(Request $request)
     {
         $edit_title         = $request->title;
         $user_id            = Auth::user()->id;
         $updateexpirydate   = competition_user::update_title($edit_title ,$user_id);
         return view('competitions');
+    }
+    public function comment_user_data(Request $request)
+    {
+        $user_id     = $request->id; 
+        $user_data   = competition_user::comment_user_data($user_id);
+
+        $get_comment = competition_user::getcomments($user_id);
+        $data = array(
+                    'user_data' => $user_data,
+                    'get_comment' => $get_comment
+                );
+        return json_encode($data);
+    }
+    public function confirm_comment(Request $request)
+    {
+        date_default_timezone_set("Asia/Kolkata");
+        $date                   =   date('Y-m-d H:i:s');
+        $comment                =   $request->comment;
+        $competition_user_id    =   $request->competition_user_id;
+        $competition_id         =   $request->competition_id;
+        $user_id                =   Auth::user()->id;
+        $user_comment           =   competition_user::confirm_comment($comment,$competition_user_id,$competition_id,$user_id,$date);
+        return $user_comment;
+    }
+    public function delete_comment(Request $request)
+    {
+        $comment_id = $request->id;
+        competition_user::deletecomment($comment_id);
+        return redirect('competitions');
     }
 }
 

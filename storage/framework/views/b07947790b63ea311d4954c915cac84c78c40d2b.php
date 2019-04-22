@@ -11,7 +11,7 @@
 
 <?php $__env->startSection('content'); ?>
 
-<?php date_default_timezone_set("Asia/Kolkata");?>
+<?php date_default_timezone_set("GMT");?>
  <?php if(Auth::user()->gender == 'male'): ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script> 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
@@ -123,39 +123,38 @@ first 10 interests will be logged for each Offer.</center>
                         </a>
                       </h3>
                     </div>
-                     <div class="offer_right">
-                        <h3><span><?php echo e($offers->currency); ?><?php echo e($offers->offer_rate); ?></span></h3>
-                     </div> 
-                     <div class="offer_detailes_box">
-                       <p>
-                           <?php echo e($offers->offer_details); ?>
+                    <div class="offer_right">
+                      <h3><span><?php echo e($offers->currency); ?><?php echo e($offers->offer_rate); ?></span></h3>
+                    </div> 
+                    <div class="offer_detailes_box">
+                      <p>
+                        <?php echo e($offers->offer_details); ?>
 
-                       </p>
-                      </div>
-                      <br/>
-                     <?php if(Auth::user()->gender == 'male'): ?>
+                      </p>
+                    </div>
+                    <br/>
+                    <?php if(Auth::user()->gender == 'male'): ?>
                        <button type="button" disabled class="btn btn-default btn_interested">
                          <i class="fa fa-thumbs-up"></i> Interested
                        </button>
-                     <?php else: ?>
+                    <?php else: ?>
 
                       <?php if($offers->intrest_count < 10): ?>
                         <a href="<?php echo e(url('interested/'.$offers->post_id. '/' . $offers->id)); ?>">
-                          <button type="submit" id="interested_btn<?php echo e($offers->post_id); ?>" class="btn btn-default btn_interested">
+                          <button type="submit" class="btn btn-default btn_interested">
                           <i class="fa fa-thumbs-up" ></i> Interested
                           </button>
                         </a>
-                       <?php else: ?>
+                      <?php else: ?>
                        <a href="#">
                        <button type="submit" disabled class="btn btn-default btn_interested">
                          <i class="fa fa-thumbs-up"></i> Interested
                        </button>
                        </a>
-                       <?php endif; ?>
-                     <?php endif; ?>
+                      <?php endif; ?>
+                    <?php endif; ?>
                  
-                     <!-- popup call -->
-                      
+                    <!-- popup call -->
                       <span class="viewOffers cursor-pointer" onclick="interestedcount(<?php echo $offers->post_id; ?>)"><?php echo e($offers->intrest_count); ?></span>
                     <!-- pop call close -->  
                       
@@ -167,15 +166,14 @@ first 10 interests will be logged for each Offer.</center>
                           $date_a = new DateTime(date("F j, Y, H:i:s"));
                           $date_b = new DateTime($offers->offer_post_date);
                           $interval = date_diff($date_a,$date_b);
-
                           $stop_date = date('Y-m-d H:i:s', strtotime($offers->offer_post_date . ' +1 day'));
                         
                           $interval_days = $interval->format('%a');
-                          //print_r($interval_days);
+                          //rint_r($interval_days);
                           if ($interval_days > 0) 
                           {
                             echo '<font style="color:red;">Closed</font>';
-                            echo '<script> $("#interested_btn").attr("disabled","true"); </script>';
+                            // echo "<script>$('#interested_btn{{$offers->post_id}}').attr('disabled','true'); </script>";
                           }
                           else
                           {
@@ -194,8 +192,8 @@ first 10 interests will be logged for each Offer.</center>
                             }
                             if(totalHours==0 && totalMins==0 && totalSecs==0)
                             {
-                            $(this).html('<font style="color:red;">Closed</font>');
-                            $("#interested_btn<?php echo e($offers->post_id); ?>").attr("disabled","true");
+                              $(this).html('<font style="color:red;">Closed</font>');
+                              // $("#interested_btn<?php echo e($offers->post_id); ?>").attr("disabled","true");
                           }
                             else {
                               $(this).html(event.strftime(totalHours + ' : %M : %S Remaining'));
@@ -208,7 +206,7 @@ first 10 interests will be logged for each Offer.</center>
                         </span>
                         
                       <?php else: ?>
-                       <span style="color:red;">Closed</span>
+                       <span class="post_closed">Closed</span>
                       <?php endif; ?> 
                       <br/><br/>
                     <span class="offer_id">Id: #<?php echo e($offers->post_id); ?></span>

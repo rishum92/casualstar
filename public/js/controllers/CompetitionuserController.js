@@ -1,55 +1,20 @@
 var CuserCtrl = angular.module('CuserCtrl',[]);
 
 CuserCtrl.controller('UserCompetitionController',function($scope, $http, $location, $rootScope, $timeout, Upload) {
-  
-  $http.get('competition_user').then(function(response) {
-  $scope.competition_user = response.data;
-  console.log($scope.competition_user);
-  //sssalert($scope.competition_users);
-
-  //Comment Section Start
-  $scope.viewThisPhoto = function(photo) {
-    $scope.openModal('viewPhoto', 'photo', photo);
-    $scope.user = $scope.$parent.user;
    
-   // $scope.getLikes(photo);
-    //$scope.getComments(photo);
+    $http.get('/api/user').then(function(response) {
+    $scope.user = response.data;
+    // console.log($scope.user);
+  $scope.$watch('results.selected', function(newValue, oldValue) {
+      if(newValue !== oldValue) {
+        $http.post('/api/user-interest', {interests: newValue}).then(function(response) {
+          notify(response.data.messageType, response.data.message);
+        }); 
+      }
+    });
 
-  //   $scope.refreshInterval = setInterval(function() {
-  //     if(!$scope.refreshPaused) {
-  //       $scope.getComments(photo);
-  //       $scope.getLikes(photo);
-  //     } 
-  //   }, 5000);
-  // }
-
-  // $scope.getLikes = function(photo) {
-  //   console.log('refreshing likes');
-  //   $http.get('/api/photo-like/' + photo.id).then(function(response) {
-  //     $scope.photoLikes = response.data;
-  //   });
-  // }
-
-  // $scope.getComments = function(photo) {
-  //   console.log('refreshing comments');
-  //   $http.get('/api/photo-comment/' + photo.id).then(function(response) {
-  //     $scope.photoComments = response.data;
-  //   });
-  }
-
-  $scope.postComment = function(photo) {
-    if($scope.comment.length > 0) {
-      $('#postCommentButton').attr('disabled', 'disabled');
-      $http.post('profile-comment', {user_id: user_id, comment: $scope.comment}).then(function(response) {
-        notify(response.data.messageType, response.data.message);
-        //$scope.getComments(photo);
-        $scope.comment = '';
-        $('#postCommentButton').removeAttr('disabled');
-      });
-    }
-  }
-  //Comment Section Close
-
+    $scope.userLoaded = true; 
+  });
   $scope.openModal = function(modalName, optionKey, optionValue) {
     if(optionKey) {
       var modal = $scope.$eval(modalName);
@@ -71,6 +36,75 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
     var modal = $scope.$eval(modalName);
     var file = $('#' + modalName + 'Modal').find('input[type="file"]').prop('files')[0];
     switch(modalName) {
+      case 'addProfilePhoto':
+        $scope.notify = uploadProgress('');
+        modal.data.crop = [];
+        $('#' + modalName + 'Modal input[type="hidden"]:not([name="type"])').each(function(key, item) {
+          modal.data.crop[$(item).attr('name')] = $(item).val();
+        });
+        $scope.upload = Upload.upload({
+        method: 'POST',
+          url: 'competition-user',
+          data: modal.data,
+          file: file
+        }).progress(function (evt) {
+          $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total, 10);
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          $scope.notify.update('progress', progressPercentage);
+        }).then(function (response) {
+          $('#userPhoto').attr('src', location.origin + '/img/users/' + $scope.user.username + '/' + response.data.new.img);
+          $scope.user.img = response.data.new.img;
+          $scope.notify.close();
+ 
+          notify(response.data.messageType, response.data.message);
+        });
+      break;
+    case 'addSelfiePhoto':
+        $scope.notify = uploadProgress('');
+        modal.data.crop = [];
+        $('#' + modalName + 'Modal input[type="hidden"]:not([name="type"])').each(function(key, item) {
+          modal.data.crop[$(item).attr('name')] = $(item).val();
+        });
+        $scope.upload = Upload.upload({
+        method: 'POST',
+          url: '/api/add-selfie-photo',
+          data: modal.data,
+          file: file
+        }).progress(function (evt) {
+          $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total, 10);
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          $scope.notify.update('progress', progressPercentage);
+        }).then(function (response) {
+          $('#userPhoto').attr('src', location.origin + '/img/Verified/users/' + $scope.user.username + '/' + response.data.new.img);
+      $scope.user = response.data.new;
+          // $scope.user.verify_img = response.data.new.img;
+          $scope.notify.close();
+ 
+          notify(response.data.messageType, response.data.message);
+        });
+      break;
+      case 'addCoverPhoto':
+        $scope.notify = uploadProgress('');
+        modal.data.crop = [];
+        $('#' + modalName + 'Modal input[type="hidden"]:not([name="type"])').each(function(key, item) {
+          modal.data.crop[$(item).attr('name')] = $(item).val();
+        });
+        $scope.upload = Upload.upload({
+        method: 'POST',
+          url: 'competition-user',
+          data: modal.data,
+          file: file
+        }).progress(function (evt) {
+          $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total, 10);
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          $scope.notify.update('progress', progressPercentage);
+        }).then(function (response) {
+          $scope.user = response.data.new;
+          $scope.notify.close();
+          notify(response.data.messageType, response.data.message);
+        });
+      break;
+
       case 'addPhoto':
         $scope.notify = uploadProgress('');
         modal.data.crop = [];
@@ -100,13 +134,43 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
         });
        
       break;
-      case 'vote_popup':
-      }
+      case 'addPrivatePhoto':
+        $scope.notify = uploadProgress('');
+        modal.data.crop = [];
+        $('#' + modalName + 'Modal input[type="hidden"]:not([name="type"])').each(function(key, item) {
+          modal.data.crop[$(item).attr('name')] = $(item).val();
+        }); 
+        $scope.upload = Upload.upload({
+        method: 'POST',
+          url: '/api/privatePhoto',
+          data: modal.data,
+          file: file
+        }).progress(function (evt) {
+          $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total, 10);
+          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+          $scope.notify.update('progress', progressPercentage);
+        }).then(function (response) {
+          
+          console.log($scope.user);
+          
+          $scope.sendNotification();
+          // $scope.lightGallery.data('lightGallery').destroy(true);
+          $scope.user = response.data.new;
+          // $scope.initLightGallery();
+
+          $scope.notify.close();
+ 
+          notify(response.data.messageType, response.data.message);
+        });
+      break;
+       }
 
     modal.data = [];
     modal.$setPristine();
     $scope.hideModal(modalName);
   }
+ 
+
   $scope.initLightGallery = function() {
     console.log('initLightGallery');
     $scope.lightGalleryProfile = $('#userPhotoProfile');
@@ -151,50 +215,4 @@ CuserCtrl.controller('UserCompetitionController',function($scope, $http, $locati
       download: false
     });
   }
-  $scope.getUserPhotoPreviewUrl = function(user) {
-    if(competition_user != undefined) {
-      if(competition_user.img != undefined) {
-        return '/img/competition_users/' + competition_user.username + '/previews/' + competition_user.user_profile;
-      } else {
-        return '/img/' + competition_user.gender + '.jpg';
-      }
-    }
-  }
-});
-  $scope.getPhotoUrl = function(photo) {
-
-    if(photo != undefined) {
-      return '/img/competition_user/' + $scope.competition_user.username + '/previews/' + photo;
-    } else {
-      //return '/img/' +'female.jpg';
-    }
-  }
-
-  $scope.getPhotoPreviewUrl = function(photo) {
-    if(photo != undefined) {
-      return '/img/competition_user/' + $scope.competition_user.username + '/previews/' + photo;
-    } else {
-      //return '/img/' + 'female.jpg';
-    }
-  }
-
-  $scope.deleteconfirmation =function(id)
-  {
-    if(confirm("Are you sure want to delete this data ?"))
-    {
-      $http.get('competitiondelete/'+ id).then(function(data)
-      {
-        window.location.href = '/competitions';
-      });
-    }
-    else
-    {
-      return false;
-    }
-  }
-  $scope.confirm_vote_popup =function(competition_id,user_id)
-  {
-    var confirm_vote = $("#confirm_vote").val();
-    $http.post('confirm_vote', {competition_id: competition_id, user_id: user_id,confirm_vote:confirm_vote})
-  };
 });

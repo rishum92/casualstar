@@ -337,6 +337,9 @@ ChatCtrl.controller('ChatController', ['$scope', '$http', '$location', '$rootSco
       }
     }
   }
+  // $scope.offer_message_send = function(){
+  //   console.log($scope.offermessagesend);
+  // }
 
   $scope.destroyMessage = function(item) {
     $http.post('/api/delete-message', {chatId: $scope.chat._id, userId: $scope.user.id, messageId: item._id}).then(function(response) {
