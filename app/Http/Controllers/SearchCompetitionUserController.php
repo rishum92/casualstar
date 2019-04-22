@@ -145,11 +145,22 @@ class SearchCompetitionUserController extends Controller
                         ->join('competiton_vote','competiton_vote.user_id','=','competition_interested_users.user_id')
                         ->where('username','like','%'.$query.'%')
                         ->get();
+                if($data[0]->competition_id !=''){
                 $data = array(
                     'response' => $data
                 );
                 
                 return json_encode($data);
+                }
+                else
+                {
+                    $not_found = "Recordnotfound";
+                    $data = array(
+                    'not_found' => $not_found
+                );
+                
+                return json_encode($data);
+                }
             }
             else
             {

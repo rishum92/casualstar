@@ -1,7 +1,6 @@
 <ul class="profil_ul">
-<?php //echo"<pre>"; print_r($competitionuser); //die; ?>
 @if(empty($competitionuser)) 
-  <div style = "font-size: 30px;text-align:center;">
+  <div style = "font-size:30px;text-align:center;">
     There is currently no active competition.
   </div><br><br>
 
