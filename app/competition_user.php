@@ -200,8 +200,7 @@ class competition_user extends Model
     $insert_comment = DB::table('profile_comments')
                     ->insert(['competition_id'=>$competition_id,'user_id'=>$competition_user_id,'sender_id'=>$user_id,'comment'=>$comment,'created_at'=>$date,'updated_at'=>$date]);
     $get_comment    = DB::table('profile_comments')
-                    ->select('profile_comments.*','users.*')
-                    ->join('users','users.id','=',$user_id)
+                    ->select('profile_comments.*')
                     ->where('profile_comments.user_id','=',$competition_user_id)
                     ->where('is_deleted',0)
                     ->orderBy('created_at','desc')

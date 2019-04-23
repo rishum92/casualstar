@@ -719,7 +719,7 @@ section.com_banner {
     position: relative;
     margin: 0;
   }
-
+}
 @media only screen and (max-width:320px)
 {
   .comment_count
@@ -817,7 +817,7 @@ section.com_banner {
     font-size: 18px;
     font-weight: bold;
     letter-spacing: 1px;
-    position: relative;
+    /*position: relative;*/
     margin: 0;
   }
   section.com_banner {
@@ -829,20 +829,154 @@ section.com_banner {
     background-size: cover;
   }
   .table_cell h1::after {
-    position: absolute;
+    /*position: absolute;*/
     left: -13px;
     top: -104px;
     height: 192px;
     width: 198px;
     content: "";
-    background-image: url('/img/competitions/afterimg.png');
+    background-image: url('/img/competitions/after.png');
     background-repeat: no-repeat;
     background-position: center;
+  }
+  .titlediv
+  {
+    border: none;
+    font-size: 20px;
+    text-align: center;
+    width: 280px;
+    padding: 3px;
+  }
 }
+@media only screen and (max-width:375px)
+{
+  .comment_count
+  {
+    color: #d61857;
+    font-weight:bold;
+    margin-right:5px;
+    margin-top:-31px;
+  }
+  .trash_btn
+  {
+    float:right;
+    color:#d61857;
+  }
+  .inputform input 
+  {
+    height: 55px;
+    padding: 10px 12px;
+    max-width: 500px;
+    width: 340px;
+    border: 2px solid #A8A8A8;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .img-pro 
+  {
+    margin-left:89px;
+    width: 40%;
+    position: relative;
+  }
+  .profile_content {
+    /*float: right;*/
+    width: 100%;
+    padding-left: 15px;
+  }
+  .profile_content h1 {
+    margin: 0 0 0px 0px;
+    color: #000;
+    font-size: 22px;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .profile_content p {
+    font-size: 16px;
+    color: #757575;
+    font-weight:300;
+    margin-left: -10px;
+  }
+  .like_block {
+    margin: 7px 0 0 0;
+    color: #000;
+    font-size: 22px;
+    font-weight: bold;
+    text-align:center;
+  }
+  .wrap_btn {
+    margin-top: 13px;
+    margin-left: 20px;
+  }
+  .page_btn:last-child {
+    margin-right: 0;
+    padding:6px 6px 6px 6px;
+  }
+  .page_btn:first-child {
+    background-color: transparent;
+    color: #d61857;
+    border: 3px solid #d61857;
+    padding: 6px 6px;
+  }
+  .profil_ul li {
+    float: left;
+    width: 100%;
+    padding: 0 15px;
+    margin-bottom: 30px;
+  }
+  .page_btn,.btn.btn-red{
+    background-color: #d61857;
+    color: #fff;
+    font-size:12px;
+    border-radius: 5px;
+    box-shadow: unset;
+    min-width:107px;
+    border: 3px solid #d61857;
+  }
+  .table_block {
+    display: table;
+    height: 130px;
+    /*width: 20%;*/
+  }
+  .table_cell h1 {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    /*position: relative;*/
+    margin: 0;
+  }
+  section.com_banner {
+    float: left;
+    width: 100%;
+    background-image: url("/img/competitions/banner.png");
+    height: 132px;
+    background-position: center;
+    background-size: cover;
+  }
+  .table_cell h1::after {
+    /*position: absolute;*/
+    left: -13px;
+    top: -104px;
+    height: 192px;
+    width: 198px;
+    content: "";
+    background-image: url('/img/competitions/after.png');
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .titlediv
+  {
+    border: none;
+    font-size: 20px;
+    text-align: center;
+    width: 280px;
+    padding: 3px;
+  }
 }
 /* Media Query End Here */
-
-
 
 /*=======  ends here ======*/
 
