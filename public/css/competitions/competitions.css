@@ -625,7 +625,7 @@ section.com_banner {
   width: auto;
 }
 /* Media Query Start Here */
-@media only screen and (max-width:1250px)
+@media only screen and (max-width:600px)
 {
   .comment_count
   {
@@ -854,7 +854,7 @@ section.com_banner {
   {
     color: #d61857;
     font-weight:bold;
-    margin-right:5px;
+    margin-right:10px;
     margin-top:-31px;
   }
   .trash_btn
@@ -906,7 +906,7 @@ section.com_banner {
     text-align:center;
   }
   .wrap_btn {
-    margin-top: 13px;
+    margin-top: 8px;
     margin-left: 20px;
   }
   .page_btn:last-child {
