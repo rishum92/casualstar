@@ -21,7 +21,7 @@
     <div class="headeing_search">
       <form class="inputform">
         <div class="form-group">
-          <input data-ng-model="userText" name="userText" data-ng-change="filterUsers()" ng-model-options="{updateOn: 'default change',debounce: {'default': 0,'change': 0}}" placeholder="Search by username" type="text" id="search">
+          <input placeholder="Search by username" type="text" id="search">
           <button class="btn_search" type="submit">
             <i class="fa fa-search"></i>
           </button>
@@ -104,7 +104,7 @@
               @include('competition_users')
               <!--Competition User Div Close-->
             </div>
-            <div class="wrap_prodiv" id="searched_data" style="display: none;">
+            <div class="wrap_prodiv" id="searched_data" style="display:none;">
               @include('competition_users_searched')
             </div>
               <!--Terms and conditions -->
@@ -243,7 +243,11 @@ function deleteconfirmation(id) {
 <script>
   $('#search').on('keyup',function(){
     var text = "";
+    var norecord="";
     $value=$(this).val();
+    if($value ==''){
+      $('#default_searched').show();
+    }
     $.ajax({
       type : "get",
       url : "{{ route('live_search.action')}}",
@@ -255,16 +259,19 @@ function deleteconfirmation(id) {
           if (obj.not_found !='Recordnotfound') {
             $('#default_searched').attr('style', 'display: none');
             $('#searched_data').removeAttr('style');
+            $('#record_found').removeAttr('style');
             for (i = 0; i < res.length; i++) { 
               text += '<li><div class="wrap_profile"><div class="img-pro"><img src="http://localhost:8000/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" type="button"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" type="button"><i class="fa fa-comments"></i> Comments</button></div></div></div></li>';
             }
-            $('#hhh').html(text);
+            console.log("in loop");
+            $('#record_found').html(text);
           }
           else {
-            $('#default_searched').attr('style', 'display: none');
-            $('#searched_data').removeAttr('style');
-            text += 'No Record Found';
-            $('#notfound').html(text);
+            console.log("out loop");
+            $('#default_searched').hide();
+            $('#record_found').attr('style', 'display: none');
+            norecord += 'No Record Found';
+            $('#notfound').html(norecord);
           }  
         }
     });

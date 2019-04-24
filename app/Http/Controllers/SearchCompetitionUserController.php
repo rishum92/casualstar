@@ -145,6 +145,7 @@ class SearchCompetitionUserController extends Controller
                         ->join('competiton_vote','competiton_vote.user_id','=','competition_interested_users.user_id')
                         ->where('username','like','%'.$query.'%')
                         ->get();
+                    //echo "<pre>";print_r($data);die;
                 if($data[0]->competition_id !=''){
                 $data = array(
                     'response' => $data
