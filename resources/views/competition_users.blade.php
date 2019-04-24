@@ -3,7 +3,6 @@
   <div style = "font-size:30px;text-align:center;">
     There is currently no active competition.
   </div><br><br>
-
 @else
 @foreach($competitionuser as $user)
   <?php //echo"<pre>"; print_r($user); //die; ?>

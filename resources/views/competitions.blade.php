@@ -27,6 +27,7 @@
           </button>
         </div>  
       </form>
+      <br /><!-- <br><br><br><br>  -->
       <div class="center_text">
         <?php  if(Auth::check()) {?>
           @if(Auth::user()->username == 'Admin')
