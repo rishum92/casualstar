@@ -257,19 +257,23 @@ function deleteconfirmation(id) {
         res = obj.response;
         //console.log(res);return false;
           if (obj.not_found !='Recordnotfound') {
+            $('#notfound').attr('style','display:none');
             $('#default_searched').attr('style', 'display: none');
             $('#searched_data').removeAttr('style');
             $('#record_found').removeAttr('style');
             for (i = 0; i < res.length; i++) { 
               text += '<li><div class="wrap_profile"><div class="img-pro"><img src="http://localhost:8000/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" type="button"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" type="button"><i class="fa fa-comments"></i> Comments</button></div></div></div></li>';
+            
             }
             console.log("in loop");
             $('#record_found').html(text);
+
           }
           else {
             console.log("out loop");
             $('#default_searched').hide();
-            $('#record_found').attr('style', 'display: none');
+            $('#record_found').attr('style','display: none');
+            $('#notfound').attr('style','display:block');
             norecord += 'No Record Found';
             $('#notfound').html(norecord);
           }  

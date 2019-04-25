@@ -219,8 +219,6 @@
 	Route::post('competition-user','competitionController@add');
 	Route::get('competitiondelete/{id}','competitionController@competitiondelete');
 	Route::post('editdate','competitionController@editd');
-	
-	Route::get('browseuser', ['uses' => 'SearchCompetitionUserController@browse', 'as' => 'views']);
 	Route::get('live_search/action', 'SearchCompetitionUserController@action')->name('live_search.action');
 	Route::post('terms_store','competitionController@termsstore');
 	Route::post('confirm_vote','competitionController@confirm_vote');
