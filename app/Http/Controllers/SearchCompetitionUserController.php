@@ -21,17 +21,19 @@ class SearchCompetitionUserController extends Controller
 {
     public function action(Request $request)
     {
+        
         if ($request->ajax()) {
             
             $query = $request->get('search');
             if($query != '')
             {   
                 $data = DB::table('competition_interested_users')
-                        ->select('competition_interested_users.*','competiton_vote.*',DB::raw('count(competiton_vote.id) as total_votes'))
+                        ->select('competition_interested_users.*','competiton_vote.is_vote',DB::raw('count(competiton_vote.is_vote) as total_votes'))
                         ->join('competiton_vote','competiton_vote.user_id','=','competition_interested_users.user_id')
                         ->where('username','like','%'.$query.'%')
+                        ->where('is_vote',1)
                         ->get();
-                echo "<pre>";print_r($data);die;
+                //echo "<pre>";print_r($data);die;
                 if($data[0]->competition_id !=''){
                 $data = array(
                     'response' => $data
@@ -58,4 +60,30 @@ class SearchCompetitionUserController extends Controller
 
         
     }
+    //  public function action(Request $request)
+    // {
+    //     if ($request->ajax()) {
+            
+    //         $query = $request->get('search');
+    //         if($query != '')
+    //         {
+    //             $data = DB::table('users')
+    //                     ->where('username','like','%'.$query.'%')
+    //                     ->select('*')
+    //                     ->get();
+    //             $data = array(
+    //                 'response' => $data
+    //             );
+                
+    //             return json_encode($data);
+    //         }
+    //         else
+    //         {
+    //            echo "Record not found"; 
+    //         }
+
+    //     }
+
+        
+    // }
 }

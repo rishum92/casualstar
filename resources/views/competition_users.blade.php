@@ -33,7 +33,7 @@
       @else
       <div ng-controller = "UserCompetitionController">
         <div class="wrap_profile">
-          @if($user->total_votes >= 100)
+          @if($user->total_votes >= 3)
           <div class="first_place">
             1<sup>st</sup>
           </div>
@@ -54,7 +54,7 @@
           <div class="second_place_amount">
             <input type ="text" value ="Wins:$50" class="edit_amount" readonly = "true">
           </div>
-          @elseif($user->total_votes >= 50)
+          @elseif($user->total_votes >= 2)
           <div class="third_place">
             3<sup>rd</sup>
           </div>
