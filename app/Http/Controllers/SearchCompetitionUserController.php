@@ -28,27 +28,46 @@ class SearchCompetitionUserController extends Controller
             if($query != '')
             {   
                 $data = DB::table('competition_interested_users')
-                        ->select('competition_interested_users.*','competiton_vote.is_vote',DB::raw('count(competiton_vote.is_vote) as total_votes'))
-                        ->join('competiton_vote','competiton_vote.user_id','=','competition_interested_users.user_id')
+                        ->select('competition_interested_users.*')
                         ->where('username','like','%'.$query.'%')
-                        ->where('is_vote',1)
+                        ->where('is_status',1)
                         ->get();
-                //echo "<pre>";print_r($data);die;
-                if($data[0]->competition_id !=''){
-                $data = array(
-                    'response' => $data
-                );
+                foreach ($data as $key => $vote_data) 
+                {
+                    $vote_count = DB::table('competiton_vote')
+                                ->select('is_vote')
+                                ->where('competition_id', $vote_data->competition_id)
+                                ->where('is_vote',1)
+                                ->get(); 
+
+                    $data[$key]->total_votes = count($vote_count);
+                }
+                foreach($data as $key =>$comment_data)
+                {
+                    $comment_count = DB::table('profile_comments')
+                                ->select('comment')
+                                ->where('competition_id', $comment_data->competition_id)
+                                ->where('is_deleted',0)
+                                ->get(); 
+
+                    $data[$key]->total_comment = count($comment_count);
+                }
+                //echo "<pre>";print_r($data);
+                if(!empty($data))
+                {
+                    $data = array(
+                        'response' => $data
+                    );
                 
-                return json_encode($data);
+                    return json_encode($data);
                 }
                 else
                 {
                     $not_found = "Recordnotfound";
                     $data = array(
                     'not_found' => $not_found
-                );
-                
-                return json_encode($data);
+                    );
+                    return json_encode($data);
                 }
             }
             else
@@ -60,6 +79,8 @@ class SearchCompetitionUserController extends Controller
 
         
     }
+    // competiton_vote.is_vote',DB::raw('count(competiton_vote.is_vote) as total_votes// ->where('is_vote',1)
+    // join('competiton_vote','competiton_vote.user_id','=','competition_interested_users.user_id')
     //  public function action(Request $request)
     // {
     //     if ($request->ajax()) {

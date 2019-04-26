@@ -99,7 +99,7 @@
                   <i class="fa fa-heart"></i> Vote Me
                 </button>
               <?php endif; ?>
-              <?php echo $__env->make('modals.commentcompetition', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+              
               <button onclick = "profilecomment(<?php echo e($user->user_id); ?>)"
                 class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
               </button>

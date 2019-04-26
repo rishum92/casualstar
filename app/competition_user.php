@@ -201,11 +201,20 @@ class competition_user extends Model
                     ->insert(['competition_id'=>$competition_id,'user_id'=>$competition_user_id,'sender_id'=>$user_id,'comment'=>$comment,'created_at'=>$date,'updated_at'=>$date]);
     $get_comment    = DB::table('profile_comments')
                     ->select('profile_comments.*')
-                    ->where('profile_comments.user_id','=',$competition_user_id)
+                    ->where('profile_comments.user_id',$competition_user_id)
                     ->where('is_deleted',0)
                     ->orderBy('created_at','desc')
                     ->get();
-    return $get_comment;
+      foreach ($get_comment as $key => $commentdata) 
+      {
+        $commentcount = DB::table('profile_comments')
+                        ->select('comment')
+                        ->where('competition_id',$commentdata->competition_id)
+                        ->where('is_deleted',0)
+                        ->get();
+        $get_comment[$key]->total_comment = count($commentcount);
+      }
+      return $get_comment;
   }
 
   //fetch comment

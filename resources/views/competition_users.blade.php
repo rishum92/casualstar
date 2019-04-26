@@ -95,7 +95,7 @@
                   <i class="fa fa-heart"></i> Vote Me
                 </button>
               @endif
-              @include('modals.commentcompetition')
+              
               <button onclick = "profilecomment({{$user->user_id}})"
                 class="page_btn" type="button"><i class="fa fa-comments"></i>Comments
               </button>

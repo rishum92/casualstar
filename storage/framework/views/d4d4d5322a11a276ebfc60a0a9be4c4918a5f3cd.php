@@ -111,6 +111,8 @@
                 Terms & Conditions
                 </button>
             </div>
+            <input type="hidden" id="auth_userid" name="auth_userid" value="<?php echo e(Auth::user()->id); ?>">
+            <input type="hidden" id="auth_username" name="auth_username" value="<?php echo e(Auth::user()->username); ?>">
                 <!--Terms and conditions -->
     </div>
   </div>
@@ -203,6 +205,55 @@ function confirm_vote_popup(id,competition_userid) {
   </div>
 </div>
 <!-- vote popup end -->
+
+<!--comment popup start-->
+<?php //echo "<pre>";print_r($user->user_id}});die;?>
+<div class="modal fade" id="commentcompetitionModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="viewPhoto" files="true" novalidate>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="ion-android-close"></i></button>
+          
+          <div class="userPhotoTitle">
+            <a class="userImage" id="profile_username">
+              <img id="img_profile"/>
+            </a>
+            &nbsp;&nbsp;
+            <h3 id ="user_name">
+            </h3>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="explore-photo caption">
+            <label></label>
+          </div>
+         <!--  <div class="form-group likes">
+             <h3>Likes</h3>
+            
+            <button type="button" class="edit-button" ng-click="likePhoto(viewPhoto['data'].photo)"><i class="[[getLikeIcon()]]"></i></button>
+          </div> -->
+          <div class="messages">
+            <div class="form-group right comments">
+              <!-- <h3>Comments</h3> -->
+              <!-- [[photoComments.length]] -->
+              <input type="hidden" name="competition_user_id" id="competition_user_id">
+              <input type="hidden" name="competition_id" id="competition_id">
+              <form>
+                <textarea id="comment" autocomplete="off" maxlength="300" name="commentmessage" class="form-control" placeholder="Type a comment here..."></textarea>
+                <button type="button" id="postCommentButton" class="post-comment-btn form-btn main-btn stroke-btn"><i class="fa fa-check"></i></input></button>
+              </form>
+              <ul class="conversation" id="demo_comment">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--comment popup end-->
 <script>
 function deleteconfirmation(id) {
  $('#deleteconfirmationbtn').modal('show');
@@ -241,6 +292,9 @@ function deleteconfirmation(id) {
   $('#search').on('keyup',function(){
     var text = "";
     var norecord="";
+    var auth_userid = $('#auth_userid').val();
+    var auth_username = $('#auth_username').val();
+
     $value=$(this).val();
     if($value ==''){
       $('#default_searched').show();
@@ -252,22 +306,47 @@ function deleteconfirmation(id) {
       success:function(data){
         obj = JSON.parse(data);
         res = obj.response;
-        //console.log(res);return false;
+        //console.log(document.getElementById('auth_userid').value);
+        // console.log(auth_username);return false;
           if (obj.not_found !='Recordnotfound') {
             $('#notfound').attr('style','display:none');
             $('#default_searched').attr('style', 'display: none');
             $('#searched_data').removeAttr('style');
             $('#record_found').removeAttr('style');
-            for (i = 0; i < res.length; i++) { 
-              text += '<li><div class="wrap_profile"><div class="img-pro"><img src="http://localhost:8000/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" type="button"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" type="button"><i class="fa fa-comments"></i> Comments</button></div></div></div></li>';
-            
-            }
-            console.log("in loop");
-            $('#record_found').html(text);
+            for (i = 0; i < res.length; i++) 
+            {
 
+              text += '<li><div class="wrap_profile">'
+              if(res[i].total_votes >= 3)
+              {
+                text +='<div class="first_place">1<sup>st</sup></div>'
+                if(auth_username == 'Admin')
+                {
+                  text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'><input type ="text" value ="Wins:$100" id = "firstplace_amount"  class="edit_amount"></div>'
+                }
+                else
+                {
+                  text +='<div class = "first_place_amount"><input type ="text" value ="Wins:$100" class="edit_amount" readonly = "true"> </div>'
+                }
+              }
+                else if(res[i].total_votes >= 75)
+                {
+                  text +='<div class = "second_place">2<sup>nd</sup></div><div class="second_place_amount"><input type ="text" value ="Wins:$50" class="edit_amount" readonly = "true"></div>'
+                }
+                else if(res[i].total_votes >= 2)
+                {
+                  text +='<div class="third_place">3<sup>rd</sup></div><div class ="third_place_amount"><input type ="text" value ="Wins:$25" class="edit_amount" readonly = "true"></div>'
+                }
+              
+                text +='<div class="img-pro"><img src="http://localhost:8000/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
+                if(res[i].user_id == auth_userid || auth_username == 'Admin')
+                  { 
+                    text +='<div><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div></div> </div></li>';
+                  }
+            }
+            $('#record_found').html(text);
           }
           else {
-            console.log("out loop");
             $('#default_searched').hide();
             $('#record_found').attr('style','display: none');
             $('#notfound').attr('style','display:block');
@@ -314,16 +393,15 @@ function deletecomment(comment_id) {
 <script>
   function profilecomment(user_id)
   {
-    
     var comment = "";
-    //$('#commentcompetitionModal').modal('show');
-    //$('#commentid').val(user_id);
+    $('#commentcompetitionModal').modal('show');
     $.ajax({
       url: 'comment_user_data/'+user_id,
       type: 'GET',
       success: function(data){
         data = JSON.parse(data);
-        $('#commentcompetitionModal').modal('toggle');
+        //console.log(data.get_comment);return false;
+       // $('#commentcompetitionModal').modal('toggle');
         $('#img_profile').attr('src','img/users/'+data.user_data[0].username+'/previews/'+data.user_data[0].img);
         $('#user_name').text(data.user_data[0].username);
         $('#profile_username').attr("href","users/"+data.user_data[0].username);
@@ -492,7 +570,7 @@ if (s >= y) {
             },
       success:function(data)
       {
-        console.log(data);
+        //console.log(data);return false;
         $('#comment').val('');
         for (j = 0; j < data.length; j++)
         {
@@ -504,9 +582,10 @@ if (s >= y) {
           var mon = date.getMonth()+1;
           var yea = date.getFullYear();
           var dateformat = hour+":"+min+":"+sec+" "+dat+"/"+mon+"/"+yea;
-          comment_text +='<li class="message block-flex wrap-flex" class="partner"><div class="image"><a href="#"><img src="img/users/'+data[j].username+'/previews/'+data[j].img+'"/></a></div><div class="text">'+data[j].comment+'<span class="date-sent">'+dateformat+'</span></div><button type="button" class="edit-button"><i class="ion-trash-a"></i></button></li>';
+          comment_text +='<li class="message block-flex wrap-flex" class="partner"><div class="image"><a href="#"><img src="img/users/'+data[j].username+'/previews/'+data[j].img+'"/></a></div><div class="text">'+data[j].comment+'<span class="date-sent">'+dateformat+'</span></div><button type="button" onclick = "deletecomment('+data[j].id+')" class="edit-button"><i class="ion-trash-a"></i></button></li>';
         }
         $("#demo_comment").html(comment_text);
+        location.reload();
       }
     });
   });
