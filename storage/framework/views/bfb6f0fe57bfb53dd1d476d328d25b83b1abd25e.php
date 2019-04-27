@@ -33,8 +33,9 @@
         </div>
       <?php else: ?>
       <div ng-controller = "UserCompetitionController">
+        <input type="hidden" id="position_number" value="<?php echo e($user->total_votes); ?>">
         <div class="wrap_profile">
-          <?php if($user->total_votes >= 3): ?>
+          <?php if($user->total_votes >= 7): ?>
           <div class="first_place">
             1<sup>st</sup>
           </div>
@@ -48,14 +49,14 @@
             <input type ="text" value ="Wins:$100" class="edit_amount" readonly = "true">
           </div>
           <?php endif; ?>
-          <?php elseif($user->total_votes >= 75): ?>
+          <?php elseif($user->total_votes >= 5): ?>
           <div class = "second_place">
             2<sup>nd</sup>
           </div>
           <div class="second_place_amount">
             <input type ="text" value ="Wins:$50" class="edit_amount" readonly = "true">
           </div>
-          <?php elseif($user->total_votes >= 2): ?>
+          <?php elseif($user->total_votes >= 3): ?>
           <div class="third_place">
             3<sup>rd</sup>
           </div>
@@ -91,7 +92,7 @@
             <div class="wrap_btn">
             <?php //echo '<pre>';print_r($voter_count);?>
               <?php if($voter_count < 2 || !in_array ($user->user_id, $voter_count) && Auth::user()->id != $user->user_id || Auth::user()->username == 'Admin' && date('d/m/Y') != $showdate): ?>
-                <button class="page_btn" type="button" onclick="confirm_vote_popup(<?php echo e($user->competition_id); ?>,<?php echo e($user->user_id); ?>)">
+                <button class="page_btn" type="button" onclick="confirm_vote_popup(<?php echo e($user->competition_id); ?>,<?php echo e($user->user_id); ?>,'<?php echo e($user->username); ?>')">
                   <i class="fa fa-heart"></i> Vote Me
                 </button>
               <?php else: ?>

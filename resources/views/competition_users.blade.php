@@ -32,8 +32,9 @@
         </div>
       @else
       <div ng-controller = "UserCompetitionController">
+        <input type="hidden" id="position_number" value="{{$user->total_votes}}">
         <div class="wrap_profile">
-          @if($user->total_votes >= 3)
+          @if($user->total_votes >= 7)
           <div class="first_place">
             1<sup>st</sup>
           </div>
@@ -47,14 +48,14 @@
             <input type ="text" value ="Wins:$100" class="edit_amount" readonly = "true">
           </div>
           @endif
-          @elseif($user->total_votes >= 75)
+          @elseif($user->total_votes >= 5)
           <div class = "second_place">
             2<sup>nd</sup>
           </div>
           <div class="second_place_amount">
             <input type ="text" value ="Wins:$50" class="edit_amount" readonly = "true">
           </div>
-          @elseif($user->total_votes >= 2)
+          @elseif($user->total_votes >= 3)
           <div class="third_place">
             3<sup>rd</sup>
           </div>
@@ -87,7 +88,7 @@
             <div class="wrap_btn">
             <?php //echo '<pre>';print_r($voter_count);?>
               @if($voter_count < 2 || !in_array ($user->user_id, $voter_count) && Auth::user()->id != $user->user_id || Auth::user()->username == 'Admin' && date('d/m/Y') != $showdate)
-                <button class="page_btn" type="button" onclick="confirm_vote_popup({{$user->competition_id}},{{$user->user_id}})">
+                <button class="page_btn" type="button" onclick="confirm_vote_popup({{$user->competition_id}},{{$user->user_id}},'{{$user->username}}')">
                   <i class="fa fa-heart"></i> Vote Me
                 </button>
               @else

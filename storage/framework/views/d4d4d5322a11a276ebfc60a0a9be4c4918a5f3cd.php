@@ -97,6 +97,7 @@
            ?>
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
+            <?php //echo"<pre>";print_r($competitionuser);die;?>
             <div class="wrap_prodiv" id="default_searched">
               <?php echo $__env->make('competition_users', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
               <!--Competition User Div Close-->
@@ -113,6 +114,7 @@
             </div>
             <input type="hidden" id="auth_userid" name="auth_userid" value="<?php echo e(Auth::user()->id); ?>">
             <input type="hidden" id="auth_username" name="auth_username" value="<?php echo e(Auth::user()->username); ?>">
+
                 <!--Terms and conditions -->
     </div>
   </div>
@@ -171,10 +173,11 @@ function imagemodal(id){
 
 <!-- vote popup start -->
 <script>
-function confirm_vote_popup(id,competition_userid) {
+function confirm_vote_popup(id,competition_userid,username) {
  $('#modalcompetitionid').val(id);
+ //alert(id);return false;
  $('#competition_userid').val(competition_userid);
- $('#competition_username').val(competition_username);
+ $('#competition_username').val(username);
  $('#exampleModal').modal('show');
 }
 </script>
@@ -196,15 +199,43 @@ function confirm_vote_popup(id,competition_userid) {
       <input type="hidden" name="competition_username" id="competition_username">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary" data-dismiss="modal" target="" id="confirm_vote" value="1">Vote Now</button>
-      </div>
-      <span id = "messagedisplay" style = "display:none;">
-        Thank you for voting.Username is now in position 23 in the competition.You also have one more vote remaining.
-          </span>
+        <button type="submit" onclick = "message_popup()" class="btn btn-primary" data-dismiss="modal" target="" id="confirm_vote" value="1">Vote Now</button>
+      </div> 
     </div>
   </div>
 </div>
 <!-- vote popup end -->
+<script>
+  function message_popup()
+  {
+    $('#messagepopupModal').modal('show');
+    var username = $('#competition_username').val();
+    var position_number = $('#position_number',this).val();
+    alert(position_number);
+     $('#thankyoumessage').text('Thank you for voting.'+username+' is now in position 23 in the competition.You also have one more vote remaining.');
+    //console.log(username);
+  }
+</script>
+<!--vote message popup start-->
+<div class="modal fade" id="messagepopupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="messagepopupModal">Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="thankyoumessage">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div> 
+    </div>
+  </div>
+</div>
+<!--vote message popup end-->
 
 <!--comment popup start-->
 <?php //echo "<pre>";print_r($user->user_id}});die;?>
@@ -306,8 +337,6 @@ function deleteconfirmation(id) {
       success:function(data){
         obj = JSON.parse(data);
         res = obj.response;
-        //console.log(document.getElementById('auth_userid').value);
-        // console.log(auth_username);return false;
           if (obj.not_found !='Recordnotfound') {
             $('#notfound').attr('style','display:none');
             $('#default_searched').attr('style', 'display: none');
@@ -317,9 +346,9 @@ function deleteconfirmation(id) {
             {
 
               text += '<li><div class="wrap_profile">'
-              if(res[i].total_votes >= 3)
+              if(res[i].total_votes >= 7)
               {
-                text +='<div class="first_place">1<sup>st</sup></div>'
+                text +='<div classhttps://github.com/rishum92/casualstar.git="first_place">1<sup>st</sup></div>'
                 if(auth_username == 'Admin')
                 {
                   text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'><input type ="text" value ="Wins:$100" id = "firstplace_amount"  class="edit_amount"></div>'
@@ -329,15 +358,14 @@ function deleteconfirmation(id) {
                   text +='<div class = "first_place_amount"><input type ="text" value ="Wins:$100" class="edit_amount" readonly = "true"> </div>'
                 }
               }
-                else if(res[i].total_votes >= 75)
+                else if(res[i].total_votes >= 5)
                 {
                   text +='<div class = "second_place">2<sup>nd</sup></div><div class="second_place_amount"><input type ="text" value ="Wins:$50" class="edit_amount" readonly = "true"></div>'
                 }
-                else if(res[i].total_votes >= 2)
+                else if(res[i].total_votes >= 3)
                 {
                   text +='<div class="third_place">3<sup>rd</sup></div><div class ="third_place_amount"><input type ="text" value ="Wins:$25" class="edit_amount" readonly = "true"></div>'
                 }
-              
                 text +='<div class="img-pro"><img src="http://localhost:8000/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
                 if(res[i].user_id == auth_userid || auth_username == 'Admin')
                   { 
@@ -364,7 +392,6 @@ function deletecomment(comment_id) {
  $('#competitionid').val(id);
 }
 </script>
-
 
 <!--Delete Confirmation Popup-->
 <div class="modal fade" id="deleteconfirmationbtn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -547,7 +574,7 @@ if (s >= y) {
             },
       success:function(data)
       {
-        $("#messagedisplay").removeAttr('style');
+        //alert(data);return false;
         $(".wrap_prodiv").html(data);
       }
     });
