@@ -16,7 +16,12 @@ body a:focus{
 
 /*=======  page css start here===========*/
 
-
+.no_competition_found
+{
+    font-size:30px;
+    text-align:center;
+    display:block;
+}
 .comment_count
 {
   color: #d61857;

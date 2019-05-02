@@ -1,6 +1,7 @@
 <ul class="profil_ul">
-<?php if(empty($competitionuser)): ?> 
-  <div style = "font-size:30px;text-align:center;">
+<?php //echo"<pre>"; print_r($competitionuser); //die; ?>
+<?php if($competitionuser->isEmpty()): ?>
+  <div class = "no_competition_found">
     There is currently no active competition.
   </div><br><br>
 <?php else: ?>

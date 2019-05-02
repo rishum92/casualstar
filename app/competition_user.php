@@ -21,7 +21,7 @@ class competition_user extends Model
                 ->groupBy('users.id', 'competiton_vote.user_id')
                 ->orderBy('total_votes', 'desc')
                 ->where('is_status',1)
-                ->where('is_vote',1)
+                //->where('is_vote',1)
                 ->paginate(20);
 
     foreach ($getuserdata as $key => $userdata) {

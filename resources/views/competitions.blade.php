@@ -115,8 +115,7 @@
                 Terms & Conditions
                 </button>
             </div>
-            <input type="hidden" id="auth_userid" name="auth_userid" value="{{Auth::user()->id}}">
-            <input type="hidden" id="auth_username" name="auth_username" value="{{Auth::user()->username}}">
+            
 
                 <!--Terms and conditions -->
     </div>
@@ -178,7 +177,6 @@ function imagemodal(id){
 <script>
 function confirm_vote_popup(id,competition_userid,username) {
  $('#modalcompetitionid').val(id);
- //alert(id);return false;
  $('#competition_userid').val(competition_userid);
  $('#competition_username').val(username);
  $('#exampleModal').modal('show');
@@ -213,8 +211,10 @@ function confirm_vote_popup(id,competition_userid,username) {
   {
     $('#messagepopupModal').modal('show');
     var username = $('#competition_username').val();
-    var position_number = $('#position_number',this).val();
-    alert(position_number);
+    var position = $('input[id^="position_number"]').val();   
+    $('input[id^="tag"]').on('click', function() {  
+    alert(this.value);
+    //alert(position);
      $('#thankyoumessage').text('Thank you for voting.'+username+' is now in position 23 in the competition.You also have one more vote remaining.');
     //console.log(username);
   }
@@ -328,7 +328,6 @@ function deleteconfirmation(id) {
     var norecord="";
     var auth_userid = $('#auth_userid').val();
     var auth_username = $('#auth_username').val();
-
     $value=$(this).val();
     if($value ==''){
       $('#default_searched').show();
@@ -351,7 +350,7 @@ function deleteconfirmation(id) {
               text += '<li><div class="wrap_profile">'
               if(res[i].total_votes >= 7)
               {
-                text +='<div classhttps://github.com/rishum92/casualstar.git="first_place">1<sup>st</sup></div>'
+                text +='<div class="first_place">1<sup>st</sup></div>'
                 if(auth_username == 'Admin')
                 {
                   text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'><input type ="text" value ="Wins:$100" id = "firstplace_amount"  class="edit_amount"></div>'
@@ -369,7 +368,7 @@ function deleteconfirmation(id) {
                 {
                   text +='<div class="third_place">3<sup>rd</sup></div><div class ="third_place_amount"><input type ="text" value ="Wins:$25" class="edit_amount" readonly = "true"></div>'
                 }
-                text +='<div class="img-pro"><img src="http://localhost:8000/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
+                text +='<div class="img-pro"><img src="/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
                 if(res[i].user_id == auth_userid || auth_username == 'Admin')
                   { 
                     text +='<div><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div></div> </div></li>';

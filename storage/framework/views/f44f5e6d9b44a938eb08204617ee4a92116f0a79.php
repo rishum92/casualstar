@@ -26,10 +26,10 @@
       </div>
     </div>
     <div class="wrap pusher"> 
-      <!-- <div class="block-flex wrap-flex " data-ng-hide="chats.length > 0">
+      <div class="block-flex wrap-flex " data-ng-hide="chats.length > 0">
         <h3 class="no-chats" data-ng-if="user.gender == 'female'">Loading... Please wait while we fetch your messages for you.</h3>
         <h3 class="no-chats" data-ng-if="user.gender == 'male'"><?php echo e(Lang::get('messages.noChats')); ?></h3>
-      </div> -->
+      </div>
       <button class="toggle-chats">
         <i class="ion-chatbubbles"></i>chats
         <span class="chat-indicator" data-ng-if="$parent.messageCount > 0 && $parent.messageCount < 100">[[$parent.messageCount]]</span>
