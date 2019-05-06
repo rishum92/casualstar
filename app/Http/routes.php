@@ -219,15 +219,18 @@
 	Route::post('competition-user','competitionController@add');
 	Route::get('competitiondelete/{id}','competitionController@competitiondelete');
 	Route::post('editdate','competitionController@editd');
+	
+	Route::get('browseuser', ['uses' => 'SearchCompetitionUserController@browse', 'as' => 'views']);
 	Route::get('live_search/action', 'SearchCompetitionUserController@action')->name('live_search.action');
 	Route::post('terms_store','competitionController@termsstore');
-	Route::post('confirm_vote','competitionController@confirm_vote');
+// 	Route::post('confirm_vote','competitionController@confirm_vote');
+	Route::get('confirm_vote/{confirm_vote}/{competitionid}/{competition_userid}/{competition_username}','competitionController@confirm_vote');
 	Route::get('expand_image/{id}','competitionController@expand_image');
-	Route::post('amount_edit','competitionController@amount_edit');
+// 	Route::post('amount_edit','competitionController@amount_edit');
+	Route::get('competition_vote_amount_edit/{firstplace_amount}/{hidden_user_id}','HomeController@competition_vote_amount_edit');
 	Route::resource('competition_user', 'CompetitionUserController', ['only' => ['index', 'show', 'store', 'update', 'destroy']]);
 	Route::post('edit_title','competitionController@edit_title');
 	Route::get('comment_user_data/{id}','competitionController@comment_user_data');
 	Route::post('confirm_comment','competitionController@confirm_comment');
 	Route::get('delete_comment/{id}','competitionController@delete_comment');
 	
-

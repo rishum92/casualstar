@@ -20,9 +20,9 @@ use DB;
 class competitionController extends Controller
 {
     public function add(Request $request) 
-    {
+    {   
         $data = Input::all();
-        $caption = $data['title'];
+        //$caption = $data['title'];
         //echo "<pre>";print_r($title);die;
         $user = User::find(Auth::user()->id);
         $user_id = $user->id;
@@ -78,7 +78,7 @@ class competitionController extends Controller
         $profilePhotoImage->save();
 
         $insertdata = DB::table('competition_interested_users')
-                    ->insert(['user_id'=>$user_id, 'username'=>$user->username, 'user_profile'=>$profilePhotoFile,'caption'=>$caption]);
+                    ->insert(['user_id'=>$user_id, 'username'=>$user->username, 'user_profile'=>$profilePhotoFile]);
                     
         $success = Lang::get('messages.photoAdded');
         $error = Lang::get('messages.errorMsg');
@@ -117,11 +117,13 @@ class competitionController extends Controller
     {
         $competitionid      = $request->competitionid;
         $competition_userid = $request->competition_userid;
+        $competition_username = $request->competition_username;
         $confirm_vote       = $request->confirm_vote;
         $voter_id           = Auth::user()->id;
-        $voter_id           = competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
+        $uservotecount = competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
         $getdata = competition_user::getdata();
         $voter_count = competition_user::vote_count($voter_id);
+        $total_voters_count = count($voter_count);
         $showdate= competition_user::showdate();
         $updatedate = $showdate[0]->ExpiryDate;
         $date_array = explode("-",$updatedate); // split the array
@@ -129,10 +131,19 @@ class competitionController extends Controller
         $var_month = $date_array[1]; //month segment
         $var_day = $date_array[2]; //year segment
         $new_date_format = "$var_day/$var_month/$var_year";
+        $data = array(
+                    'competitionuser' =>$getdata,
+                    'competitionuserid' => $competition_userid,
+                    'uservotecount' => $uservotecount
+                );
+        return json_encode($data);
         
-        return view('competition_users',['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format]);
+        //return redirect()->route('competitions', ['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format,'total_voters_count'=>$total_voters_count])->with('message', 'Thank you for voting '.$competition_username.' is now in position 23 in the competition.You also have one more vote remaining.')->with('messageType', 'success');
+        //return view('competition_users')->with(['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format,'total_voters_count'=>$total_voters_count])->with('message', 'Thank you for voting '.$competition_username.' is now in position 23 in the competition.You also have one more vote remaining.')->with('messageType', 'success');
+         //return view('competition_users',['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format,'total_voters_count'=>$total_voters_count]);
+       
     }
-     
+  
     public function expand_image(Request $request)
     {
         $id = $request->id;
@@ -160,10 +171,11 @@ class competitionController extends Controller
     }
     public function amount_edit(Request $request)
     {
-        $vote_amount            = $request->amount_edit;
+        $vote_amount            = $request->firstplace_amount;
         $user_id                = $request->hidden_user_id;
         $update_vote_amount     = competition_user::update_amount_edit($vote_amount,$user_id);
-        return redirect('competitions');
+        return view('competition_users',['competitionuservoteamount' =>$update_vote_amount]);
+        //return redirect('competitions');
     }
     
     public function edit_title(Request $request)
@@ -203,4 +215,3 @@ class competitionController extends Controller
         return redirect('competitions');
     }
 }
-

@@ -16,16 +16,16 @@ use App\competition_user;
 class HomeController extends BaseController
 {
   public function index() {
-  	if(Auth::check()) {
-    	return redirect()->route('dashboard');
-  	} else {
+    if(Auth::check()) {
+      return redirect()->route('dashboard');
+    } else {
       $tributeCount = Tribute::count();
-    	return view('index', ['tributeCount' => $tributeCount]);
-  	}
+      return view('index', ['tributeCount' => $tributeCount]);
+    }
   }
 
   public function contact() {
-	 return view('contact', []);
+   return view('contact', []);
   }
    
   public function faq() {
@@ -109,11 +109,13 @@ class HomeController extends BaseController
         $user_id = Auth::user()->id;
         $getdata = competition_user::getdata();
         
-        //echo '<pre>';print_r($getdata);exit;
+       // echo '<pre>';print_r($getdata);exit;
         $exist = competition_user::existuser($user_id);
         
         $voter_count = competition_user::vote_count($user_id);
         //echo '<pre>';print_r($voter_count);
+        $total_voters_count = count($voter_count);
+        $exist_voters = competition_user::exist_voters($user_id);
         $showdate= competition_user::showdate();
         $updatedate = $showdate[0]->ExpiryDate;
         $date_array = explode("-",$updatedate); // split the array
@@ -123,8 +125,7 @@ class HomeController extends BaseController
         $new_date_format = "$var_day/$var_month/$var_year";
         $showtermscondition= competition_user::showtermscondition();
         $get_title= competition_user::get_title();
-        
-        return view('competitions',['competitionuser' =>$getdata,'exists'=>$exist,'showdate'=>$new_date_format,'termscondition'=>$showtermscondition,'voter_count'=>$voter_count,'get_title'=>$get_title]);
+        return view('competitions',['competitionuser' =>$getdata,'exists'=>$exist,'showdate'=>$new_date_format,'termscondition'=>$showtermscondition,'voter_count'=>$voter_count,'get_title'=>$get_title,'total_voters_count'=>$total_voters_count, 'exist_voters'=>$exist_voters]);
     } else {
         $getdata = competition_user::getdata();
         $showdate= competition_user::showdate();
@@ -138,5 +139,17 @@ class HomeController extends BaseController
     }
   }
 
+public function competition_vote_amount_edit(Request $request)
+    {   //echo "<pre>"; print_r($request->firstplace_amount); die;
+        $vote_amount = $request->firstplace_amount;
+        $hidden_user_id_for_voteamount = $request->hidden_user_id;
+        $update_vote_amount     = competition_user::update_amount_edit($vote_amount,$hidden_user_id_for_voteamount);
+        $select_vote_amount     = competition_user::select_vote_amount($hidden_user_id_for_voteamount);
+        $data = array('competitionuservoteamount' => $select_vote_amount);
+        return json_encode($data);
+        //return redirect('competitions');
+    }
+    
+    
 
 }

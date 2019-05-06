@@ -27,25 +27,25 @@
           </button>
         </div>  
       </form>
-      <br /><!-- <br><br><br><br>  -->
-      <div class="center_text">
-        <?php  if(Auth::check()) {?>
-          @if(Auth::user()->username == 'Admin')
-            <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="{{$get_title}}">
-            <br />
-            Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
-          @else
-            <input class = "titlediv" type="text" value="{{$get_title}}" readonly="true">
-            <br />
-            Expires:<input type="text" class = "inputfield" value = "{{$showdate}}"readonly="true">GMT
-          @endif
-        <?php } ?>
+    </div>
+    <div class="center_text">
+      <?php  if(Auth::check()) {?>
+        @if(Auth::user()->username == 'Admin')
+          <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="{{$get_title}}">
+          <br />
+          Expires:<input class = "inputfield" type="text" id="expiry"name = "expirydate" value="{{$showdate}}">GMT
+        @else
+          <input class = "titlediv" type="text" value="{{$get_title}}" readonly="true">
+          <br />
+          Expires:<input type="text" class = "inputfield" value = "{{$showdate}}"readonly="true">GMT
+        @endif
+      <?php } ?>
       </div>
-        <?php    
-          if(Auth::check()) {
-            if(empty($exists) || date('d/m/Y') == $showdate)
+        <?php  //echo"<pre>"  ; print_r($exists); die;
+          if(Auth::check()) { ?>
+            @if(Auth::user()->gender == 'female')
+            <?php if(empty($exists) || date('d/m/Y') == $showdate)
             { ?>
-              @if(Auth::user()->gender == 'female')
                 <!--Image Uploader Start-->
                 <center>
                   <div ng-controller = "UserCompetitionController"> 
@@ -73,10 +73,6 @@
                                   <input type="hidden" name="type" ng-model="addPhoto['data'].type">
                                   <input type="file" name="file" ng-model="addPhoto['data'].file" class="form-control" accept="image/*" valid-file required>
                                 </div>
-                                <div class="form-group">
-                                  <label>Caption</label>
-                                  <input type="text" name="title" ng-model="addPhoto['data'].title" maxlength=100 class="form-control">
-                                </div>
                               </div>
                               <div class="modal-footer">
                                 <button type="submit" ng-disabled="addPhoto.$invalid" class="form-btn main-btn stroke-btn"><i class="fa fa-check"></i>
@@ -89,10 +85,9 @@
                     <button type="button" data-ng-click="openModal('addPhoto')" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
                   </div>
                 </center>            
-                @endif
-              <?php }
-            }
-            else {?>
+              <?php } ?>
+               @endif
+            <?php } else {?>
               <center>
                 <button type="button" onclick="newwin()" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
               </center>
@@ -100,7 +95,7 @@
            ?>
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
-            <?php //echo"<pre>";print_r($competitionuser);die;?>
+           <?php //echo"<pre>"; print_r($total_voters_count); die; ?>
             <div class="wrap_prodiv" id="default_searched">
               @include('competition_users')
               <!--Competition User Div Close-->
@@ -108,6 +103,10 @@
             <div class="wrap_prodiv" id="searched_data" style="display:none;">
               @include('competition_users_searched')
             </div>
+            <div class="wrap_prodiv">
+              <div style="font-size: 30px;text-align: center;" id = "notfound"></div>
+            </div>
+            
               <!--Terms and conditions -->
             <div>
               @include('modals.termsmodel')
@@ -116,11 +115,11 @@
                 </button>
             </div>
             
-
                 <!--Terms and conditions -->
     </div>
   </div>
 </section>
+ 
 <!--VisitorPopup Modal-->
 <div class="modal fade" id="visitorpopupModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -162,8 +161,8 @@ function imagemodal(id){
  <input type = "hidden" id="hiddenuserid">
 
 
-  <div class="modal-dialog" role="document">
-    <div class="modal-content-centered" style="margin-right: 200px;">
+  <div class="modal-dialog" role="document" style="width: 203px; margin: 18% 0% 0% 43%;">
+    <div class="modal-content-centered">
       <center>
         <img class = "imgpopup" id="myimgprofile">
       </center>
@@ -179,6 +178,8 @@ function confirm_vote_popup(id,competition_userid,username) {
  $('#modalcompetitionid').val(id);
  $('#competition_userid').val(competition_userid);
  $('#competition_username').val(username);
+ // var username = $('#competition_username').val();
+ // $('#thakyouforvote').text('Thankyou for voting '+username+'. You also have one more vote remaining.');
  $('#exampleModal').modal('show');
 }
 </script>
@@ -192,7 +193,7 @@ function confirm_vote_popup(id,competition_userid,username) {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="thakyouforvote">
         Click Vote Now, to confirm your vote.
       </div>
       <input type="hidden" name="modalcompetitionid" id="modalcompetitionid">
@@ -200,7 +201,7 @@ function confirm_vote_popup(id,competition_userid,username) {
       <input type="hidden" name="competition_username" id="competition_username">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="submit" onclick = "message_popup()" class="btn btn-primary" data-dismiss="modal" target="" id="confirm_vote" value="1">Vote Now</button>
+        <button type="submit"  class="btn btn-primary" data-dismiss="modal" target="" id="confirm_vote" onclick="message_popup()" value="1">Vote Now</button>
       </div> 
     </div>
   </div>
@@ -211,12 +212,7 @@ function confirm_vote_popup(id,competition_userid,username) {
   {
     $('#messagepopupModal').modal('show');
     var username = $('#competition_username').val();
-    var position = $('input[id^="position_number"]').val();   
-    $('input[id^="tag"]').on('click', function() {  
-    alert(this.value);
-    //alert(position);
-     $('#thankyoumessage').text('Thank you for voting.'+username+' is now in position 23 in the competition.You also have one more vote remaining.');
-    //console.log(username);
+    $('#thankyoumessage').text('Thank you for voting '+username+'. You also have one more vote remaining.');
   }
 </script>
 <!--vote message popup start-->
@@ -232,8 +228,8 @@ function confirm_vote_popup(id,competition_userid,username) {
       <div class="modal-body" id="thankyoumessage">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary" data-dismiss="modal">Ok</button>
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+        <button type="button" class="btn btn-primary" id="thakyoumsgrefresh" data-dismiss="modal">Ok</button>
       </div> 
     </div>
   </div>
@@ -241,7 +237,7 @@ function confirm_vote_popup(id,competition_userid,username) {
 <!--vote message popup end-->
 
 <!--comment popup start-->
-<?php //echo "<pre>";print_r($user->user_id}});die;?>
+<?php //echo "<pre>";print_r($user);die;?>
 <div class="modal fade" id="commentcompetitionModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -289,6 +285,10 @@ function confirm_vote_popup(id,competition_userid,username) {
 
 <!--comment popup end-->
 <script>
+  $("#thakyoumsgrefresh").click(function() {
+      location.reload();
+    });
+  
 function deleteconfirmation(id) {
  $('#deleteconfirmationbtn').modal('show');
  $('#competitionid').val(id);
@@ -328,6 +328,7 @@ function deleteconfirmation(id) {
     var norecord="";
     var auth_userid = $('#auth_userid').val();
     var auth_username = $('#auth_username').val();
+
     $value=$(this).val();
     if($value ==''){
       $('#default_searched').show();
@@ -339,50 +340,58 @@ function deleteconfirmation(id) {
       success:function(data){
         obj = JSON.parse(data);
         res = obj.response;
-          if (obj.not_found !='Recordnotfound') {
-            $('#notfound').attr('style','display:none');
-            $('#default_searched').attr('style', 'display: none');
-            $('#searched_data').removeAttr('style');
-            $('#record_found').removeAttr('style');
-            for (i = 0; i < res.length; i++) 
-            {
-
-              text += '<li><div class="wrap_profile">'
-              if(res[i].total_votes >= 7)
-              {
-                text +='<div class="first_place">1<sup>st</sup></div>'
-                if(auth_username == 'Admin')
-                {
-                  text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'><input type ="text" value ="Wins:$100" id = "firstplace_amount"  class="edit_amount"></div>'
-                }
-                else
-                {
-                  text +='<div class = "first_place_amount"><input type ="text" value ="Wins:$100" class="edit_amount" readonly = "true"> </div>'
-                }
-              }
-                else if(res[i].total_votes >= 5)
-                {
-                  text +='<div class = "second_place">2<sup>nd</sup></div><div class="second_place_amount"><input type ="text" value ="Wins:$50" class="edit_amount" readonly = "true"></div>'
-                }
-                else if(res[i].total_votes >= 3)
-                {
-                  text +='<div class="third_place">3<sup>rd</sup></div><div class ="third_place_amount"><input type ="text" value ="Wins:$25" class="edit_amount" readonly = "true"></div>'
-                }
-                text +='<div class="img-pro"><img src="/img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a>' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
-                if(res[i].user_id == auth_userid || auth_username == 'Admin')
-                  { 
-                    text +='<div><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div></div> </div></li>';
+            if(data){
+                if (obj.not_found !='Recordnotfound') {
+                    $('#notfound').attr('style','display:none');
+                    $('#default_searched').attr('style', 'display: none');
+                    $('#searched_data').removeAttr('style');
+                    $('#record_found').removeAttr('style');
+                    for (i = 0; i < res.length; i++) 
+                    {
+        
+                      text += '<li><div class="wrap_profile">'
+                      if(res[i].total_votes >= 7)
+                      {
+                        text +='<div class="first_place">1<sup>st</sup></div>'
+                        if(auth_username == 'Admin')
+                        {
+                          text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'>Wins:$<input type ="text" value="" id = "firstplace_amount"  class="edit_amount"></div>'
+                        }
+                        else
+                        {
+                          text +='<div class = "first_place_amount">Wins:$<input type ="text" value ="100" class="edit_amount" readonly = "true"> </div>'
+                        }
+                      }
+                        else if(res[i].total_votes >= 5)
+                        {
+                          text +='<div class = "second_place">2<sup>nd</sup></div><div class="second_place_amount">Wins:$<input type ="text" value ="50" class="edit_amount" readonly = "true"></div>'
+                        }
+                        else if(res[i].total_votes >= 3)
+                        {
+                          text +='<div class="third_place">3<sup>rd</sup></div><div class ="third_place_amount">Wins:$<input type ="text" value ="25" class="edit_amount" readonly = "true"></div>'
+                        }
+                        text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
+                        if(res[i].user_id == auth_userid || auth_username == 'Admin')
+                          { 
+                            text +='<div><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div></div> </div></li>';
+                          }
+                    }
+                    $('#record_found').html(text);
                   }
+                  else {
+                    $('#default_searched').hide();
+                    $('#record_found').attr('style','display: none');
+                    $('#notfound').attr('style','display:block');
+                    norecord += 'No Record Found';
+                    $('#notfound').html(norecord);
+                  } 
+            } else{
+                $('#default_searched').hide();
+                $('#record_found').attr('style','display: none');
+                $('#notfound').attr('style','display:block');
+                norecord += 'No Record Found';
+                $('#notfound').html(norecord);
             }
-            $('#record_found').html(text);
-          }
-          else {
-            $('#default_searched').hide();
-            $('#record_found').attr('style','display: none');
-            $('#notfound').attr('style','display:block');
-            norecord += 'No Record Found';
-            $('#notfound').html(norecord);
-          }  
         }
     });
   })
@@ -429,7 +438,7 @@ function deletecomment(comment_id) {
       type: 'GET',
       success: function(data){
         data = JSON.parse(data);
-        //console.log(data.get_comment);return false;
+        //console.log(data);return false;
        // $('#commentcompetitionModal').modal('toggle');
         $('#img_profile').attr('src','img/users/'+data.user_data[0].username+'/previews/'+data.user_data[0].img);
         $('#user_name').text(data.user_data[0].username);
@@ -559,26 +568,61 @@ if (s >= y) {
   }); 
 
   // for confirmation vote
-  $("#confirm_vote").click(function() {
+//   $("#confirm_vote").click(function() {
+//     var vote = "";
+//     var confirm_vote = $("#confirm_vote").val();
+//     var competitionid = $("#modalcompetitionid").val(); 
+//     var competition_userid = $("#competition_userid").val();
+//     var competition_username = $("#competition_username").val();
+//     $.ajax({
+//       url: 'confirm_vote',
+//       type: 'POST',
+//       data: {
+//               "_token"              : "{{ csrf_token() }}",
+//               "confirm_vote"        : confirm_vote,
+//               "competitionid"       : competitionid,
+//               "competition_userid"  : competition_userid,
+//               "competition_username"  : competition_username,
+//             },
+//         success:function(data)
+//         {   var obj = JSON.parse(data);
+//             for(i =0; i < obj.competitionuser.data.length; i++){
+//              vote +='<i class="fa fa-heart"></i>'+obj.competitionuser.data[i].total_votes;
+//              //$("#increase_vote").html(vote);   
+//             }
+//             $("#increase_vote_ajax").html(vote);
+//             $("#increase_vote_ajax").removeAttr("style");
+//             $('#increase_vote').attr('style', 'display: none');
+//              // $(".wrap_prodiv").html(data);
+//         }
+//     });
+//   });
+ 
+ // get
+$("#confirm_vote").click(function() {
+    var vote = "";
     var confirm_vote = $("#confirm_vote").val();
     var competitionid = $("#modalcompetitionid").val(); 
     var competition_userid = $("#competition_userid").val();
-    var competition_username = $("competition_username").val();
-   
+    var competition_username = $("#competition_username").val();
     $.ajax({
-      url: 'confirm_vote',
-      type: 'POST',
-      data: {
-              "_token"              : "{{ csrf_token() }}",
-              "confirm_vote"        : confirm_vote,
-              "competitionid"       : competitionid,
-              "competition_userid"  : competition_userid,
-            },
-      success:function(data)
-      {
-        //alert(data);return false;
-        $(".wrap_prodiv").html(data);
-      }
+      url: 'confirm_vote/'+confirm_vote+'/'+competitionid+'/'+competition_userid+'/'+competition_username,
+      type: 'GET',
+        success:function(data)
+        {   
+            var obj = JSON.parse(data);
+            //console.log(obj);
+            // for(i =0; i < obj.competitionuser.data.length; i++){
+            //  vote +='<i class="fa fa-heart"></i>'+obj.competitionuser.data[i].total_votes;
+            //  //$("#increase_vote").html(vote);   
+            // }
+            vote +='<i class="fa fa-heart"></i>'+obj.uservotecount;
+            $("#increase_vote_ajax_"+obj.competitionuserid).html(vote);
+            $("#increase_vote_ajax_"+obj.competitionuserid).removeAttr("style");
+            $('#increase_vote_'+obj.competitionuserid).attr('style', 'display: none');
+            // location.reload();
+             // $(".wrap_prodiv").html(data);
+        }
     });
   });
 
@@ -588,35 +632,39 @@ if (s >= y) {
     var comment = $("#comment").val();
     var competition_user_id = $("#competition_user_id").val(); 
     var competition_id = $("#competition_id").val();
-    $.ajax({
-      url: 'confirm_comment',
-      type: 'POST',
-      data: {
-              "_token"                : "{{ csrf_token() }}",
-              "comment"               : comment,
-              "competition_user_id"   : competition_user_id,
-              "competition_id"        : competition_id,
-            },
-      success:function(data)
-      {
-        //console.log(data);return false;
-        $('#comment').val('');
-        for (j = 0; j < data.length; j++)
-        {
-          var date = new Date(data[j].created_at);
-          var hour = date.getHours(); 
-          var min = date.getMinutes(); 
-          var sec = date.getSeconds();
-          var dat = date.getDate(); 
-          var mon = date.getMonth()+1;
-          var yea = date.getFullYear();
-          var dateformat = hour+":"+min+":"+sec+" "+dat+"/"+mon+"/"+yea;
-          comment_text +='<li class="message block-flex wrap-flex" class="partner"><div class="image"><a href="#"><img src="img/users/'+data[j].username+'/previews/'+data[j].img+'"/></a></div><div class="text">'+data[j].comment+'<span class="date-sent">'+dateformat+'</span></div><button type="button" onclick = "deletecomment('+data[j].id+')" class="edit-button"><i class="ion-trash-a"></i></button></li>';
-        }
-        $("#demo_comment").html(comment_text);
-        location.reload();
-      }
-    });
+    if(comment == ""){
+        console.log("Please enter comments."); return false;
+    }else{
+        $.ajax({
+            url: 'confirm_comment',
+            type: 'POST',
+            data: {
+                  "_token"                : "{{ csrf_token() }}",
+                  "comment"               : comment,
+                  "competition_user_id"   : competition_user_id,
+                  "competition_id"        : competition_id,
+                },
+            success:function(data)
+                {
+                //console.log(data);return false;
+                $('#comment').val('');
+                for (j = 0; j < data.length; j++)
+                    {
+                      var date = new Date(data[j].created_at);
+                      var hour = date.getHours(); 
+                      var min = date.getMinutes(); 
+                      var sec = date.getSeconds();
+                      var dat = date.getDate(); 
+                      var mon = date.getMonth()+1;
+                      var yea = date.getFullYear();
+                      var dateformat = hour+":"+min+":"+sec+" "+dat+"/"+mon+"/"+yea;
+                      comment_text +='<li class="message block-flex wrap-flex" class="partner"><div class="image"><a href="#"><img src="img/users/'+data[j].username+'/previews/'+data[j].img+'"/></a></div><div class="text">'+data[j].comment+'<span class="date-sent">'+dateformat+'</span></div><button type="button" onclick = "deletecomment('+data[j].id+')" class="edit-button"><i class="ion-trash-a"></i></button></li>';
+                    }
+                $("#demo_comment").html(comment_text);
+                // location.reload();
+                }
+        });
+    }
   });
 
   //for confirmation delete
@@ -632,28 +680,38 @@ if (s >= y) {
         }
       });
     });
+    
+    // $("#first_place_amount").on('focus',"input#firstplace_amount", function() {
+    //   console.log("on focus");
+    // }).on('blur',"input#firstplace_amount", function() {
+    //     console.log("on blur");
+    // });
+    
   //amount edit
-  $("#firstplace_amount").blur(function() {
-    var firstplace_amount = $("#firstplace_amount").val();
-    var hidden_user_id = $("#hidden_user_id").val();
+
+  function firstplace_amount_fun(user_id) {
+
+    var vote_amount = "";
+    var hidden_user_id = user_id;
+    var firstplace_amount = $("#firstplace_amount_"+hidden_user_id).val();
       $.ajax({
-        type: 'POST',
-        url: 'amount_edit',
-        data: {
-              "_token"              : "{{ csrf_token() }}",
-              "firstplace_amount"   : firstplace_amount,
-              "hidden_user_id"      : hidden_user_id,
-              },
+        type: 'GET',
+        url: 'competition_vote_amount_edit/'+firstplace_amount+'/'+hidden_user_id,
         success:function(data)
-        {
-          //location.reload();
+        {   
+          //  var obj = JSON.parse(data)
+           // console.log(obj.competitionuservoteamount.vote_amount);firstplace_amount_ajax
+           // $("#first_place_amount").val(obj.competitionuservoteamount.vote_amount);
+            // vote_amount +='Wins:$<input type ="text" value ="'+obj.competitionuservoteamount.vote_amount+'" id = "firstplace_amount_ajax"  class="edit_amount">';
+            // $("#firstplace_amount_ajax_"+hidden_user_id).html(vote_amount);
+            // $("#firstplace_amount_ajax_"+hidden_user_id).removeAttr("style");
+            // $("#first_place_amount").attr("style", "display: none");
         }
       });
-    });
-</script>
-<!--Change Expiry Date -->
-<!--Visitor Model Popup Script -->
-<script>
+    };
+
+
+// Visitor Model Popup Script
 
 function newwin() {
 
