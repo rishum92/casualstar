@@ -23,7 +23,7 @@ class competition_user extends Model
                                 ->update(['is_status'=>0]);
        
         $getuserdata = DB::table('competition_interested_users')
-                    ->select('users.username','competition_interested_users.*', DB::raw('count(competiton_vote.is_vote) as total_votes'))
+                    ->select('users.*','competition_interested_users.*', DB::raw('count(competiton_vote.is_vote) as total_votes'))
                     ->join('users','id','=','competition_interested_users.user_id')
                     ->leftJoin('competiton_vote', 'users.id', '=', 'competiton_vote.user_id')
                     ->groupBy('users.id', 'competiton_vote.user_id')
@@ -47,31 +47,40 @@ class competition_user extends Model
         return $getuserdata;
     } else {
         $getuserdata = DB::table('competition_interested_users')
-                    ->select('users.username','competition_interested_users.*', DB::raw('count(competiton_vote.is_vote) as total_votes'))
-                    ->join('users','id','=','competition_interested_users.user_id')
-                    ->leftJoin('competiton_vote', 'users.id', '=', 'competiton_vote.user_id')
-                    ->groupBy('users.id', 'competiton_vote.user_id')
-                    ->orderBy('total_votes', 'desc')
-                    ->where('is_status',1)
+                        ->select('users.*','competition_interested_users.*', DB::raw('count(competiton_vote.is_vote) as total_votes'))
+                        ->join('users','id','=','competition_interested_users.user_id')
+                        ->leftJoin('competiton_vote', 'users.id', '=', 'competiton_vote.user_id')
+                        ->groupBy('users.id', 'competiton_vote.user_id')
+                        ->orderBy('total_votes', 'desc')
+                        ->where('is_status',1)
                     //->where('is_vote',1)
-                    ->paginate(20);
-    
-        foreach ($getuserdata as $key => $userdata) {
-            $comment_count = DB::table('profile_comments')
-                              ->select('comment')
-                              ->where('competition_id', $userdata->competition_id)
-                              ->where('is_deleted',0)
+                        ->paginate(20);
+        foreach ($getuserdata as $key => $uservote) {
+            $vote_counts = DB::table('competiton_vote')
+                              ->select('is_vote')
+                              ->where('competiton_vote.competition_id', $uservote->competition_id)
+                              ->where('is_vote','=',1)
+                              //->orderBy('is_vote', 'desc')
                               ->get(); 
-    
-            $getuserdata[$key]->total_comment = count($comment_count);
+                    //echo '<pre>';print_r($vote_counts);die;
+            $getuserdata[$key]->total_votes = count($vote_counts);
+        }
+        foreach ($getuserdata as $key => $userdata) {
+          $comment_count = DB::table('profile_comments')
+                            ->select('comment')
+                            ->where('competition_id', $userdata->competition_id)
+                            ->where('is_deleted',0)
+                            ->get(); 
+  
+          $getuserdata[$key]->total_comment = count($comment_count);
         }
         foreach ($getuserdata as $key => $voteprize) {
-            $voteprize = DB::table('competiton_vote')
-                              ->select('vote_amount')
-                              ->where('competition_id', $voteprize->competition_id)
-                              ->first(); 
-    
-            $getuserdata[$key]->vote_prize = $voteprize;
+          $voteprize = DB::table('competiton_vote')
+                            ->select('vote_amount')
+                            ->where('competition_id', $voteprize->competition_id)
+                            ->first(); 
+  
+          $getuserdata[$key]->vote_prize = $voteprize;
         }
         return $getuserdata;
     }
@@ -164,7 +173,7 @@ class competition_user extends Model
 
   //delete the competition account and folder of user
   public static function competitiondelete($competitionid) 
-  {
+  { //echo $competitionid;die;
     $username = DB::table('competition_interested_users')
               ->select('username')
               ->where('competition_id', '=', $competitionid)
@@ -180,11 +189,9 @@ class competition_user extends Model
 
   //delete vote
   public static function votedelete($competitionid)
-  {
+  { 
     $deletevote = DB::table('competiton_vote')
-                    ->join('competition_interested_users','competition_interested_users.competition_id','=','competiton_vote.competition_id')
-                    ->where('competiton_vote.competition_id','=',$competitionid)
-                    ->where('competition_interested_users.is_status',1)
+                    ->where('competition_id','=',$competitionid)
                     ->delete();
   }
 
@@ -192,9 +199,7 @@ class competition_user extends Model
   public static function commentdelete($competitionid)
   {
     $deletecomment = DB::table('profile_comments')
-                    ->join('competition_interested_users','competition_interested_users.competition_id','=','profile_comments.competition_id')
-                    ->where('profile_comments.competition_id','=',$competitionid)
-                    ->where('competition_interested_users.is_status',1)
+                    ->where('competition_id','=',$competitionid)
                     ->delete();
   } 
 

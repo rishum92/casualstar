@@ -13,6 +13,7 @@ use DB;
 use App\offer_post;
 use App\Models\Tribute;
 use App\competition_user;
+use DateTime;
 class HomeController extends BaseController
 {
   public function index() {
@@ -108,8 +109,7 @@ class HomeController extends BaseController
       if(Auth::check()) {
         $user_id = Auth::user()->id;
         $getdata = competition_user::getdata();
-        
-       // echo '<pre>';print_r($getdata);exit;
+        //echo '<pre>';print_r($getdata);exit;
         $exist = competition_user::existuser($user_id);
         
         $voter_count = competition_user::vote_count($user_id);

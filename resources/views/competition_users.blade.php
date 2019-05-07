@@ -6,7 +6,13 @@
 @else
 <?php $vote_rank = 0; $temp_vote = 0; ?>
 @foreach($competitionuser as $user)
-   <?php //echo '<pre>';print_r($user);die;?>
+<?php 
+  $userDob = $user->dob;
+  $dob = new DateTime($userDob);
+  $now = new DateTime();
+  $difference = $now->diff($dob);
+  $age = $difference->y;
+?>
     <li>
       @if(!Auth::user())
         <div class="wrap_profile" onclick = 'newwin()'>
@@ -17,10 +23,19 @@
                 }
             ?>  
 
-              <?php if($vote_rank == 1){ ?>
+              <?php if($vote_rank == 1 || $vote_rank == 0){ 
+                    if($vote_rank == 0){?>
+                      <div class="first_place"><?php echo 1; ?><sup>st</sup></div>
+                    <?php } else { ?>
                       <div class="first_place"><?php echo $vote_rank; ?><sup>st</sup></div>
+                    <?php } ?>
                       <div class = "first_place_amount">
+                        <?php if(empty($user->vote_prize))
+                        { ?>
+                        Wins:$<input type ="text" value ="100" class="edit_amount" readonly = "true">
+                        <?php } else { ?>
                         Wins:$<input type ="text" value ="{{$user->vote_prize->vote_amount}}" class="edit_amount" readonly = "true">
+                        <?php } ?>
                       </div>
                         <?php }
                    else if($vote_rank == 2){ ?>
@@ -47,7 +62,7 @@
             <h1>
               <a> {{$user->username}}</a>
             </h1>
-            <p>44 - High Wycombe, Bucking-hamshire</p>
+            <p><?php echo $age; ?> - {{$user->location}}</p>
             <div class="like_block" >
               <div id="increase_vote_{{$user->user_id}}"><i class="fa fa-heart"></i>{{ $user->total_votes }}</div>
               <div id="increase_vote_ajax_{{$user->user_id}}" style="display:none;"><i class="fa fa-heart"></i></div>
@@ -78,18 +93,31 @@
                 }
         ?>  
 
-              <?php if($vote_rank == 1){ ?>
+              <?php if($vote_rank == 1 || $vote_rank == 0){ 
+                    if($vote_rank == 0){?>
+                      <div class="first_place"><?php echo 1; ?><sup>st</sup></div>
+                    <?php } else { ?>
                       <div class="first_place"><?php echo $vote_rank; ?><sup>st</sup></div>
+                    <?php } ?>
                       @if(Auth::user()->username == 'Admin')
-                      <div class = "first_place_amount" id="first_place_amount">
-                        <input type="hidden" name="hidden_user_id" id = "hidden_user_id" value = "{{$user->user_id}}">
-                            Wins:$<input type ="text" value ="{{$user->vote_prize->vote_amount}}" onblur="firstplace_amount_fun({{$user->user_id}})" id = "firstplace_amount_{{$user->user_id}}"  class="edit_amount">
-                      </div>
-                      <!-- <div class = "first_place_amount" id="firstplace_amount_ajax_{{$user->user_id}}" style="display:none;">
-                      </div> -->
+                        <div class = "first_place_amount" id="first_place_amount">
+                          <input type="hidden" name="hidden_user_id" id = "hidden_user_id" value = "{{$user->user_id}}">
+                            <?php if(empty($user->vote_prize))
+                            { ?>
+                             Wins:$<input type ="text" value ="100" onblur="firstplace_amount_fun({{$user->user_id}})" id = "firstplace_amount_{{$user->user_id}}"  class="edit_amount">
+                            <?php } else { ?>
+                              Wins:$<input type ="text" value ="{{$user->vote_prize->vote_amount}}" onblur="firstplace_amount_fun({{$user->user_id}})" id = "firstplace_amount_{{$user->user_id}}"  class="edit_amount">
+                            <?php } ?>
+                        </div>
                       @else
                       <div class = "first_place_amount">
-                        Wins:$<input type ="text" value ="{{$user->vote_prize->vote_amount}}" class="edit_amount" readonly = "true">
+                        <?php if(empty($user->vote_prize))
+                          { ?>
+                         Wins:$<input type ="text" value ="100" class="edit_amount" readonly = "true">
+                        <?php } else { ?>
+                         Wins:$<input type ="text" value ="{{$user->vote_prize->vote_amount}}" class="edit_amount" readonly = "true">
+                        <?php } ?>
+                       
                       </div>
                       @endif
                         <?php }
@@ -121,13 +149,13 @@
                 {{$user->username}}
               </a>
             </h1>
-            <p>44 - High Wycombe, Bucking-hamshire</p>
+            <p><?php echo $age; ?> - {{$user->location}}</p>
             <div class="like_block" >
               <div id="increase_vote_{{$user->user_id}}"><i class="fa fa-heart"></i>{{ $user->total_votes }}</div>
               <div id="increase_vote_ajax_{{$user->user_id}}" style="display:none;"><i class="fa fa-heart"></i></div>
             </div>
             <div class="wrap_btn">
-              @if($total_voters_count < 3 && !in_array ($user->user_id, $voter_count) && Auth::user()->id != $user->user_id || Auth::user()->username == 'Admin' && date('d/m/Y') != $showdate)
+              @if($total_voters_count < 2 && !in_array ($user->user_id, $voter_count) && Auth::user()->id != $user->user_id || Auth::user()->username == 'Admin' && date('d/m/Y') != $showdate)
                 <button class="page_btn" type="button" onclick="confirm_vote_popup({{$user->competition_id}},{{$user->user_id}},'{{$user->username}}')">
                   <i class="fa fa-heart"></i> Vote Me
                 </button>

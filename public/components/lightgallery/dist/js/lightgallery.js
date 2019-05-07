@@ -1298,7 +1298,7 @@
         }, _this.s.backdropDuration + 50);
     };
 
-    $.fn.lightGallery = function(options) {
+    $.fn.lightGallery = function(options) {alert(22);
         return this.each(function() {
             if (!$.data(this, 'lightGallery')) {
                 $.data(this, 'lightGallery', new Plugin(this, options));

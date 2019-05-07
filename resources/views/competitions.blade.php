@@ -150,18 +150,19 @@ function imagemodal(id){
     success: function(data){ 
  
     $('#imageModalId').modal('toggle');
-    $('#myimgprofile').attr('src','img/competition_user/'+data[0].username+'/previews/'+data[0].user_profile);
+    $('#myimgprofile').attr('src','img/competition_user/'+data[0].username+'/'+data[0].user_profile);
    },
  });
 }
+
 </script>
 <!--Add Image popup-->
-
+<link href="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/css/lightgallery.css" rel="stylesheet">
 <div class="modal fade" id="imageModalId" tabindex="-1" role="dialog">
  <input type = "hidden" id="hiddenuserid">
 
 
-  <div class="modal-dialog" role="document" style="width: 203px; margin: 18% 0% 0% 43%;">
+  <div class="modal-dialog" role="document">
     <div class="modal-content-centered">
       <center>
         <img class = "imgpopup" id="myimgprofile">
