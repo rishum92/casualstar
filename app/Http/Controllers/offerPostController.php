@@ -29,7 +29,8 @@ class offerPostController extends Controller
       //$timezoneidentifiers = DateTimeZone::listidentifiers();
       // print"<pre>";print_r($timezoneidentifiers);
       // print"<pre>";die;
-      date_default_timezone_set("GMT");
+      //date_default_timezone_set("Europe/London");
+      date_default_timezone_set("Asia/Kolkata");
       $date         =  date('Y-m-d H:i:s');
 
       offer_post::addPost($rate,$detail,$user_id,$user_name,$user_img,$currency,$date);

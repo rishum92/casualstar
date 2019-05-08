@@ -80,7 +80,7 @@
                 <small class="user-age">{{ Lang::get('age') }}</small>
                 <span class="user-age">[[user.age]]</span>
             </div>
-            @if($isOnline)
+            @if($isOnline == 'true')
             <div class="stat status">
                 <span class="indicator active"></span>
                 <small>{{ Lang::get('messages.onlineNow') }}</small>
@@ -88,7 +88,7 @@
             @else
             <div class="stat status">
                 <span class="indicator"></span> @if($lastLogin)
-                <small>Last seen: {{date("d/m/Y", strtotime($lastLogin))}}</small> @else
+                <small>Last seen: {{date("d/m/Y  H:i:s", strtotime($lastLogin))}}</small> @else
                 <small>Last seen: </small> @endif
             </div>
             @endif

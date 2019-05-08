@@ -67,8 +67,16 @@ class UserController extends BaseController
 			    	$lastLogin = NULL;
 			    }
 
+			     $isOnline = Activity::getOnlineActive($user->id);
+			     //echo "<pre>";print_r($isOnline);die;
+			    if($isOnline->activity == 'LOGIN') {
+			    	$isOnline = true;
+			    } else {
+			    	$isOnline = false;
+			    }
+
 	    		//$isOnline = Online::getOnline($user->id);
-	    		$isOnline = true; //APInfo Set Static Value for Mongo DB
+	    		//$isOnline = true; //APInfo Set Static Value for Mongo DB
 
 	    		/*$haversine = "(3959 * acos(cos(radians(" . $user->lat . ")) 
                      * cos(radians(lat))    
