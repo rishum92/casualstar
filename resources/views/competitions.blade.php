@@ -93,6 +93,7 @@
               </center>
             <?php } 
            ?>
+           <br/>
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
            <?php //echo"<pre>"; print_r($total_voters_count); die; ?>
@@ -104,7 +105,7 @@
               @include('competition_users_searched')
             </div>
             <div class="wrap_prodiv">
-              <div style="font-size: 30px;text-align: center;" id = "notfound"></div>
+              <div class="search_not_found" id = "notfound"></div>
             </div>
             
               <!--Terms and conditions -->
@@ -383,6 +384,7 @@ function deleteconfirmation(id) {
                     $('#default_searched').hide();
                     $('#record_found').attr('style','display: none');
                     $('#notfound').attr('style','display:block');
+                    $('#notfound').addClass('search_not_found');
                     norecord += 'No Record Found';
                     $('#notfound').html(norecord);
                   } 
@@ -390,6 +392,7 @@ function deleteconfirmation(id) {
                 $('#default_searched').hide();
                 $('#record_found').attr('style','display: none');
                 $('#notfound').attr('style','display:block');
+                $('#notfound').addClass('search_not_found');
                 norecord += 'No Record Found';
                 $('#notfound').html(norecord);
             }

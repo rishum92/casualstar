@@ -15,7 +15,11 @@ body a:focus{
 
 
 /*=======  page css start here===========*/
-
+.search_not_found
+{
+  font-size: 30px;
+  text-align: center;
+}
 
 .no_competition_found
 {
