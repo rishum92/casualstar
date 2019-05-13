@@ -291,6 +291,15 @@
                     <span class="small-notif larger" ng-if="pending_count>99">99+</span>
                  </i>Services</a></li>
                  <?php endif; ?>
+              <?php if(Auth()->user()->gender=="male"): ?>
+              <li>
+                <a class="<?php if(Route::is('competitions') || Route::is('competitions')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('competitions')); ?>">
+                  <i class="fa fa-tasks">           
+                  </i>
+                  Competitions
+                </a>
+              </li>
+              <?php endif; ?>
           <li>
             <a class="<?php if(Route::is('activity') || Route::is('activity')): ?> active <?php endif; ?>" href="<?php echo e(URL::route('activity')); ?>">
               <i class="ion-flash">           

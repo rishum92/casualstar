@@ -23,12 +23,8 @@
                 }
             ?>  
 
-              <?php if($vote_rank == 1 || $vote_rank == 0){ 
-                    if($vote_rank == 0){?>
-                      <div class="first_place"><?php echo 1; ?><sup>st</sup></div>
-                    <?php } else { ?>
+              <?php if($vote_rank == 1){ ?>
                       <div class="first_place"><?php echo $vote_rank; ?><sup>st</sup></div>
-                    <?php } ?>
                       <div class = "first_place_amount">
                         <?php if(empty($user->vote_prize))
                         { ?>
@@ -94,12 +90,8 @@
                 }
         ?>  
 
-              <?php if($vote_rank == 1 || $vote_rank == 0){ 
-                    if($vote_rank == 0){?>
-                      <div class="first_place"><?php echo 1; ?><sup>st</sup></div>
-                    <?php } else { ?>
+              <?php if($vote_rank == 1){ ?>
                       <div class="first_place"><?php echo $vote_rank; ?><sup>st</sup></div>
-                    <?php } ?>
                       <?php if(Auth::user()->username == 'Admin'): ?>
                         <div class = "first_place_amount" id="first_place_amount">
                           <input type="hidden" name="hidden_user_id" id = "hidden_user_id" value = "<?php echo e($user->user_id); ?>">
@@ -179,7 +171,7 @@
               <div>
                 <i onclick = "deleteconfirmation(<?php echo e($user->competition_id); ?>)" class = "fa fa-trash trash_btn"></i>
               </div>
-            <?php endif; ?> 
+            <?php endif; ?>
           </div>
         </div>
       </div>

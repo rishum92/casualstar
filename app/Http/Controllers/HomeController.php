@@ -129,13 +129,14 @@ class HomeController extends BaseController
     } else {
         $getdata = competition_user::getdata();
         $showdate= competition_user::showdate();
+        $get_title= competition_user::get_title();
         $updatedate = $showdate[0]->ExpiryDate;
         $date_array = explode("-",$updatedate); // split the array
         $var_year = $date_array[0]; //day seqment
         $var_month = $date_array[1]; //month segment
         $var_day = $date_array[2]; //year segment
         $new_date_format = "$var_day/$var_month/$var_year";
-        return view('competitions',['competitionuser' =>$getdata,'showdate'=>$new_date_format]);
+        return view('competitions',['competitionuser' =>$getdata,'showdate'=>$new_date_format,'get_title'=>$get_title]);
     }
   }
 

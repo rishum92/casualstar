@@ -11,7 +11,8 @@
 
 <?php $__env->startSection('content'); ?>
 
-<?php date_default_timezone_set("Europe/London");?>
+<?php //date_default_timezone_set("Europe/London");
+date_default_timezone_set("Asia/Kolkata");?>
  <?php if(Auth::user()->gender == 'male'): ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.js"></script> 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
@@ -332,7 +333,7 @@ first 10 interests will be logged for each Offer.</center>
                     </h3>
                  </div>
                   <div class="offer_right">
-                    <h3><span><?php echo e($myoffer->currency); ?><?php echo e($offers->offer_rate); ?></span></h3>
+                    <h3><span><?php echo e($myoffer->currency); ?><?php echo e($myoffer->offer_rate); ?></span></h3>
                   </div> 
                   <div class="offer_detailes_box">
                     <p>

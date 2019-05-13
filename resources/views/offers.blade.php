@@ -331,7 +331,7 @@ first 10 interests will be logged for each Offer.</center>
                     </h3>
                  </div>
                   <div class="offer_right">
-                    <h3><span>{{$myoffer->currency}}{{$offers->offer_rate}}</span></h3>
+                    <h3><span>{{$myoffer->currency}}{{$myoffer->offer_rate}}</span></h3>
                   </div> 
                   <div class="offer_detailes_box">
                     <p>

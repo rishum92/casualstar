@@ -156,7 +156,6 @@ class competition_user extends Model
   //update the terms and condition
   public static function termscondition($user_id,$termscondition)
   {
-    
     $termscondition = DB::table('competiton_terms_condition')
                    ->update(['user_id'=>$user_id,'termscondition'=>$termscondition]);
     return $termscondition;

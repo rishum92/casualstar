@@ -292,6 +292,15 @@
                     <span class="small-notif larger" ng-if="pending_count>99">99+</span>
                  </i>Services</a></li>
                  @endif
+              @if(Auth()->user()->gender=="male")
+              <li>
+                <a class="@if(Route::is('competitions') || Route::is('competitions')) active @endif" href="{{ URL::route('competitions') }}">
+                  <i class="fa fa-tasks">           
+                  </i>
+                  Competitions
+                </a>
+              </li>
+              @endif
           <li>
             <a class="@if(Route::is('activity') || Route::is('activity')) active @endif" href="{{ URL::route('activity') }}">
               <i class="ion-flash">           

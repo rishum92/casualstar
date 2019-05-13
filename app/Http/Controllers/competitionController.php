@@ -159,7 +159,7 @@ class competitionController extends Controller
         $user_id         = Auth::user()->id;
         $termscondition  = $request->textareaValue;
         $terms_condition = competition_user::termscondition($user_id,$termscondition);
-        return redirect('competitions');
+        //return redirect('competitions');
     }
     
     public function destroy($id)

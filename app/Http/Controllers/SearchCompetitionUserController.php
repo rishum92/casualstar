@@ -14,6 +14,7 @@ use Lang;
 use Hash;
 use Session;
 use DB;
+use DateTime;
 use App\Models\User;
 use App\competition_user;
 
@@ -28,9 +29,10 @@ class SearchCompetitionUserController extends Controller
             if($query != '')
             {   
                 $data = DB::table('competition_interested_users')
-                        ->select('competition_interested_users.*')
-                        ->where('username','like','%'.$query.'%')
-                        ->where('is_status',1)
+                        ->select('competition_interested_users.*','users.*')
+                        ->join('users','id','=','competition_interested_users.user_id')
+                        ->where('competition_interested_users.username','like','%'.$query.'%')
+                        ->where('competition_interested_users.is_status',1)
                         ->get();
                 foreach ($data as $key => $vote_data) 
                 {
@@ -52,6 +54,16 @@ class SearchCompetitionUserController extends Controller
 
                     $data[$key]->total_comment = count($comment_count);
                 }
+                foreach($data as $key =>$vote_amount)
+                {
+                    $vote_amount = DB::table('competiton_vote')
+                                ->select('vote_amount')
+                                ->where('competition_id', $vote_amount->competition_id)
+                                ->get(); 
+
+                    $data[$key]->vote_amount = $vote_amount;
+                }
+                
                 //echo "<pre>";print_r($data);
                 if(!empty($data))
                 {
@@ -65,7 +77,7 @@ class SearchCompetitionUserController extends Controller
                 {
                     $not_found = "Recordnotfound";
                     $data = array(
-                    'not_found' => $not_found
+                        'not_found' => $not_found
                     );
                     return json_encode($data);
                 }

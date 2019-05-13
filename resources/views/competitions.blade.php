@@ -88,12 +88,16 @@
               <?php } ?>
                @endif
             <?php } else {?>
-              <center>
+             <div class="center_text">
+                <input class = "titlediv" type="text" value="{{$get_title}}" readonly="true">
+                <br />
+                Expires:<input type="text" class = "inputfield" value = "{{$showdate}}"readonly="true"><span style="font-size: 12px;">GMT</span>
+                <br/>
                 <button type="button" onclick="newwin()" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
-              </center>
+              </div>
             <?php } 
            ?>
-           <br/>
+           <br />
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
            <?php //echo"<pre>"; print_r($total_voters_count); die; ?>
@@ -159,18 +163,12 @@ function imagemodal(id){
 </script>
 <!--Add Image popup-->
 <link href="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/css/lightgallery.css" rel="stylesheet">
-<div class="modal fade" id="imageModalId" tabindex="-1" role="dialog">
- <input type = "hidden" id="hiddenuserid">
-
-
-  <div class="modal-dialog" role="document">
-    <div class="modal-content-centered">
-      <center>
-        <img class = "imgpopup" id="myimgprofile">
-      </center>
-      <br/>
-    </div>
-  </div>
+<div class="modal fade imgpopupcenter" id="imageModalId" tabindex="-1" role="dialog">
+  <input type = "hidden" id="hiddenuserid">
+    <button type="button" class="close popupclosebutton" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <img class = "imgpopup modal-dialog" id="myimgprofile">
 </div>
 <!--Add Image popup-->
 
@@ -334,6 +332,9 @@ function deleteconfirmation(id) {
     $value=$(this).val();
     if($value ==''){
       $('#default_searched').show();
+      $('#notfound').attr('style','display:none');
+      $('#searched_data').hide();
+      
     }
     $.ajax({
       type : "get",
@@ -342,6 +343,7 @@ function deleteconfirmation(id) {
       success:function(data){
         obj = JSON.parse(data);
         res = obj.response;
+        //console.log(res);return false;
             if(data){
                 if (obj.not_found !='Recordnotfound') {
                     $('#notfound').attr('style','display:none');
@@ -349,22 +351,24 @@ function deleteconfirmation(id) {
                     $('#searched_data').removeAttr('style');
                     $('#record_found').removeAttr('style');
                     for (i = 0; i < res.length; i++) 
-                    {
-        
+                    {   console.count();
+                      var dob = new Date(res[i].dob);
+                      var today = new Date();
+                      var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
                       text += '<li><div class="wrap_profile">'
-                      if(res[i].total_votes >= 7)
+                      if(res[i].total_votes >= 2)
                       {
                         text +='<div class="first_place">1<sup>st</sup></div>'
                         if(auth_username == 'Admin')
                         {
-                          text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'>Wins:$<input type ="text" value="" id = "firstplace_amount"  class="edit_amount"></div>'
+                          text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'>Wins:$<input type ="text" value ='+res[i].vote_amount[0].vote_amount+' id = "firstplace_amount"  class="edit_amount"></div>'
                         }
                         else
                         {
-                          text +='<div class = "first_place_amount">Wins:$<input type ="text" value ="100" class="edit_amount" readonly = "true"> </div>'
+                          text +='<div class = "first_place_amount">Wins:$<input type ="text" value ='+res[i].vote_amount[0].vote_amount+' class="edit_amount" readonly = "true"> </div>'
                         }
                       }
-                        else if(res[i].total_votes >= 5)
+                        else if(res[i].total_votes >= 1)
                         {
                           text +='<div class = "second_place">2<sup>nd</sup></div><div class="second_place_amount">Wins:$<input type ="text" value ="50" class="edit_amount" readonly = "true"></div>'
                         }
@@ -372,7 +376,7 @@ function deleteconfirmation(id) {
                         {
                           text +='<div class="third_place">3<sup>rd</sup></div><div class ="third_place_amount">Wins:$<input type ="text" value ="25" class="edit_amount" readonly = "true"></div>'
                         }
-                        text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>44 - High Wycombe, Bucking-hamshire</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
+                        text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>'+age+' - '+res[i].location+'</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
                         if(res[i].user_id == auth_userid || auth_username == 'Admin')
                           { 
                             text +='<div><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div></div> </div></li>';
