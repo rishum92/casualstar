@@ -40,6 +40,7 @@ class SearchCompetitionUserController extends Controller
                                 ->select('is_vote')
                                 ->where('competition_id', $vote_data->competition_id)
                                 ->where('is_vote',1)
+                                ->orderBy('is_vote', 'asc')
                                 ->get(); 
 
                     $data[$key]->total_votes = count($vote_count);
@@ -62,6 +63,15 @@ class SearchCompetitionUserController extends Controller
                                 ->get(); 
 
                     $data[$key]->vote_amount = $vote_amount;
+                }
+                foreach($data as $key =>$user_position)
+                {
+                    $position = DB::table('competiton_vote')
+                                ->select('user_position')
+                                ->where('competition_id', $user_position->competition_id)
+                                ->get(); 
+
+                    $data[$key]->user_position = $position;
                 }
                 
                 //echo "<pre>";print_r($data);

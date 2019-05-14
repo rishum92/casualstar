@@ -99,7 +99,7 @@ table {
   font-weight: 600;
 }
 .my_offer_msg{
-  width: 80%;
+  /*width: 80%;*/
   margin-top: 2%;
 }
 .my_offer_msg span{

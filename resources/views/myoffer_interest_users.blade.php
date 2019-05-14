@@ -10,13 +10,13 @@ foreach ($myoffer_interested_users as $myoffersusers) {
       <img class="view_pro_pic" src="img/users/{{$myoffersusers->username}}/previews/{{$myoffersusers->img}}" />
       @endif
     </div>
-    <div class="view_users_link">
+    <div class="col-md-3 view_users_link">
        <h3><a href="{{url('users/'.$myoffersusers->username)}}" class="view_users_link"><span>{{$myoffersusers->username}}</span></a></h3>
     </div> 
-    <div class="my_offer_date"> 
+    <div class="col-md-3 my_offer_date"> 
       <span>{{$myoffersusers->created_at}}</span>
     </div>
-    <div class="my_offer_msg">
+    <div class="col-md-3 my_offer_msg">
       <span class="label label-danger cursor-pointer" onclick="$('#message_{{$myoffersusers->id}}').show();">
         <i class="fa fa-paper-plane"></i> Message
       </span>
@@ -31,7 +31,7 @@ foreach ($myoffer_interested_users as $myoffersusers) {
     <button type="submit" class="btn btn-xs btn-default btn_interested" onclick="send_offer_message({{$myoffersusers->post_id}}, {{$myoffersusers->id}}); $('#message_{{$myoffersusers->id}}').hide();">Send message</button>
   </div>
 </div>
-<hr/>
+ <br/>
 <?php 
 }
 ?>

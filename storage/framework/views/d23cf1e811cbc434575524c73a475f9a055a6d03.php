@@ -10,13 +10,13 @@ foreach ($myoffer_interested_users as $myoffersusers) {
       <img class="view_pro_pic" src="img/users/<?php echo e($myoffersusers->username); ?>/previews/<?php echo e($myoffersusers->img); ?>" />
       <?php endif; ?>
     </div>
-    <div class="view_users_link">
+    <div class="col-md-3 view_users_link">
        <h3><a href="<?php echo e(url('users/'.$myoffersusers->username)); ?>" class="view_users_link"><span><?php echo e($myoffersusers->username); ?></span></a></h3>
     </div> 
-    <div class="my_offer_date"> 
+    <div class="col-md-3 my_offer_date"> 
       <span><?php echo e($myoffersusers->created_at); ?></span>
     </div>
-    <div class="my_offer_msg">
+    <div class="col-md-3 my_offer_msg">
       <span class="label label-danger cursor-pointer" onclick="$('#message_<?php echo e($myoffersusers->id); ?>').show();">
         <i class="fa fa-paper-plane"></i> Message
       </span>
@@ -31,7 +31,7 @@ foreach ($myoffer_interested_users as $myoffersusers) {
     <button type="submit" class="btn btn-xs btn-default btn_interested" onclick="send_offer_message(<?php echo e($myoffersusers->post_id); ?>, <?php echo e($myoffersusers->id); ?>); $('#message_<?php echo e($myoffersusers->id); ?>').hide();">Send message</button>
   </div>
 </div>
-<hr/>
+ <br/>
 <?php 
 }
 ?>

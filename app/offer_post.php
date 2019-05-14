@@ -288,10 +288,18 @@ class offer_post extends Model
   //delete offers 
    public static function deleteOffers($post_id)
    {
-       
-       $deleteoffer = DB::table('offer_post')
+      $select_offer_user_id = DB::table('offer_post')
+                            ->where('id', $post_id)
+                            ->get();
+      $deleteoffer = DB::table('offer_post')
                      ->where('id',$post_id)
                      ->delete();
+      $get_notification_value = DB::table('users')
+                                ->select('notification')
+                                ->where('id',$select_offer_user_id[0]->user_id)
+                                ->get();
+      $notification_decrement = DB::table('users')
+                                ->decrement('notification');
     }
   
   //delete my offers

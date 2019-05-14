@@ -58,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
                   $subscribed = 1;
                 // }
                 $notification_data = offer_post::offer_notification();
+                // echo "<pre>";print_r($notification_data); die;
                 $pgp_notification  = offer_post::count_points(Auth::user()->id);
                 $notifications = Notification::where('is_read','FALSE')
                                   ->where('to_id',Auth::user()->id)->count();

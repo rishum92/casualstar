@@ -88,7 +88,7 @@
             <?php else: ?>
             <div class="stat status">
                 <span class="indicator"></span> <?php if($lastLogin): ?>
-                <small>Last seen: <?php echo e(date("d/m/Y  H:i:s", strtotime($lastLogin))); ?></small> <?php else: ?>
+                <small>Last seen: <?php echo e(date("d/m/Y", strtotime($lastLogin))); ?></small> <?php else: ?>
                 <small>Last seen: </small> <?php endif; ?>
             </div>
             <?php endif; ?>

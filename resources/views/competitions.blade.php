@@ -30,6 +30,8 @@
     </div>
     <div class="center_text">
       <?php  if(Auth::check()) {?>
+        <input type="hidden" name="hidden_search_user_id" id = "hidden_search_user_id" value = "<?php echo Auth::user()->id; ?>">
+        <input type="hidden" name="hidden_search_user_name" id = "hidden_search_user_name" value = "<?php echo Auth::user()->username; ?>">
         @if(Auth::user()->username == 'Admin')
           <input class = "titlediv" type="text" id="competition_title"name = "competition_title" value="{{$get_title}}">
           <br />
@@ -95,8 +97,7 @@
                 <br/>
                 <button type="button" onclick="newwin()" class="page_btn"><i class="fa fa-camera"></i>Upload Photo</button>
               </div>
-            <?php } 
-           ?>
+            <?php } ?>
            <br />
             <!---Image Uploader Close-->
             <!--Competition User Div Start-->
@@ -237,7 +238,7 @@ function confirm_vote_popup(id,competition_userid,username) {
 <!--vote message popup end-->
 
 <!--comment popup start-->
-<?php //echo "<pre>";print_r($user);die;?>
+
 <div class="modal fade" id="commentcompetitionModal" tabindex="-1" role="dialog" aria-labelledby="viewPhotoModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -320,7 +321,96 @@ function deleteconfirmation(id) {
 </div>
 <!--Delete Confirmation Popup End-->
 
-<!--Add Photo-->
+<!--Search Bar Script Start-->
+<?php if(Auth::check()) { ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+  $('#search').on('keyup',function(){
+    var text = "";
+    var norecord="";
+    var auth_userid = $('#hidden_search_user_id').val();
+    var auth_username = $('#hidden_search_user_name').val();
+    $value=$(this).val();
+    if($value ==''){
+      $('#default_searched').show();
+      $('#notfound').attr('style','display:none');
+      $('#searched_data').hide();
+      
+    }
+    $.ajax({
+      type : "get",
+      url : "{{ route('live_search.action')}}",
+      data:{'search':$value},
+      success:function(data){
+        obj = JSON.parse(data);
+        res = obj.response;
+        //console.log(res);return false;
+            if(data){
+              if (obj.not_found !='Recordnotfound') {
+                $('#notfound').attr('style','display:none');
+                $('#default_searched').attr('style', 'display: none');
+                $('#searched_data').removeAttr('style');
+                $('#record_found').removeAttr('style');
+              
+                for (i = 0; i < res.length; i++) 
+                {  
+                  var dob = new Date(res[i].dob);
+                  var today = new Date();
+                  var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+                  text += '<li><div class="wrap_profile">'
+                
+                  if(res[i].user_position[0].user_position == 1){
+                    text +='<div class="first_place">'+res[i].user_position[0].user_position+'<sup>st</sup></div>'
+                    if(auth_username == 'Admin')
+                    {
+                      text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'>Wins:$<input type ="text" onblur="firstplace_amount_fun('+res[i].user_id+')" value ='+res[i].vote_amount[0].vote_amount+' id = "firstplace_amount_+('+res[i].user_id+')"  class="edit_amount"></div>'
+                    }
+                    else
+                    {
+                      text +='<div class = "first_place_amount">Wins:$<input type ="text" value ='+res[i].vote_amount[0].vote_amount+' class="edit_amount" readonly = "true"> </div>'
+                    }
+                  }
+                    else if(res[i].user_position[0].user_position == 2)
+                    {
+                      text +='<div class = "second_place">'+res[i].user_position[0].user_position+'<sup>nd</sup></div><div class="second_place_amount">Wins:$<input type ="text" value ="50" class="edit_amount" readonly = "true"></div>'
+                    }
+                    else if(res[i].user_position[0].user_position == 3)
+                    {
+                      text +='<div class="third_place">'+res[i].user_position[0].user_position+'<sup>rd</sup></div><div class ="third_place_amount">Wins:$<input type ="text" value ="25" class="edit_amount" readonly = "true"></div>'
+                    }
+                    else if(res[i].user_position[0].user_position >= 4) {
+                      text +='<div class="fourth_place">'+res[i].user_position[0].user_position+'</div>' 
+                    }
+
+                    text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>'+age+' - '+res[i].location+'</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div></div></div></div><br>'
+                    if(res[i].user_id == auth_userid || auth_username == 'Admin')
+                      { 
+                        text +='<div class = "profile_search_trash_btn"><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div>';
+                      }
+                    }
+                    $('#record_found').html(text);
+                }
+                  else {
+                    $('#default_searched').hide();
+                    $('#record_found').attr('style','display: none');
+                    $('#notfound').attr('style','display:block');
+                    $('#notfound').addClass('search_not_found');
+                    norecord += 'No Record Found';
+                    $('#notfound').html(norecord);
+                  } 
+            } else{
+                $('#default_searched').hide();
+                $('#record_found').attr('style','display: none');
+                $('#notfound').attr('style','display:block');
+                $('#notfound').addClass('search_not_found');
+                norecord += 'No Record Found';
+                $('#notfound').html(norecord);
+            }
+        }
+    });
+  })
+</script>
+<?php } else { ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
   $('#search').on('keyup',function(){
@@ -350,36 +440,33 @@ function deleteconfirmation(id) {
                     $('#default_searched').attr('style', 'display: none');
                     $('#searched_data').removeAttr('style');
                     $('#record_found').removeAttr('style');
+                    
                     for (i = 0; i < res.length; i++) 
-                    {   console.count();
+                    {  
                       var dob = new Date(res[i].dob);
                       var today = new Date();
                       var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
                       text += '<li><div class="wrap_profile">'
-                      if(res[i].total_votes >= 2)
-                      {
-                        text +='<div class="first_place">1<sup>st</sup></div>'
-                        if(auth_username == 'Admin')
-                        {
-                          text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'>Wins:$<input type ="text" value ='+res[i].vote_amount[0].vote_amount+' id = "firstplace_amount"  class="edit_amount"></div>'
+                      
+                        if(res[i].user_position[0].user_position == 1){
+                            text +='<div class="first_place">'+res[i].user_position[0].user_position+'<sup>st</sup></div>'
+                            text +='<div class = "first_place_amount">Wins:$<input type ="text" value ='+res[i].vote_amount[0].vote_amount+' class="edit_amount" readonly = "true"> </div>'
                         }
-                        else
+                        else if(res[i].user_position[0].user_position == 2)
                         {
-                          text +='<div class = "first_place_amount">Wins:$<input type ="text" value ='+res[i].vote_amount[0].vote_amount+' class="edit_amount" readonly = "true"> </div>'
+                          text +='<div class = "second_place">'+res[i].user_position[0].user_position+'<sup>nd</sup></div><div class="second_place_amount">Wins:$<input type ="text" value ="50" class="edit_amount" readonly = "true"></div>'
                         }
-                      }
-                        else if(res[i].total_votes >= 1)
+                        else if(res[i].user_position[0].user_position == 3)
                         {
-                          text +='<div class = "second_place">2<sup>nd</sup></div><div class="second_place_amount">Wins:$<input type ="text" value ="50" class="edit_amount" readonly = "true"></div>'
+                          text +='<div class="third_place">'+res[i].user_position[0].user_position+'<sup>rd</sup></div><div class ="third_place_amount">Wins:$<input type ="text" value ="25" class="edit_amount" readonly = "true"></div>'
                         }
-                        else if(res[i].total_votes >= 3)
-                        {
-                          text +='<div class="third_place">3<sup>rd</sup></div><div class ="third_place_amount">Wins:$<input type ="text" value ="25" class="edit_amount" readonly = "true"></div>'
+                        else if(res[i].user_position[0].user_position >= 4) {
+                          text +='<div class="fourth_place">'+res[i].user_position[0].user_position+'</div>' 
                         }
-                        text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>'+age+' - '+res[i].location+'</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
+                        text +='<div class="img-pro"><img onclick = "newwin()" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>'+age+' - '+res[i].location+'</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "newwin()"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "newwin()" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div><br>'
                         if(res[i].user_id == auth_userid || auth_username == 'Admin')
                           { 
-                            text +='<div><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div></div> </div></li>';
+                            text +='<div><i onclick = "newwin()" class = "fa fa-trash trash_btn"></i></div></div> </div></li>';
                           }
                     }
                     $('#record_found').html(text);
@@ -404,6 +491,10 @@ function deleteconfirmation(id) {
     });
   })
 </script>
+
+<?php } ?>
+<!--Search Bar Script Close-->  
+
 <!--Comment Delete Popup Start-->
 <script>
 function deletecomment(comment_id) {
