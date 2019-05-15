@@ -4,7 +4,7 @@
     There is currently no active competition.
   </div><br><br>
 <?php else: ?>
-<?php $vote_rank = 0; $temp_vote = 0; ?>
+
 <?php foreach($competitionuser as $user): ?>
 <?php 
   $userDob = $user->dob;
@@ -73,13 +73,7 @@
         </div>
       <?php else: ?>
       <div ng-controller = "UserCompetitionController">
-        <div class="wrap_profile">
-          <?php if($temp_vote != $user->total_votes)
-          {
-              $vote_rank++;
-              $temp_vote = $user->total_votes;
-          }
-          ?>  
+        <div class="wrap_profile">  
           <?php if($user->user_position == 1){ ?>
             <div class="first_place"><?php echo e($user->user_position); ?><sup>st</sup></div>
             <?php if(Auth::user()->username == 'Admin'): ?>
@@ -138,6 +132,8 @@
                   <div id="increase_vote_ajax_<?php echo e($user->user_id); ?>" style="display:none;"><i class="fa fa-heart"></i></div>
                 </div>
                 <div class="wrap_btn">
+                  <?php //echo "<pre>";print_r($voter_count);die;?>
+                  
                   <?php if($total_voters_count < 2 && !in_array ($user->user_id, $voter_count) && Auth::user()->id != $user->user_id || Auth::user()->username == 'Admin' && date('d/m/Y') != $showdate): ?>
                     <button class="page_btn" type="button" onclick="confirm_vote_popup(<?php echo e($user->competition_id); ?>,<?php echo e($user->user_id); ?>,'<?php echo e($user->username); ?>')">
                       <i class="fa fa-heart"></i> Vote Me

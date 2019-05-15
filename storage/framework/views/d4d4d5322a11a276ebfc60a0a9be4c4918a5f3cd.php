@@ -338,10 +338,19 @@ function deleteconfirmation(id) {
       type : "get",
       url : "<?php echo e(route('live_search.action')); ?>",
       data:{'search':$value},
-      success:function(data){
+      success:function(data){ 
         obj = JSON.parse(data);
         res = obj.response;
-        //console.log(res);return false;
+        var today = new Date();
+        var mon = today.getMonth()+1;
+        var dat = today.getDate(); 
+        var yea = today.getFullYear();
+        var new_date_format = dat+"/"+mon+"/"+yea;
+        var expiry_date = obj.showdate[0].ExpiryDate;
+        var month = today.getMonth()+1;
+        var date = today.getDate(); 
+        var year = today.getFullYear();
+        var newexpirydate = date+"/"+month+"/"+year;
             if(data){
               if (obj.not_found !='Recordnotfound') {
                 $('#notfound').attr('style','display:none');
@@ -360,7 +369,7 @@ function deleteconfirmation(id) {
                     text +='<div class="first_place">'+res[i].user_position[0].user_position+'<sup>st</sup></div>'
                     if(auth_username == 'Admin')
                     {
-                      text +='<div class = "first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'>Wins:$<input type ="text" onblur="firstplace_amount_fun('+res[i].user_id+')" value ='+res[i].vote_amount[0].vote_amount+' id = "firstplace_amount_+('+res[i].user_id+')"  class="edit_amount"></div>'
+                      text +='<div class = "first_place_amount" id="first_place_amount"><input type="hidden" name="hidden_user_id" id = "hidden_user_id" value ='+res[i].user_id+'>Wins:$<input type ="text" onblur="firstplace_amount_fun('+res[i].user_id+')" id = "firstplace_amount_('+res[i].user_id+')"value ='+res[i].vote_amount[0].vote_amount+' class="edit_amount"></div>'
                     }
                     else
                     {
@@ -379,7 +388,16 @@ function deleteconfirmation(id) {
                       text +='<div class="fourth_place">'+res[i].user_position[0].user_position+'</div>' 
                     }
 
-                    text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>'+age+' - '+res[i].location+'</p><div class="like_block"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div class="wrap_btn"><button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+')"><i class="fa fa-heart"></i> Vote Me</button><button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div></div></div></div><br>'
+                      text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>'+age+' - '+res[i].location+'</p><div class="like_block"><div id="increase_vote_'+res[i].user_id+'"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div id="increase_vote_ajax_'+res[i].user_id+'" style="display:none;"><i class="fa fa-heart"></i></div></div><div class="wrap_btn">'
+
+                   if(res[i].total_voters_count < 2 && res[i].user_id != auth_userid || obj.username == 'Admin' && new_date_format != newexpirydate) {console.log('in in array condition');
+                      text+='<button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+',\'' +  res[i].username + '\')"><i class="fa fa-heart"></i> Vote Me</button>'
+                   }
+                   else {
+                        console.log('out in array condition');
+                      text+='<button class="page_btn" type="button" disabled><i class="fa fa-heart"></i> Vote Me</button>'
+                    }
+                      text+='<button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div></div></div></div><br>'
                     if(res[i].user_id == auth_userid || auth_username == 'Admin')
                       { 
                         text +='<div class = "profile_search_trash_btn"><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div>';
@@ -776,32 +794,20 @@ $("#confirm_vote").click(function() {
         }
       });
     });
-    
-    // $("#first_place_amount").on('focus',"input#firstplace_amount", function() {
-    //   console.log("on focus");
-    // }).on('blur',"input#firstplace_amount", function() {
-    //     console.log("on blur");
-    // });
-    
+   
   //amount edit
 
   function firstplace_amount_fun(user_id) {
 
-    var vote_amount = "";
     var hidden_user_id = user_id;
     var firstplace_amount = $("#firstplace_amount_"+hidden_user_id).val();
+    alert(firstplace_amount);return false;
       $.ajax({
         type: 'GET',
         url: 'competition_vote_amount_edit/'+firstplace_amount+'/'+hidden_user_id,
         success:function(data)
         {   
-          //  var obj = JSON.parse(data)
-           // console.log(obj.competitionuservoteamount.vote_amount);firstplace_amount_ajax
-           // $("#first_place_amount").val(obj.competitionuservoteamount.vote_amount);
-            // vote_amount +='Wins:$<input type ="text" value ="'+obj.competitionuservoteamount.vote_amount+'" id = "firstplace_amount_ajax"  class="edit_amount">';
-            // $("#firstplace_amount_ajax_"+hidden_user_id).html(vote_amount);
-            // $("#firstplace_amount_ajax_"+hidden_user_id).removeAttr("style");
-            // $("#first_place_amount").attr("style", "display: none");
+          
         }
       });
     };

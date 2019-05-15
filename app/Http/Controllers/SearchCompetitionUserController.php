@@ -22,12 +22,13 @@ class SearchCompetitionUserController extends Controller
 {
     public function action(Request $request)
     {
-        
+        $username = Auth::user()->username;
         if ($request->ajax()) {
             
             $query = $request->get('search');
             if($query != '')
             {   
+                $showdate = competition_user::showdate();
                 $data = DB::table('competition_interested_users')
                         ->select('competition_interested_users.*','users.*')
                         ->join('users','id','=','competition_interested_users.user_id')
@@ -73,12 +74,28 @@ class SearchCompetitionUserController extends Controller
 
                     $data[$key]->user_position = $position;
                 }
-                
-                //echo "<pre>";print_r($data);
+                $showdate   =   DB::table('competition_expiry_date')
+                                    ->select('ExpiryDate')
+                                    ->get();
+                foreach ($data as $key => $voter_count) {
+                    $votes  =   DB::table('competiton_vote')
+                                ->where('voter_id',$voter_count->user_id)
+                                ->get();
+                    $data[$key]->voter_count = $votes;
+                    $data[$key]->total_voters_count = count($votes);
+                foreach ($votes as $key => $vote) {
+                    $votes[$key] = $vote->user_id;
+                   }
+                    
+                }
+                 
+                //echo "<pre>";print_r($data);die;
                 if(!empty($data))
                 {
                     $data = array(
-                        'response' => $data
+                        'response' => $data,
+                        'showdate' => $showdate,
+                        'username' => $username
                     );
                 
                     return json_encode($data);
@@ -124,7 +141,7 @@ class SearchCompetitionUserController extends Controller
     //         {
     //            echo "Record not found"; 
     //         }
-
+// res[i].total_voters_count < 2 && (jQuery.inArray(res[i].user_id, res[i].voter_count)!='-1') && res[i].user_id != auth_userid || obj.username == 'Admin' && new_date_format != newexpirydate
     //     }
 
         

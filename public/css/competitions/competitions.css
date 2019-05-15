@@ -740,7 +740,6 @@ section.com_banner {
   }
 }
 
-}
 @media only screen and (max-width:414px)
 {
   .imgpopup
@@ -770,7 +769,7 @@ section.com_banner {
     min-height: 360px;
   }
   .comment_count {
-    margin-right:4px;
+    margin-right:10px;
     margin-top:-31px;
   }
   .img-pro {
@@ -850,7 +849,7 @@ section.com_banner {
   }
   .comment_count {
     margin-right:2px;
-    margin-top:-31px;
+    margin-top:-29px;
   }
   .img-pro {
     margin-left:89px;
@@ -993,7 +992,7 @@ section.com_banner {
   }
   .comment_count {
     margin-right:2px;
-    margin-top:-31px;
+    margin-top:-26px;
   }
   .table_block {
     height: 145px;
