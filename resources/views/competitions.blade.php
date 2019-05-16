@@ -349,7 +349,7 @@ function deleteconfirmation(id) {
         var dat = today.getDate(); 
         var yea = today.getFullYear();
         var new_date_format = dat+"/"+mon+"/"+yea;
-        var expiry_date = obj.showdate[0].ExpiryDate;
+        var expiry_date = obj.showdate;
         var month = today.getMonth()+1;
         var date = today.getDate(); 
         var year = today.getFullYear();
@@ -392,15 +392,23 @@ function deleteconfirmation(id) {
                     }
 
                       text +='<div class="img-pro"><img onclick = "imagemodal('+res[i].user_id+')" src="img/competition_user/'+ res[i].username +'/previews/'+ res[i].user_profile +'"><br></div><div class="profile_content"><h1><a href="users/'+ res[i].username +'">' + res[i].username + '</a></h1><p>'+age+' - '+res[i].location+'</p><div class="like_block"><div id="increase_vote_'+res[i].user_id+'"><i class="fa fa-heart"></i>'+res[i].total_votes+'</div><div id="increase_vote_ajax_'+res[i].user_id+'" style="display:none;"><i class="fa fa-heart"></i></div></div><div class="wrap_btn">'
-
-                   if(res[i].total_voters_count < 2 && res[i].user_id != auth_userid || obj.username == 'Admin' && new_date_format != newexpirydate) {console.log('in in array condition');
+                    if(obj.total_voters_count < 2){ 
+                      if(res[i].user_id != auth_userid && (jQuery.inArray(res[i].user_id, obj.voter_count))==-1 || obj.username == 'Admin' && new_date_format != newexpirydate) {
+                      
+                        text+='<button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+',\'' +  res[i].username + '\')"><i class="fa fa-heart"></i> Vote Me</button>'
+                      }
+                      else {
+                        text+='<button class="page_btn" type="button" disabled><i class="fa fa-heart"></i> Vote Me</button>'
+                      }
+                    }
+                    else if(obj.username == 'Admin'){
                       text+='<button class="page_btn" onclick = "confirm_vote_popup('+res[i].competition_id+','+res[i].user_id+',\'' +  res[i].username + '\')"><i class="fa fa-heart"></i> Vote Me</button>'
-                   }
-                   else {
-                        console.log('out in array condition');
+                    }
+                    else{
                       text+='<button class="page_btn" type="button" disabled><i class="fa fa-heart"></i> Vote Me</button>'
                     }
                       text+='<button class="page_btn" onclick = "profilecomment('+res[i].user_id+')" type="button"><i class="fa fa-comments"></i> Comments</button></div><div class="comment_count">'+res[i].total_comment+'</div></div></div></div><br>'
+                    
                     if(res[i].user_id == auth_userid || auth_username == 'Admin')
                       { 
                         text +='<div class = "profile_search_trash_btn"><i onclick = "deleteconfirmation('+res[i].competition_id+')" class = "fa fa-trash trash_btn"></i></div>';
@@ -426,7 +434,7 @@ function deleteconfirmation(id) {
             }
         }
     });
-  })
+  });
 </script>
 <?php } else { ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -804,7 +812,6 @@ $("#confirm_vote").click(function() {
 
     var hidden_user_id = user_id;
     var firstplace_amount = $("#firstplace_amount_"+hidden_user_id).val();
-    alert(firstplace_amount);return false;
       $.ajax({
         type: 'GET',
         url: 'competition_vote_amount_edit/'+firstplace_amount+'/'+hidden_user_id,

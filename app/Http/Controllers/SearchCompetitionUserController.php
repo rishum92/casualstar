@@ -22,7 +22,8 @@ class SearchCompetitionUserController extends Controller
 {
     public function action(Request $request)
     {
-        $username = Auth::user()->username;
+        // $username = Auth::user()->username;
+        // $userid = Auth::user()->id;
         if ($request->ajax()) {
             
             $query = $request->get('search');
@@ -77,25 +78,36 @@ class SearchCompetitionUserController extends Controller
                 $showdate   =   DB::table('competition_expiry_date')
                                     ->select('ExpiryDate')
                                     ->get();
-                foreach ($data as $key => $voter_count) {
-                    $votes  =   DB::table('competiton_vote')
-                                ->where('voter_id',$voter_count->user_id)
-                                ->get();
-                    $data[$key]->voter_count = $votes;
-                    $data[$key]->total_voters_count = count($votes);
-                foreach ($votes as $key => $vote) {
-                    $votes[$key] = $vote->user_id;
-                   }
+                $updatedate = $showdate[0]->ExpiryDate;
+                $date_array = explode("-",$updatedate); 
+                $var_year = $date_array[0]; //day seqment
+                $var_month = $date_array[1]; //month segment
+                $var_day = $date_array[2]; //year segment
+                $new_date_format = "$var_day/$var_month/$var_year";
+                //echo "<pre>";print_r($new_date_format);die;
+                // $voter_count = competition_user::vote_count($userid);
+                // $total_voters_count = count($voter_count);
+                // foreach ($data as $key => $voter_count) {
+                //     $votes  =   DB::table('competiton_vote')
+                //                 ->where('voter_id',$voter_count->user_id)
+                //                 ->get();
+                //     $data[$key]->voter_count = $votes;
+                //     $data[$key]->total_voters_count = count($votes);
+                // foreach ($votes as $key => $vote) {
+                //     $votes[$key] = $vote->user_id;
+                //    }
                     
-                }
+                // }
                  
                 //echo "<pre>";print_r($data);die;
                 if(!empty($data))
                 {
                     $data = array(
                         'response' => $data,
-                        'showdate' => $showdate,
+                        'showdate' => $new_date_format,
                         'username' => $username
+                        // 'voter_count' => $voter_count,
+                        // 'total_voters_count' => $total_voters_count
                     );
                 
                     return json_encode($data);
@@ -141,7 +153,7 @@ class SearchCompetitionUserController extends Controller
     //         {
     //            echo "Record not found"; 
     //         }
-// res[i].total_voters_count < 2 && (jQuery.inArray(res[i].user_id, res[i].voter_count)!='-1') && res[i].user_id != auth_userid || obj.username == 'Admin' && new_date_format != newexpirydate
+// res[i].total_voters_count < 2 && (jQuery.inArray(res[i].user_id, res[i].voter_count)== -1) && res[i].user_id != auth_userid || obj.username == 'Admin' && new_date_format != newexpirydate
     //     }
 
         
