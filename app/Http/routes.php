@@ -233,4 +233,5 @@
 	Route::get('comment_user_data/{id}','competitionController@comment_user_data');
 	Route::post('confirm_comment','competitionController@confirm_comment');
 	Route::get('delete_comment/{id}','competitionController@delete_comment');
+	Route::get('allcompetition_delete','competitionController@delete_all_competitions');
 	

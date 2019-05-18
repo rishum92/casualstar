@@ -141,7 +141,7 @@ class HomeController extends BaseController
   }
 
 public function competition_vote_amount_edit(Request $request)
-    {   echo "<pre>"; print_r($request->firstplace_amount); die;
+    {   
         $vote_amount = $request->firstplace_amount;
         $hidden_user_id_for_voteamount = $request->hidden_user_id;
         $update_vote_amount     = competition_user::update_amount_edit($vote_amount,$hidden_user_id_for_voteamount);

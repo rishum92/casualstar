@@ -334,6 +334,20 @@ class competition_user extends Model
                     ->where('competition_id',$competitionid)
                     ->get();
     return $comment_count;
-  } 
-
+  }
+  public static function delete_all_competition()
+  {
+    $delete_all_competition = DB::table('competition_interested_users')
+                            ->delete();
+  }
+  public static function delete_all_competition_votes()
+  {
+    $delete_all_competition_votes = DB::table('competiton_vote')
+                                  ->delete();
+  }
+  public static function delete_all_competition_comment()
+  {
+    $delete_all_competition_comment = DB::table('profile_comments')
+                                    ->delete();
+  }
 }

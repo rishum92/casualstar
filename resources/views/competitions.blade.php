@@ -43,7 +43,7 @@
         @endif
       <?php } ?>
       </div>
-        <?php  //echo"<pre>"  ; print_r($exists); die;
+        <?php  
           if(Auth::check()) { ?>
             @if(Auth::user()->gender == 'female')
             <?php if(empty($exists) || date('d/m/Y') == $showdate)
@@ -99,7 +99,13 @@
               </div>
             <?php } ?>
            <br />
-            <!---Image Uploader Close-->
+           <?php {
+           if(Auth::check()) { ?>
+            @if(Auth::user()->username == 'Admin' && date('d/m/Y')==$showdate)
+                <button  onclick = "allcompetitiondelete()" type="button" class="all_competition_delete_button"><i class = "fa fa-trash "></i>  Delete All  </button>            
+            @endif
+          <?php } }?>  
+          <!---Image Uploader Close-->
             <!--Competition User Div Start-->
            <?php //echo"<pre>"; print_r($total_voters_count); die; ?>
             <div class="wrap_prodiv" id="default_searched">
@@ -122,6 +128,8 @@
             </div>
             
                 <!--Terms and conditions -->
+      }
+      }
     </div>
   </div>
 </section>
@@ -320,6 +328,51 @@ function deleteconfirmation(id) {
   </div>
 </div>
 <!--Delete Confirmation Popup End-->
+
+<!--All Competition Delete Popup-->
+<script>
+function allcompetitiondelete() {
+ $('#alldeletecompetition').modal('show');
+}
+</script>
+
+
+<!--Delete Confirmation Popup-->
+<div class="modal fade" id="alldeletecompetition" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      Are you sure you want to delete this submission?
+      </div>
+      <input type="hidden" name="competitionid" id="competitionid">
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="confirm_all_delete">Yes</button>
+        <button class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$("#confirm_all_delete").click(function() {
+  $.ajax({
+    type: 'GET',
+    url: 'allcompetition_delete/',
+    success:function(data)
+    {
+      //location.reload();
+    }
+  });
+});
+
+</script>
+<!--All COmpetition Delete Popup-->
 
 <!--Search Bar Script Start-->
 <?php if(Auth::check()) { ?>

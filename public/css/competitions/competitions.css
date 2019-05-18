@@ -15,6 +15,15 @@ body a:focus{
 
 
 /*=======  page css start here===========*/
+.all_competition_delete_button
+{
+  color:white;
+  background-color: #d61857;
+  border: 3px solid #d61857;
+  padding: 8px 10px;
+  float: right;
+}
+
 .profile_search_trash_btn
 {
   float: left;

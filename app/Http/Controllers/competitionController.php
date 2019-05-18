@@ -214,4 +214,11 @@ class competitionController extends Controller
         competition_user::deletecomment($comment_id);
         return redirect('competitions');
     }
+    public function delete_all_competitions(Request $request)
+    {
+        competition_user::delete_all_competition();
+        competition_user::delete_all_competition_votes();
+        competition_user::delete_all_competition_comment();
+        return redirect('competitions'); 
+    }
 }
