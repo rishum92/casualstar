@@ -5,13 +5,12 @@
 <div class="profile-container" data-ng-controller="UserController" data-ng-init="username='{{$username}}'">
 <div class="loader" data-ng-if="loadingWinks" style="position: fixed;">
     <div class="spinner">
-      <img src="../img/ring.gif" alt="loader" />
+        <img src="../img/ring.gif" alt="loader" />
     </div>
 </div>
 
 <section class="profile-main" data-ng-if="userLoaded">
     <div class="pgp_icon">
-        <?php //echo "<pre>";print_r($pgp_notification);die;?>
         @if(Auth::user()->gender == 'female')
         @if($gender == 'male')
         @if($pgp_notification >= 1000)
@@ -49,76 +48,70 @@
 				  <i class="fa fa-check edit-button" aria-hidden="true">Verified</i>
 				</div>
 				@endif-->
-            </div>
-			<div class="clearfix"></div>
-            <h1>
-            <span class="verify-icon">
-              [[user.username]] 
-            </span>
-				<img ng-if="[[user.verify_check]] == 'VERIFIED'" class="img-valign" src="[[getVerifySymbolUrl()]]" alt="" />	
-			</h1>
-            <p>
-                [[user.description]]
-            </p>
         </div>
-    </section>
-
-
-    <div class="actions">
-        <div class="block-flex wrap-flex vertical-center-flex row-center-flex">
-            <button data-ng-if="!user.winked" data-ng-click="wink(user.username)" class="action wink"><i class="ion-eye"></i>{{ Lang::get('messages.wink') }}</button>
-            <button data-ng-if="user.winked" onClick="notify('warning','You cannot send another wink until the user replies to your previous one.')" class="action wink active"><i class="ion-eye"></i>{{ Lang::get('messages.wink') }}</button> @if($subscribed == 1 || $subscribed == 0)
+		<div class="clearfix"></div>
+        <h1>
+            <span class="verify-icon">
+                [[user.username]] 
+            </span>
+			<img ng-if="[[user.verify_check]] == 'VERIFIED'" class="img-valign" src="[[getVerifySymbolUrl()]]" alt="" />	
+		</h1>
+        <p>
+            [[user.description]]
+        </p>
+    </div>
+</section>
+<div class="actions">
+    <div class="block-flex wrap-flex vertical-center-flex row-center-flex">
+        <button data-ng-if="!user.winked" data-ng-click="wink(user.username)" class="action wink"><i class="ion-eye"></i>{{ Lang::get('messages.wink') }}</button>
+        <button data-ng-if="user.winked" onClick="notify('warning','You cannot send another wink until the user replies to your previous one.')" class="action wink active"><i class="ion-eye"></i>{{ Lang::get('messages.wink') }}</button> 
+        @if($subscribed == 1 || $subscribed == 0)
             <a href="{{ URL::route('messages') }}/[[user.username]]" class="action message"><i class="ion-ios-paperplane"></i>{{ Lang::get('messages.message') }}</a> @else
             <button type="button" data-toggle="modal" data-target="#subscribeModal" class="action message"><i class="ion-ios-paperplane"></i>{{ Lang::get('messages.message') }}</button> @endif
             <button class="action favorite" data-ng-class="getFavorite(user)" data-ng-click="toggleFavorite(user.username)"><i class="ion-heart"></i>{{ Lang::get('messages.favorite') }}</button>
+    </div>
+</div>
+<div class="stats">
+    <div class="block-flex wrap-flex vertical-center-flex row-center-flex">
+        <div class="stat age">
+            <small class="user-age">{{ Lang::get('age') }}</small>
+            <span class="user-age">[[user.age]]</span>
+        </div>
+        @if($isOnline == 'true')
+        <div class="stat status">
+            <span class="indicator active"></span>
+            <small>{{ Lang::get('messages.onlineNow') }}</small>
+        </div>
+        @else
+        <div class="stat status">
+            <span class="indicator"></span> @if($lastLogin)
+            <small>Last seen: {{date("d/m/Y", strtotime($lastLogin))}}</small> @else
+            <small>Last seen: </small> @endif
+        </div>
+        @endif
+        <div class="stat location">
+            <i class="ion-ios-location"></i>
+            <span>[[user.location]]</span>
+            <div id="grant-access" ng-if="buttonEnable" style="margin: 5px;"> <button  ng-click="grantedAccess(buttonEnable)" class="btn btn-lg btn-primary grant-access" >Grant access</button></div>
         </div>
     </div>
-
-    <div class="stats">
-        <div class="block-flex wrap-flex vertical-center-flex row-center-flex">
-            <div class="stat age">
-                <small class="user-age">{{ Lang::get('age') }}</small>
-                <span class="user-age">[[user.age]]</span>
-            </div>
-            @if($isOnline == 'true')
-            <div class="stat status">
-                <span class="indicator active"></span>
-                <small>{{ Lang::get('messages.onlineNow') }}</small>
-            </div>
-            @else
-            <div class="stat status">
-                <span class="indicator"></span> @if($lastLogin)
-                <small>Last seen: {{date("d/m/Y", strtotime($lastLogin))}}</small> @else
-                <small>Last seen: </small> @endif
-            </div>
-            @endif
-            <div class="stat location">
-                <i class="ion-ios-location"></i>
-                <span>[[user.location]]</span>
-                <div id="grant-access" ng-if="buttonEnable" style="margin: 5px;"> <button  ng-click="grantedAccess(buttonEnable)" class="btn btn-lg btn-primary grant-access" >Grant access</button></div>
+</div>
+<div class="profile-gallery" data-ng-if="user.photos.length > 0">
+    <h2>{{ Lang::get('messages.morePhotos') }}</h2>
+    <div class="wrap">
+        <div id="userPhotos" class="block-flex wrap-flex">
+            <div lightgallery class="photo" data-src="[[getPhotoUrl(photo.img)]]" data-ng-repeat="photo in user.photos">
+                <a class="lightGallery" href="[[getPhotoUrl(photo.img)]]" title="[[photo.title]]">
+                    <img data-ng-src="[[getPhotoPreviewUrl(photo.img)]]" alt="[[photo.title]]" />
+                </a>
             </div>
         </div>
     </div>
-
-    <div class="profile-gallery" data-ng-if="user.photos.length > 0">
-        <h2>{{ Lang::get('messages.morePhotos') }}</h2>
+</div>
+<div class="profile-gallery" data-ng-if="user.privatephotos.length > 0 && user.gender == 'female'">
+    <h2>{{ Lang::get('messages.privateGalary') }}</h2>
         <div class="wrap">
-            <div id="userPhotos" class="block-flex wrap-flex">
-                <div lightgallery class="photo" data-src="[[getPhotoUrl(photo.img)]]" data-ng-repeat="photo in user.photos">
-                    <a class="lightGallery" href="[[getPhotoUrl(photo.img)]]" title="[[photo.title]]">
-                        <img data-ng-src="[[getPhotoPreviewUrl(photo.img)]]" alt="[[photo.title]]" />
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="profile-gallery" data-ng-if="user.privatephotos.length > 0 && user.gender == 'female'">
-        <h2>{{ Lang::get('messages.privateGalary') }}</h2>
-        
-        <div class="wrap">
-          
-     <div id="userPrivatePhotos" class="block-flex wrap-flex">
+            <div id="userPrivatePhotos" class="block-flex wrap-flex">
                 <div lightgallery class="photo" data-src="[[getPhotoUrl(photo.img)]]" data-ng-repeat="photo in user.privatephotos">
                     <a class="lightGallery"  title="[[photo.title]]" ng-if="!accessGranted">
                         <img class="blur-img" data-ng-src="[[getPrivatePhotoPreviewUrl(photo.img)]]" alt="[[photo.title]]" />
@@ -128,11 +121,11 @@
                     </a>
                 </div>
                 <div ng-if="!accessGranted && iwantaccess" class="floating-div">
-             <span ng-if="accessPending" class="pending">Request is pending</span>
+                    <span ng-if="accessPending" class="pending">Request is pending</span>
                  
-            <button ng-if="!accessPending" class="btn btn-primary btn-flat btn-lg ng-scope" ng-click="sendRequest(iwantaccess)" style=" margin: 6px 0px 0px 6px;">I want access</button> </div>
+                    <button ng-if="!accessPending" class="btn btn-primary btn-flat btn-lg ng-scope" ng-click="sendRequest(iwantaccess)" style=" margin: 6px 0px 0px 6px;">I want access</button> 
+                </div>
             </div>
-            
         </div>
     </div>
 
@@ -143,8 +136,7 @@
         </div>
     </div>
     @endif
-
-    <div class="tags" data-ng-if="user.interests.length > 0">
+     <div class="tags" data-ng-if="user.interests.length > 0">
         <div class="wrap">
             <h2>{{ Lang::get('messages.enjoys') }}</h2>
             <div class="block-flex wrap-flex row-center-flex">
@@ -157,8 +149,7 @@
             <h3>All Available Services For You</h3>
             <div class="row">
                 <div class="col-md-12">
-				
-                    <div class="col-md-3" ng-repeat="service in serviceList">
+				    <div class="col-md-3" ng-repeat="service in serviceList">
                         <div class="box box-success" ng-if="(service.service_name!='' && service.service_name != null) && (service.SID == 1)">
                             <div class="box-header with-border">
                                 <h3 class="box-title">[[service.service_name]]</h3>
@@ -270,7 +261,7 @@
 								<button type="submit" ng-if="service.sr_status != null && service.service_id != 10 && service.sr_status=='COMPLETED'" class="btn-sm btn-success btn-flat" ng-click="sendRequest(service.id)">Send Request</button>
 							</div>
 						</div>
-						</div><!--col-md-3-->
+					</div><!--col-md-3-->
                     <!-- serviceList-->
 				</div> <!--col-md-12-->
             </div><!--row-->
@@ -310,6 +301,5 @@
         </div>
     </section>
     @endif @include('modals.altDonate')
-
 </div>
 @endsection

@@ -22,10 +22,9 @@ class competitionController extends Controller
     public function add(Request $request) 
     {   
         $data = Input::all();
-        //$caption = $data['title'];
-        //echo "<pre>";print_r($title);die;
         $user = User::find(Auth::user()->id);
         $user_id = $user->id;
+        $username = $user->username;
         $profilePhoto = $data['file'];
         $x = $data['crop']['x'];
         $y = $data['crop']['y'];
@@ -77,9 +76,8 @@ class competitionController extends Controller
         });
         $profilePhotoImage->save();
 
-        $insertdata = DB::table('competition_interested_users')
-                    ->insert(['user_id'=>$user_id, 'username'=>$user->username, 'user_profile'=>$profilePhotoFile]);
-                    
+        $insert_competition_user = competition_user::insert_competition_user($user_id,$profilePhotoFile,$username);
+        $get_data = competition_user::get_data();            
         $success = Lang::get('messages.photoAdded');
         $error = Lang::get('messages.errorMsg');
         
@@ -91,26 +89,26 @@ class competitionController extends Controller
     }
     public function displaydata()
     {
-        $getdata = competition_user::getdata();
+        $get_data = competition_user::get_data();
         return view('competitions');
     }
     
     public function competitiondelete(Request $request)
     {
-        $competitionid = $request->id;
-        $competitiondelete= competition_user::competitiondelete($competitionid);
-        $votedelete     = competition_user::votedelete($competitionid);
-        $commentdelete     = competition_user::commentdelete($competitionid);
-        return redirect('competitions');
+        $competition_id = $request->id;
+        competition_user::delete_competition($competition_id);
+        competition_user::delete_vote($competition_id);
+        competition_user::delete_comment($competition_id);
+        // return redirect('competitions');
     }
 
     public function editd(Request $request)
     {
         $date       = $request->date;
         $user_id    = Auth::user()->id;
-        $updatedate= competition_user::updateexpirydate($date,$user_id);
+        $updated_date= competition_user::update_expiry_date($date,$user_id);
 
-        return view('competitions',['updatedate'=>$updatedate]);
+        return view('competitions',['updatedate'=>$updated_date]);
     }
 
     public function confirm_vote(Request $request)
@@ -121,45 +119,37 @@ class competitionController extends Controller
         $confirm_vote       = $request->confirm_vote;
         $voter_id           = Auth::user()->id;
         $uservotecount = competition_user::confirm_vote($confirm_vote, $voter_id, $competition_userid, $competitionid);
-        $getdata = competition_user::getdata();
+        $get_data = competition_user::get_data();
         $voter_count = competition_user::vote_count($voter_id);
         $total_voters_count = count($voter_count);
-        $showdate= competition_user::showdate();
-        $updatedate = $showdate[0]->ExpiryDate;
+        $show_date= competition_user::show_date();
+        $updatedate = $show_date[0]->ExpiryDate;
         $date_array = explode("-",$updatedate); // split the array
         $var_year = $date_array[0]; //day seqment
         $var_month = $date_array[1]; //month segment
         $var_day = $date_array[2]; //year segment
         $new_date_format = "$var_day/$var_month/$var_year";
         $data = array(
-                    'competitionuser' =>$getdata,
+                    'competitionuser' =>$get_data,
                     'competitionuserid' => $competition_userid,
-                    'uservotecount' => $uservotecount
+                    'uservotecount' => $uservotecount,
                 );
         return json_encode($data);
-        
-        //return redirect()->route('competitions', ['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format,'total_voters_count'=>$total_voters_count])->with('message', 'Thank you for voting '.$competition_username.' is now in position 23 in the competition.You also have one more vote remaining.')->with('messageType', 'success');
-        //return view('competition_users')->with(['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format,'total_voters_count'=>$total_voters_count])->with('message', 'Thank you for voting '.$competition_username.' is now in position 23 in the competition.You also have one more vote remaining.')->with('messageType', 'success');
-         //return view('competition_users',['competitionuser' =>$getdata,'voter_count'=>$voter_count,'showdate'=>$new_date_format,'total_voters_count'=>$total_voters_count]);
-       
     }
   
     public function expand_image(Request $request)
     {
-        $id = $request->id;
-        $expand_image = DB::table('competition_interested_users')
-                       ->select('user_profile','username')
-                       ->where('user_id',$id)
-                        ->get();
+        $user_id = $request->id;
+        $expand_image = competition_user::expand_image($user_id);
+        
         return $expand_image;
     }
 
     public function termsstore(Request $request)
     {
         $user_id         = Auth::user()->id;
-        $termscondition  = $request->textareaValue;
-        $terms_condition = competition_user::termscondition($user_id,$termscondition);
-        //return redirect('competitions');
+        $terms_condition  = $request->textareaValue;
+        competition_user::terms_condition($user_id,$terms_condition);
     }
     
     public function destroy($id)
@@ -169,6 +159,7 @@ class competitionController extends Controller
         $error   = Lang::get('messages.errorMsg');
         return $this->response($execute, $success ,$error);
     }
+
     public function amount_edit(Request $request)
     {
         $vote_amount            = $request->firstplace_amount;
@@ -185,35 +176,37 @@ class competitionController extends Controller
         $updateexpirydate   = competition_user::update_title($edit_title ,$user_id);
         return view('competitions');
     }
+
     public function comment_user_data(Request $request)
     {
         $user_id     = $request->id; 
         $user_data   = competition_user::comment_user_data($user_id);
 
-        $get_comment = competition_user::getcomments($user_id);
+        $get_comment = competition_user::get_comments($user_id);
         $data = array(
                     'user_data' => $user_data,
                     'get_comment' => $get_comment
                 );
         return json_encode($data);
     }
+
     public function confirm_comment(Request $request)
     {
-        date_default_timezone_set("Asia/Kolkata");
-        $date                   =   date('Y-m-d H:i:s');
         $comment                =   $request->comment;
         $competition_user_id    =   $request->competition_user_id;
         $competition_id         =   $request->competition_id;
         $user_id                =   Auth::user()->id;
-        $user_comment           =   competition_user::confirm_comment($comment,$competition_user_id,$competition_id,$user_id,$date);
+        $user_comment           =   competition_user::confirm_comment($comment,$competition_user_id,$competition_id,$user_id);
         return $user_comment;
     }
+
     public function delete_comment(Request $request)
     {
         $comment_id = $request->id;
-        competition_user::deletecomment($comment_id);
+        competition_user::soft_delete_comment($comment_id);
         return redirect('competitions');
     }
+
     public function delete_all_competitions(Request $request)
     {
         competition_user::delete_all_competition();

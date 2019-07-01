@@ -18,7 +18,6 @@ class offer_post extends Model
     $user = DB::table('users')
             ->where('id', '=', $user_id)
             ->first();
-           
     return $user;
   }
 
@@ -53,9 +52,9 @@ class offer_post extends Model
    {
       $user_id = Auth::user()->id;
       $get_notification_data = DB::table('users')
-                          ->select('notification')
-                          ->where('id',$user_id)
-                          ->get();
+                              ->select('notification')
+                              ->where('id',$user_id)
+                              ->get();
       return $get_notification_data;
    }
 
@@ -74,12 +73,9 @@ class offer_post extends Model
                           ->select('id')
                           ->where('post_id', $post->post_id)
                           ->get(); 
-
         $post_data[$key]->intrest_count = count($interest_count);
     }
-
-      //echo  "<pre>"; print_r($post_data) ; die; 
-      return $post_data;         
+    return $post_data;         
    }
 
    //fetch the post modal
@@ -90,32 +86,22 @@ class offer_post extends Model
       if (Auth::user()->gender == 'male') 
       {
         $my_posts = DB::table('offer_post') 
-                      ->select('id')
-                      ->where('user_id', $user_id )  
-                      ->get(); 
+                    ->select('id')
+                    ->where('user_id', $user_id )  
+                    ->get(); 
         if(!empty($my_posts)){
           foreach ($my_posts as $post) {
             $user_posts[] = $post->id;
           }
         } else {
           return $my_posts;
-        }
-        
+        }  
       }
       else
       {
         $check_exist = DB::table('offer_interested_users') 
                       ->where('user_id', $user_id )  
                       ->get();
-        // if(empty($check_exist))
-        // {
-        //    echo "note exist";die;
-        // }
-        // else
-        // {
-        //   echo "exist";die;
-        // }
-
         $my_interests = DB::table('offer_interested_users') 
                       ->select('post_id')
                       ->where('user_id', $user_id )  
@@ -127,12 +113,8 @@ class offer_post extends Model
         } else {
           return $my_interests;
         }
-
       }
-
-     
-      //echo  "<pre>"; print_r($user_posts) ; die; 
-      return $user_posts;         
+    return $user_posts;         
    }
 
   //my offer post
@@ -169,7 +151,6 @@ class offer_post extends Model
                     ->groupBy('offer_post.id')
                     ->orderBy('offer_post.created_at', 'desc')
                     ->paginate(10);
-      //echo "<pre>";print_r($myofferpostinterested);die;
 
       foreach ($myofferpostinterested as $key => $post) {
         $interest_count = DB::table('offer_interested_users')
@@ -178,7 +159,6 @@ class offer_post extends Model
                           ->get(); 
         $myofferpostinterested[$key]->intrest_count = count($interest_count);
       }
-      //echo "<pre>";print_r($myofferpostinterested);die;
       return $myofferpostinterested;              
    }
 
@@ -198,22 +178,21 @@ class offer_post extends Model
    public static function checkStatus($post_id,$intrested_id)
    {
       $users = DB::table('offer_interested_users')
-                    ->select('post_id','user_id')
-                    ->where('post_id',$post_id)
-                    ->where('user_id',$intrested_id)
-                    ->get(); 
-      //echo "<pre>";print_r($users);die;        
+              ->select('post_id','user_id')
+              ->where('post_id',$post_id)
+              ->where('user_id',$intrested_id)
+              ->get();
       return $users;
     }
 
     public static function post_intrest_users($post_id)
     {
       $users = DB::table('offer_interested_users')
-                    ->join('users', 'offer_interested_users.user_id', '=', 'users.id')
-                    ->where('offer_interested_users.post_id', '=', $post_id)
-                    ->select('users.*', 'offer_interested_users.*')
-                    ->orderBy('offer_interested_users.created_at')
-                    ->get();
+              ->join('users', 'offer_interested_users.user_id', '=', 'users.id')
+              ->where('offer_interested_users.post_id', '=', $post_id)
+              ->select('users.*', 'offer_interested_users.*')
+              ->orderBy('offer_interested_users.created_at')
+              ->get();
       return $users;
     }
 
@@ -223,9 +202,9 @@ class offer_post extends Model
       ->insert(['post_id'=>$post_id,'user_id'=>$intrested_id]);
 
       $count_users = DB::table('offer_interested_users')
-                      ->select('user_id') 
-                      ->where('post_id',$post_id)
-                      ->get(); 
+                    ->select('user_id') 
+                    ->where('post_id',$post_id)
+                    ->get(); 
 
       $point_users = count($count_users) ; 
       if($point_users < 10)
@@ -255,34 +234,30 @@ class offer_post extends Model
       }
 
       return $count_points;
-      
-      //echo "<pre>";print_r($point_users);die;               
     } 
 
     //count point of post
 
     public static function count_points($user_id)
     { 
-        $count_points = DB::table('offer_post')
-                      ->where('user_id',$user_id)
-                      ->select('p_g_p')
-                      ->sum('p_g_p');
-       // echo "<pre>";print_r($count_points);die;
-        $user_points = DB::table('users')
-                      ->where('id','=',$user_id)
-                      ->select('pgp_count')
-                      ->sum('pgp_count');
-               
-        return $count_points+$user_points;
+      $count_points = DB::table('offer_post')
+                    ->where('user_id',$user_id)
+                    ->select('p_g_p')
+                    ->sum('p_g_p');
+      $user_points = DB::table('users')
+                    ->where('id','=',$user_id)
+                    ->select('pgp_count')
+                    ->sum('pgp_count');
+      return $count_points+$user_points;
     }
 
     //count point of post on visitor profile
     public static function count_pgp_points($id)
     {
       $count_pgp_points = DB::table('offer_post')
-                          ->select('p_g_p')
-                          ->where('user_id',$id)
-                          ->sum('p_g_p');
+                        ->select('p_g_p')
+                        ->where('user_id',$id)
+                        ->sum('p_g_p');
         return $count_pgp_points;
     }
   //delete offers 
@@ -291,53 +266,51 @@ class offer_post extends Model
       $select_offer_user_id = DB::table('offer_post')
                             ->where('id', $post_id)
                             ->get();
-      $deleteoffer = DB::table('offer_post')
-                     ->where('id',$post_id)
-                     ->delete();
+      $deleteoffer  = DB::table('offer_post')
+                    ->where('id',$post_id)
+                    ->delete();
       $get_notification_value = DB::table('users')
-                                ->select('notification')
-                                ->where('id',$select_offer_user_id[0]->user_id)
-                                ->get();
+                              ->select('notification')
+                              ->where('id',$select_offer_user_id[0]->user_id)
+                              ->get();
       $notification_decrement = DB::table('users')
-                                ->decrement('notification');
+                              ->decrement('notification');
     }
   
   //delete my offers
   public static function deletemyOffer($post_id)
   {
-      $deleteoffer = DB::table('offer_post')
-                     ->where('id', $post_id)
-                     ->delete();
+      $deleteoffer  = DB::table('offer_post')
+                    ->where('id', $post_id)
+                    ->delete();
   } 
 
   //delete logged interest
   public static function delete_logged_interest($post_id)
   {
-      $deleteoffer = DB::table('offer_interested_users')
-                     ->where('post_id', $post_id)
-                     ->update(['status'=>1]);
+      $deleteoffer  = DB::table('offer_interested_users')
+                    ->where('post_id', $post_id)
+                    ->update(['status'=>1]);
   }
 
    public static function interestedPostBorder($userid_post_border)
    {
       $interestedPost = DB::table('offer_post')
-                        ->get();
+                      ->get();
         foreach ($interestedPost as $key => $post) {
         $interest_count = DB::table('offer_interested_users')
-                          ->select('user_id')
-                          ->where('user_id', $userid_post_border)
-                          ->get(); 
+                        ->select('user_id')
+                        ->where('user_id', $userid_post_border)
+                        ->get(); 
         }
-       //echo "<pre>"; print_r($interest_count); die;
-        return $interest_count;
+      return $interest_count;
    }
 
   public static function send_offer_message($post_data)
   {
-
-      $message_send = DB::table('offer_message')
-                     -> insert(['post_id'=>$post_data['post_id'], 'sender_id'=>$post_data['sender_id'], 'receiver_id'=>$post_data['receiver_id'], 'offer_message'=>$post_data['offer_message']]);
-      return $message_send;
+    $message_send = DB::table('offer_message')
+                  -> insert(['post_id'=>$post_data['post_id'], 'sender_id'=>$post_data['sender_id'], 'receiver_id'=>$post_data['receiver_id'], 'offer_message'=>$post_data['offer_message']]);
+    return $message_send;
   }
   public static function get_offer_message()
   {
@@ -346,10 +319,8 @@ class offer_post extends Model
                   ->where('offer_message.receiver_id', '=','users.id')
                   ->select('users.*', 'offer_message.*')
                   ->get();
-    //echo "<pre>";print_r($get_message);die;
     return $get_message;
   }
-
 
   public static function pgp_activation()
   {
@@ -360,5 +331,14 @@ class offer_post extends Model
     DB::table('users')
     ->where('id', Auth::user()->id)
     ->update(['pgp_count' => DB::raw('pgp_count-1000')]);
+  }
+  public static function offer_notification_count($id)
+  {  
+    $offer_count  = DB::table('offer_post')
+                  ->join('offer_interested_users','offer_interested_users.post_id','=','offer_post.id')
+                  ->select('offer_post.created_at')
+                  ->where('offer_post.user_id',$id)
+                  ->get();
+    return $offer_count;
   }
 }

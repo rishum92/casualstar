@@ -60,10 +60,11 @@ class AppServiceProvider extends ServiceProvider
                 $notification_data = offer_post::offer_notification();
                 // echo "<pre>";print_r($notification_data); die;
                 $pgp_notification  = offer_post::count_points(Auth::user()->id);
-                $notifications = Notification::where('is_read','FALSE')
+                $notifications  = Notification::where('is_read','FALSE')
                                   ->where('to_id',Auth::user()->id)->count();
-  
-                $view->with(['activityCount' => $viewCount + $winkCount+$notifications, 'donationCount' => $donationCount, 'subscribed' => $subscribed, 'plans' => $plans, 'bannerAdRequestCount' => $bannerAdRequestCount,'offercount'=>$offerCount,'notification_data' => $notification_data,'pgp_notification'=>$pgp_notification]);
+                $notify_count   = offer_post::offer_notification_count(Auth::user()->id);
+              
+                $view->with(['activityCount' => $viewCount + $winkCount+$notifications, 'donationCount' => $donationCount, 'subscribed' => $subscribed, 'plans' => $plans, 'bannerAdRequestCount' => $bannerAdRequestCount,'offercount'=>$offerCount,'notification_data' => $notification_data,'pgp_notification'=>$pgp_notification,'notify_count'=>$notify_count]);
             } else {
                 $view->with(['subscribed' => 0]);
             }

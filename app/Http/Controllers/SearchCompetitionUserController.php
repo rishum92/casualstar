@@ -32,11 +32,11 @@ class SearchCompetitionUserController extends Controller
                 {
                     $username = Auth::user()->username;
                     $userid = Auth::user()->id;
-                    $showdate = competition_user::showdate();
+                    $showdate = competition_user::show_date();
                     $data = DB::table('competition_interested_users')
                             ->select('competition_interested_users.*','users.*')
                             ->join('users','id','=','competition_interested_users.user_id')
-                            ->where('competition_interested_users.username','like','%'.$query.'%')
+                            ->where('users.username','like','%'.$query.'%')
                             ->where('competition_interested_users.is_status',1)
                             ->get();
                     foreach ($data as $key => $vote_data) 
@@ -62,7 +62,7 @@ class SearchCompetitionUserController extends Controller
                     }
                     foreach($data as $key =>$vote_amount)
                     {
-                        $vote_amount =  DB::table('competiton_vote')
+                        $vote_amount =  DB::table('competition_interested_users')
                                         ->select('vote_amount')
                                         ->where('competition_id', $vote_amount->competition_id)
                                         ->get(); 
@@ -71,7 +71,7 @@ class SearchCompetitionUserController extends Controller
                     }
                     foreach($data as $key =>$user_position)
                     {
-                        $position = DB::table('competiton_vote')
+                        $position = DB::table('competition_interested_users')
                                     ->select('user_position')
                                     ->where('competition_id', $user_position->competition_id)
                                     ->get(); 
@@ -114,11 +114,11 @@ class SearchCompetitionUserController extends Controller
                 }
                 else
                 {
-                   $showdate = competition_user::showdate();
+                   $showdate = competition_user::show_date();
                     $data = DB::table('competition_interested_users')
                             ->select('competition_interested_users.*','users.*')
                             ->join('users','id','=','competition_interested_users.user_id')
-                            ->where('competition_interested_users.username','like','%'.$query.'%')
+                            ->where('users.username','like','%'.$query.'%')
                             ->where('competition_interested_users.is_status',1)
                             ->get();
                     foreach ($data as $key => $vote_data) 
@@ -144,7 +144,7 @@ class SearchCompetitionUserController extends Controller
                     }
                     foreach($data as $key =>$vote_amount)
                     {
-                        $vote_amount =  DB::table('competiton_vote')
+                        $vote_amount =  DB::table('competition_interested_users')
                                         ->select('vote_amount')
                                         ->where('competition_id', $vote_amount->competition_id)
                                         ->get(); 
@@ -153,7 +153,7 @@ class SearchCompetitionUserController extends Controller
                     }
                     foreach($data as $key =>$user_position)
                     {
-                        $position = DB::table('competiton_vote')
+                        $position = DB::table('competition_interested_users')
                                     ->select('user_position')
                                     ->where('competition_id', $user_position->competition_id)
                                     ->get(); 
@@ -192,37 +192,6 @@ class SearchCompetitionUserController extends Controller
             {
                echo "Record not found"; 
             }
-
         }
-
-        
     }
-    // competiton_vote.is_vote',DB::raw('count(competiton_vote.is_vote) as total_votes// ->where('is_vote',1)
-    // join('competiton_vote','competiton_vote.user_id','=','competition_interested_users.user_id')
-    //  public function action(Request $request)
-    // {
-    //     if ($request->ajax()) {
-            
-    //         $query = $request->get('search');
-    //         if($query != '')
-    //         {
-    //             $data = DB::table('users')
-    //                     ->where('username','like','%'.$query.'%')
-    //                     ->select('*')
-    //                     ->get();
-    //             $data = array(
-    //                 'response' => $data
-    //             );
-                
-    //             return json_encode($data);
-    //         }
-    //         else
-    //         {
-    //            echo "Record not found"; 
-    //         }
-// res[i].total_voters_count < 2 && (jQuery.inArray(res[i].user_id, res[i].voter_count)== -1) && res[i].user_id != auth_userid || obj.username == 'Admin' && new_date_format != newexpirydate
-    //     }
-
-        
-    // }
 }

@@ -649,11 +649,4 @@ class UserController extends MasterController
             return false;
         }
     }
-
-    public function profile_comment() {
-        $data = Input::all();
-        $user = User::find(Auth::user()->id);
-        echo '<pre>';print_r($data);
-        echo $user;exit;
-    }
 }

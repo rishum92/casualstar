@@ -5,6 +5,7 @@
 <?php $__env->startSection('content'); ?>
   <div data-ng-controller="ActivityController">
   <!-- notification start -->
+  
     <section class="viewed wrap">
      <div class="row service-list ">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="background: #f1f1f1;">
@@ -112,6 +113,8 @@
 	   
 	   <!-- Notification End -->
 	   <?php if(Auth()->user()->gender=="female"): ?>
+  }
+  }
   <!-- winks start -->
     <section class="winks">
       <div class="loader" data-ng-if="loadingWinks">
@@ -274,7 +277,7 @@
   </center>
   <?php endif; ?>
  <?php if($check_count_point >= 1000 && Auth::user()->pgp_status == 0): ?>
-  <div class="list-group text-danger"  ng-if="user.verify_check == 'VERIFIED'">
+  <div class="list-group text-danger">
     <div class="list-group-item list-group-item-sucess"><h5 class="text-center text-success">Click <a class="cursor-pointer" data-toggle="modal" data-target="#activeConfirmModal">Activate Now</a> to start your 24 hours of free Private Gallery Access.</h5></div>
   </div>
   <?php endif; ?>
